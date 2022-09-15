@@ -18,7 +18,13 @@
 - Assignment 2: Friday, 11 November 2022, 11:59 PM
 - Assignment 3: Friday, 2 December 2022, 11:59 PM
 
-## Getting Started
+# Work distribution
+- Assignment 1: 
+  - Part 1: 
+  - Part 2: 
+  - Part 3: 
+
+# Getting Started
  Make sure you have Visual Studio 2022 installed on your local machine. This will be our IDE for this project. 
 
  ## Deployment
