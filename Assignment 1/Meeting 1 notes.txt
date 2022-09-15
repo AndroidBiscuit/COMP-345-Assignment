@@ -1,0 +1,6 @@
+Meeting 1 notes, September 11 2022
+
+ - Since part 2 depends on part 1 (map) and part 5 (game engine), we should probably start by looking at those.
+ - We can spend the first week to learn the required material in class and then work on them together for the next week.
+ - The rest of the parts can be split up.
+ - Next meeting one week before submission to make sure that everything works.
