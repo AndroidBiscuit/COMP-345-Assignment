@@ -9,7 +9,7 @@
 # Members
 - Faizan Ahmad (40100581); GH: AndroidBiscuit
 - Monica Chen (40022537); GH: Chen-808
-- Ziad Taifour () : GH: KingZiad
+- Ziad Taifour (40097049) : GH: KingZiad
 - Wuyang Peng (40037681) : GH: peng2611878
 - Lin Ling (40153877) : GH: janeeyre912
 
