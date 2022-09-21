@@ -1,6 +1,5 @@
 // RiskProject.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -11,8 +10,6 @@ using std::ifstream;
 #include <fstream> // reading a text file
 #include <string>
 #include <sstream>
-
-
 
 void testLoadMaps() {
 
@@ -26,12 +23,13 @@ void testLoadMaps() {
 			exit(1);
 		};
 
-		if (myFile.is_open())
+		while (myFile.is_open())
 		{
+
+
 		}
 
-
-	
+		myFile.close();	
 }
 
 int main()
