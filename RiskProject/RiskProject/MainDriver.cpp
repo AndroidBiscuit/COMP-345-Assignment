@@ -1,6 +1,6 @@
 // RiskProject.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
+#include "MapDriver.h"
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -13,30 +13,10 @@ using std::ifstream;
 #include <sstream>
 
 
-
-void testLoadMaps() {
-
-	//Extract data from .map file
-	ifstream myFile;
-
-	//if file couldn't be opened
-	myFile.open("Canada1999");
-		if (!myFile) { 
-			cerr << "Error: file could not be opened" << endl;
-			exit(1);
-		};
-
-		if (myFile.is_open())
-		{
-		}
-
-
-	
-}
-
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "Start to load the map.\n";
+    testLoadMaps();
 
 }
 
