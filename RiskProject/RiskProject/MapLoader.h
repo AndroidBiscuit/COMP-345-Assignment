@@ -3,10 +3,11 @@
 
 class MapLoader {
 private :
-	Map* myMap;                         // a map object (pointer)
+	
 	string inputFileName;               //input file path
 
 public:
+	Map* myMap;                         // a map object (pointer)
 	friend ostream& operator<< (ostream& out, const MapLoader& m); // stream insertion operator
 
 	MapLoader();                       //default constructor

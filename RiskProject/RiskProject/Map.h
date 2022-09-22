@@ -10,49 +10,72 @@ private:
     string tName;                      //the name and continent of a territory
     string continentName;
     string territoryOwner;            //the owner of a territory
+    int tID;                          // the ID of a territory
+    int playerID;                     // the ID of a player
     int armyAmount;                   //the amount of army in a territory
+  
     
 public: 
-    Territory();
-    Territory(string tName, string continentName);
+    vector<string> adjacentTerritoryMembers;  //the list of adjacent territories
+    friend ostream& operator<< (ostream& out, const Territory& t); // stream insertion operator
+
+    Territory();                                                                //default constructor
+    Territory(const Territory*);                                                //copy constructor
+    Territory(string tName, string continentName, int tID);   //four parameter constructor
+    Territory& operator= (const Territory&);                                   //assigment operator
+    ~Territory();                                                              //destructor
+    
     string getTName();
     string getContinentName();
+    int getTID();
+    int getPlayerID();
     int getArmyAmount();
     void setTName(string tName);
-
+    void setTID(int tID);
+    vector<string> getAdjacentTerritoryMembers();
 };
 
 class Continent
 {
 private:
     string cName;
-    vector<Territory*> adjacentTerritoryMembers;
+    int cID;
 
 public:
-    Continent();
-    Continent(string cName, int cID);
+   /* TODO  friend ostream& operator<< (ostream& out, const Continent& t);*/ // stream insertion operator
+
+    Continent();                              //default constructor
+    //TODO  Continent(const Continent*);             //copy constructor
+    Continent(string cName, int cID);        //two parameter constructor
+    //TODO  Continent& operator= (const Continent&);   //assigment operator
+    //TODO   ~Continent();                             //destructor
 
     string getCName();
-    vector<Territory*> getAdjacentMembers();
+    int getCID();
 };
 
 class Map
 {
 private:
     string mName;
-    vector<Territory*> allTerritory;
-    vector<Continent*> allContinent;
+ 
 
 public:
-    Map();
-    Map(string mName);
+    vector<Territory*> allTerritory;
+    vector<Continent*> allContinent;
+    //friend ostream& operator<< (ostream& out, const Continent& t); // stream insertion operator
 
+    Map();                                     //default constructor
+   /*TODO   Map(const Continent*);     */              //copy constructor
+    Map(string mName);                    //two parameter constructor
+    //TODO   Map& operator= (const Map&);          //assigment operator
+    //TODO  ~Map();
+    
     string getMName();
     vector<Territory*> getAllTerritory();
+    vector<Continent*> getAllContinent();
     void setMapName(string mName);
-    void setNumOfAllTerritory(int numOfAllTerritory);
-    void setNumOfAllContinent(int numOfAllContinent);
-    void validate();
+    //TODO   void validate();
 
 };
 
