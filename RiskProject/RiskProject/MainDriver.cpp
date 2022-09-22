@@ -1,4 +1,4 @@
-// RiskProject.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// MainDriver.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include "MapDriver.h"
 #include <iostream>
