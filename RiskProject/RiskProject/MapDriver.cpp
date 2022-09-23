@@ -55,8 +55,8 @@ void testLoadMaps() {
 
     cout << "-------------------------setting up graph-----------------------------"  << endl;
     //Creates graph from data
-    //int nodesAmount = mapLoader.myMap->territoryIndexDictionary.size();
-    //vector<int> mapGraph;
+    int nodesAmount = mapLoader.myMap->territoryIndexDictionary.size();
+    vector<int> mapGraph;
     for (int i = 0; i < mapLoader.myMap->allTerritory.size(); i++)
     {
         //for each territory
@@ -65,7 +65,7 @@ void testLoadMaps() {
         { 
             string adjTerritoryName = mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers[j];
             int destTerritoryID = mapLoader.myMap->getTerritoryIDFromTName(adjTerritoryName);
-            mapLoader.myMap->addEdge(mapLoader.myMap->graph[i], i, destTerritoryID);
+            mapLoader.myMap->addEdge(mapLoader.myMap->graph, i, destTerritoryID);
         }
     }
 
