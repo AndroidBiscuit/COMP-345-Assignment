@@ -82,8 +82,8 @@ void MapLoader::parseMapFile() {
     bool mapFlag = false;
     bool continentFlag = false;
     bool territoryFlag = false;
-    int cID = 0;
-    int tID = 0;
+    int cID = -1;
+    int tID = -1;
     string lineText;
     // Read from the text file
     ifstream MyReadFile(this->inputFileName);
@@ -116,8 +116,9 @@ void MapLoader::parseMapFile() {
             }
 
             toUpper(lineTokens[0]);
-            myMap->allContinent.push_back(new Continent(lineTokens[0],cID));
-            myMap->continentIndexDictionary.insert(pair<Continent*, int>(new Continent(lineTokens[0], cID), cID));
+            Continent* temp = new Continent(lineTokens[0], cID);
+            myMap->allContinent.push_back(temp);
+            myMap->continentIndexDictionary.insert(pair<Continent*, int>(temp, cID));
             /* cout << "Information" << line[0] << cID << endl;*/
         }
 
@@ -140,7 +141,7 @@ void MapLoader::parseMapFile() {
                 }
                 Territory* temp = new Territory(lineTokens[0], lineTokens[3], tID);
                 myMap->allTerritory.push_back(temp);
-                myMap->territoryIndexDictionary.insert(pair<Territory*, int>(temp, cID));
+                myMap->territoryIndexDictionary.insert(pair<Territory*, int>(temp, tID));
                 for (int i = 3; i < lineTokens.size(); i++) {
                     temp->adjacentTerritoryMembers.push_back(lineTokens[i]);
                 }

@@ -46,6 +46,15 @@ void testLoadMaps() {
         //}
         cout << endl;
     }
+
+    cout << "-------------------------Continent dictionary-----------------------------" << endl;
+    for (auto pair : mapLoader.myMap->territoryIndexDictionary) {
+        cout << pair.first->getTName() << ": " << pair.second << endl;
+        /*for (string j : mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers) {
+            cout << j << ", ";*/
+            //}
+        cout << endl;
+    }
     /*cout << "-------------------------continent set-----------------------------" << endl;
     for (int i = 0; i < mapLoader.myMap->allContinent.size(); i++) {
         cout << mapLoader.myMap->allContinent[i]->getCName() << endl;
