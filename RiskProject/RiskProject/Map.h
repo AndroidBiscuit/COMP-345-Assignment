@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include<map>
 using namespace std;
 
 class Territory
@@ -63,6 +64,8 @@ private:
 public:
     vector<Territory*> allTerritory;
     vector<Continent*> allContinent;
+    map<Territory*, int> territoryIndexDictionary;
+    map<Continent*, int> continentIndexDictionary;
     vector<int> graph; //territories - if territories are connected then the continents MUST be connected -> thus only need to validate the connectedness of territories 
     //friend ostream& operator<< (ostream& out, const Continent& t); // stream insertion operator
 
@@ -83,24 +86,6 @@ public:
     //TODO   void validate();
 
 };
-
-
-
-a - c are connected 
-
-0 - 2
-/*
-[0 - a
-1- b
-2- c
-3 - d
-4 - e]
-
-
-
-
-
-*/
 
 //Requirments from Assignment #1 description:
 //All classes must implement a correct copy constructor, assignment operator,and stream insertion operator.

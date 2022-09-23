@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include<map>
 #include <sstream>
 #include "MapLoader.h"
 #include "Map.h"
