@@ -98,14 +98,14 @@ string Map::getTerritoryNameFromTerritoryID(int tID)
     return tName;
 };
 
-int Map::getTerritoryIDFromTName(Territory* tName)
-{
-    vector<Territory*> vec;
-    if (std::find(vec.begin(), vec.end(), tName) != vec.end())
-    {
-        int index = distance(vec.begin(), static_cast<int>(find(vec.begin(), vec.end(), tName)));
-        return index;
-    }
+//int Map::getTerritoryIDFromTName(Territory* tName)
+//{
+//    vector<Territory*> vec;
+//    if (std::find(vec.begin(), vec.end(), tName) != vec.end())
+//    {
+//        int index = distance(vec.begin(), static_cast<int>(find(vec.begin(), vec.end(), tName)));
+//        return index;
+//    }
         
     
     /*
@@ -124,7 +124,7 @@ int Map::getTerritoryIDFromTName(Territory* tName)
     return index;
     */
    
-}
+//}
 
 vector<Territory*> Map::getAllTerritory() { return allTerritory; }
 vector<Continent*> Map::getAllContinent() { return allContinent; }
