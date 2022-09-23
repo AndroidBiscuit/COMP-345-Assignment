@@ -21,6 +21,7 @@ public:
 	vector<string> tokenizeString(const string&, char); //tokenizes the line information from the text file by certain delimiter
 	void toUpper(string& str); // captitalizes the first character of the name of Territories or continents
 	void parseMapFile();               //reads the map file and stores the map as a Map object 
+
 };
 
 

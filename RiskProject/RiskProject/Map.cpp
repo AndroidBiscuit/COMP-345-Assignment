@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include <stack>
+#include<algorithm>
+#include<vector>
 #include <typeinfo>
 
 
@@ -90,9 +92,53 @@ Map::Map(string mName)
 }
 
 string Map::getMName() { return mName; }
+string Map::getTerritoryNameFromTerritoryID(int tID)
+{
+    string tName = allTerritory[tID]->getTName(); 
+    return tName;
+};
+
+int Map::getTerritoryIDFromTName(Territory* tName)
+{
+    vector<Territory*> vec;
+    if (std::find(vec.begin(), vec.end(), tName) != vec.end())
+    {
+        int index = distance(vec.begin(), static_cast<int>(find(vec.begin(), vec.end(), tName)));
+        return index;
+    }
+        
+    
+    /*
+    vector<Territory*>::iterator itr = static_cast<int>(find(allTerritory.begin(), allTerritory.end(), tName));
+    if (itr != allTerritory.end())
+    {
+        int index = distance(allTerritory.begin(), itr);
+        return index;
+    }
+
+    */
+    
+    /*
+    *  auto it = find(allTerritory.begin(), allTerritory.end(), tName);
+    int index = it - allTerritory.begin();
+    return index;
+    */
+   
+}
+
 vector<Territory*> Map::getAllTerritory() { return allTerritory; }
 vector<Continent*> Map::getAllContinent() { return allContinent; }
 void Map::setMapName(string mName)
 {
     mName = mName;
+}
+
+void Map::addEdge(vector<int> graph, int source, int destination)
+{
+    graph.push_back(destination);
+    cout << "edge has been added!";
+}
+void Map::printGraph(vector<Territory*> graph[])
+{
+
 }

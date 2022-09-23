@@ -131,13 +131,11 @@
     <ClCompile Include="MapDriver.cpp" />
     <ClCompile Include="MapLoader.cpp" />
     <ClCompile Include="MainDriver.cpp" />
-    <ClCompile Include="Territory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapDriver.h" />
     <ClInclude Include="MapLoader.h" />
-    <ClInclude Include="Territory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Canada1999.map" />
