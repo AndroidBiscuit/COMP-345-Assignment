@@ -1,6 +1,8 @@
 #include "Map.h"
 #include <iostream>
 #include <iomanip>
+#include <list>
+#include <iterator>
 #include <stack>
 #include<algorithm>
 #include<vector>
@@ -82,6 +84,7 @@ int Continent::getCID() { return cID; }
 Map::Map()
 {
     mName = "";
+    graph;
 
 }
 
@@ -98,38 +101,12 @@ string Map::getTerritoryNameFromTerritoryID(int tID)
     return tName;
 };
 
-int Map::getTerritoryIDFromTName(Territory* tName)
+int Map::getTerritoryIDFromTName(string tName)
 {
-    map<Territory*, int>::iterator it;
+    std::map<string, int>::iterator it;
     it = territoryIndexDictionary.find(tName);
 
-    return 0;
-    /*
-    vector<Territory*> vec;
-    if (std::find(vec.begin(), vec.end(), tName) != vec.end())
-    {
-        int index = distance(vec.begin(), static_cast<int>(find(vec.begin(), vec.end(), tName)));
-        return index;
-    }
-    
-    */
-        
-    
-    /*
-    vector<Territory*>::iterator itr = static_cast<int>(find(allTerritory.begin(), allTerritory.end(), tName));
-    if (itr != allTerritory.end())
-    {
-        int index = distance(allTerritory.begin(), itr);
-        return index;
-    }
-
-    */
-    
-    /*
-    *  auto it = find(allTerritory.begin(), allTerritory.end(), tName);
-    int index = it - allTerritory.begin();
-    return index;
-    */
+    return territoryIndexDictionary.find(tName)->second;
    
 }
 
@@ -140,12 +117,21 @@ void Map::setMapName(string mName)
     mName = mName;
 }
 
-void Map::addEdge(vector<int> graph, int source, int destination)
+void Map::addEdge(vector<int> graph[], int source, int destination)
 {
-    graph.push_back(destination);
-    cout << "edge has been added!";
+    graph[source].push_back(destination);
+    //Uncomment to check if edge has been added
+    string sourceTerritory = getTerritoryNameFromTerritoryID(source);
+    string destinationTerritory = getTerritoryNameFromTerritoryID(destination);
+    cout << "edge from " << sourceTerritory << " to " <<destinationTerritory << " has been added!" <<endl;
 }
-void Map::printGraph(vector<Territory*> graph[])
+//
+//void Map::getEdge(vector<int>graph, int src, int destination)
+//{
+//
+//}
+void Map::printGraph(vector<int> graph)
 {
+    cout << "Adjacency list of vertex << : " << endl;
 
 }

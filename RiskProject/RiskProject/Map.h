@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include<map>
+#include <list>
 using namespace std;
 
 class Territory
@@ -64,8 +65,8 @@ private:
 public:
     vector<Territory*> allTerritory;
     vector<Continent*> allContinent;
-    map<Territory*, int> territoryIndexDictionary;
-    map<Continent*, int> continentIndexDictionary;
+    map<string, int> territoryIndexDictionary;
+    map<string, int> continentIndexDictionary;
     vector<int> graph; //territories - if territories are connected then the continents MUST be connected -> thus only need to validate the connectedness of territories 
     //friend ostream& operator<< (ostream& out, const Continent& t); // stream insertion operator
 
@@ -77,12 +78,12 @@ public:
     
     string getMName();
     string getTerritoryNameFromTerritoryID(int tID);
-    int getTerritoryIDFromTName(Territory* tName);
+    int getTerritoryIDFromTName(string tName);
     vector<Territory*> getAllTerritory();
     vector<Continent*> getAllContinent();
     void setMapName(string mName);
-    void addEdge(vector<int> graph, int src, int dest);
-    void printGraph(vector<Territory*> graph[]);
+    void addEdge(vector<int> graph[], int src, int dest);
+    void printGraph(vector<int> graph);
     //TODO   void validate();
 
 };

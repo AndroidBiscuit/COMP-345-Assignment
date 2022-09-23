@@ -39,51 +39,47 @@ void testLoadMaps() {
     cout << "-------------------------Territory dictionary-----------------------------" << endl;
     cout << mapLoader.myMap->territoryIndexDictionary.size() << endl;
     cout << mapLoader.myMap->continentIndexDictionary.size() << endl;
-    for (auto pair : mapLoader.myMap->continentIndexDictionary) {
-        cout << pair.first->getCName() << ": " << pair.second << endl;
+    for (auto pair : mapLoader.myMap->territoryIndexDictionary) {
+        cout << pair.first << ": " << pair.second << endl;
         cout << endl;
     }
 
     cout << "-------------------------Continent dictionary-----------------------------" << endl;
-    for (auto pair : mapLoader.myMap->territoryIndexDictionary) {
-        cout << pair.first->getTName() << ": " << pair.second << endl;
+    for (auto pair : mapLoader.myMap->continentIndexDictionary) {
+        cout << pair.first << ": " << pair.second << endl;
         cout << endl;
     }
 
 
 
 
-
-
-
-    /*cout << "-------------------------continent set-----------------------------" << endl;
-    for (int i = 0; i < mapLoader.myMap->allContinent.size(); i++) {
-        cout << mapLoader.myMap->allContinent[i]->getCName() << endl;
-    }*/
-
-    cout << "-------------------------trying something here-----------------------------"  << endl;
+    cout << "-------------------------setting up graph-----------------------------"  << endl;
     //Creates graph from data
+    //int nodesAmount = mapLoader.myMap->territoryIndexDictionary.size();
+    //vector<int> mapGraph;
     for (int i = 0; i < mapLoader.myMap->allTerritory.size(); i++)
     {
         //for each territory
 
-        for (int j = 0; j < mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers.size(); j++)
-        { //cout << mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers[j] << endl;
-            Territory* adjTerritoryName = mapLoader.myMap->allTerritory[i]->;
+        for (int j = 1; j < mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers.size(); j++)
+        { 
+            string adjTerritoryName = mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers[j];
             int destTerritoryID = mapLoader.myMap->getTerritoryIDFromTName(adjTerritoryName);
-            mapLoader.myMap->addEdge(mapLoader.myMap->graph, i, destTerritoryID);
+            mapLoader.myMap->addEdge(mapLoader.myMap->graph[i], i, destTerritoryID);
         }
     }
-    //mapLoader.myMap->addEdge()
-    cout << mapLoader.myMap->getTerritoryNameFromTerritoryID(0);
-   /* cout << "-------------------------trying something here-----------------------------" << endl;
-    for (int source = 0; source < mapLoader.myMap->allTerritory.size(); source++) 
-    {
-        for (int neighbour : mapLoader.myMap->graph)
-            cout << "there is an edge between " << source << " and " << neighbour <<endl;
 
-    }*/
-    
+
+   //cout <<mapGraph[1] << endl;
+    cout << "-------------------------------GRAPH REPRESENTATION-------------------------------" << endl;
+
+    /*for (int i = 0; i < mapLoader.myMap->graph.size(); i++)
+    {
+        string territory = mapLoader.myMap->getTerritoryNameFromTerritoryID(i);
+        cout << "Adjacency list of vertex " <<territory <<": " << endl;
+        cout << mapLoader.myMap->graph[i] << endl;
+    }
+    */
 
 }
 

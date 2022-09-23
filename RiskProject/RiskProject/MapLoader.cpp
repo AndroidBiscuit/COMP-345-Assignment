@@ -118,7 +118,7 @@ void MapLoader::parseMapFile() {
             toUpper(lineTokens[0]);
             Continent* temp = new Continent(lineTokens[0], cID);
             myMap->allContinent.push_back(temp);
-            myMap->continentIndexDictionary.insert(pair<Continent*, int>(temp, cID));
+            myMap->continentIndexDictionary.insert(pair<string, int>(lineTokens[0], cID));
             /* cout << "Information" << line[0] << cID << endl;*/
         }
 
@@ -141,7 +141,7 @@ void MapLoader::parseMapFile() {
                 }
                 Territory* temp = new Territory(lineTokens[0], lineTokens[3], tID);
                 myMap->allTerritory.push_back(temp);
-                myMap->territoryIndexDictionary.insert(pair<Territory*, int>(temp, tID));
+                myMap->territoryIndexDictionary.insert(pair<string, int>(lineTokens[0], tID));
                 for (int i = 3; i < lineTokens.size(); i++) {
                     temp->adjacentTerritoryMembers.push_back(lineTokens[i]);
                 }
