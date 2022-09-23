@@ -41,40 +41,41 @@ void testLoadMaps() {
     cout << mapLoader.myMap->continentIndexDictionary.size() << endl;
     for (auto pair : mapLoader.myMap->continentIndexDictionary) {
         cout << pair.first->getCName() << ": " << pair.second << endl;
-        /*for (string j : mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers) {
-            cout << j << ", ";*/
-        //}
         cout << endl;
     }
 
     cout << "-------------------------Continent dictionary-----------------------------" << endl;
     for (auto pair : mapLoader.myMap->territoryIndexDictionary) {
         cout << pair.first->getTName() << ": " << pair.second << endl;
-        /*for (string j : mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers) {
-            cout << j << ", ";*/
-            //}
         cout << endl;
     }
+
+
+
+
+
+
+
     /*cout << "-------------------------continent set-----------------------------" << endl;
     for (int i = 0; i < mapLoader.myMap->allContinent.size(); i++) {
         cout << mapLoader.myMap->allContinent[i]->getCName() << endl;
     }*/
 
-    //cout << "-------------------------trying something here-----------------------------"  << endl;
-    ////Creates graph from data
-    //for (int i = 0; i < mapLoader.myMap->allTerritory.size(); i++)
-    //{
-    //    //for each territory
+    cout << "-------------------------trying something here-----------------------------"  << endl;
+    //Creates graph from data
+    for (int i = 0; i < mapLoader.myMap->allTerritory.size(); i++)
+    {
+        //for each territory
 
-    //    for (int j = 0; j < mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers.size(); j++)
-    //    { //cout << mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers[j] << endl;
-    //        string adjTerritoryName = mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers[j];
-    //        int destTerritoryID = mapLoader.myMap->getTerritoryIDFromTName(adjTerritoryName);
-    //        mapLoader.myMap->addEdge(mapLoader.myMap->graph, i, destTerritoryID);
-    //    }
-    //}
+        for (int j = 0; j < mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers.size(); j++)
+        { //cout << mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers[j] << endl;
+            Territory* adjTerritoryName = mapLoader.myMap->allTerritory[i]->;
+            int destTerritoryID = mapLoader.myMap->getTerritoryIDFromTName(adjTerritoryName);
+            mapLoader.myMap->addEdge(mapLoader.myMap->graph, i, destTerritoryID);
+        }
+    }
     //mapLoader.myMap->addEdge()
-    //cout << mapLoader.myMap->getTerritoryNameFromTerritoryID(0);
+    cout << mapLoader.myMap->getTerritoryNameFromTerritoryID(0);
    /* cout << "-------------------------trying something here-----------------------------" << endl;
     for (int source = 0; source < mapLoader.myMap->allTerritory.size(); source++) 
     {
