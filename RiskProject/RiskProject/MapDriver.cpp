@@ -9,6 +9,8 @@ using std::endl;
 using std::ifstream;
 #include <cstdlib> // for exit function
 
+
+
 void testLoadMaps() {
 
     //Extracts data from .map 
@@ -50,13 +52,10 @@ void testLoadMaps() {
         cout << endl;
     }
 
-
-
-
     cout << "-------------------------setting up graph-----------------------------"  << endl;
     //Creates graph from data
     int nodesAmount = mapLoader.myMap->territoryIndexDictionary.size();
-    vector<int> mapGraph;
+    
     for (int i = 0; i < mapLoader.myMap->allTerritory.size(); i++)
     {
         //for each territory
@@ -65,22 +64,14 @@ void testLoadMaps() {
         { 
             string adjTerritoryName = mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers[j];
             int destTerritoryID = mapLoader.myMap->getTerritoryIDFromTName(adjTerritoryName);
-            mapLoader.myMap->addEdge(mapLoader.myMap->graph, i, destTerritoryID);
+           mapLoader.myMap->addEdge(mapLoader.myMap->graph, i, destTerritoryID);
         }
     }
-
-
-   //cout <<mapGraph[1] << endl;
+     
     cout << "-------------------------------GRAPH REPRESENTATION-------------------------------" << endl;
-
-    /*for (int i = 0; i < mapLoader.myMap->graph.size(); i++)
-    {
-        string territory = mapLoader.myMap->getTerritoryNameFromTerritoryID(i);
-        cout << "Adjacency list of vertex " <<territory <<": " << endl;
-        cout << mapLoader.myMap->graph[i] << endl;
-    }
-    */
+    int numOfTerritories = mapLoader.myMap->allTerritory.size();
+    mapLoader.myMap->printGraph(mapLoader.myMap->graph, numOfTerritories);
 
 }
 
-//mapLoader contains all territories and continennts 
+//mapLoader contains all territories and continents 

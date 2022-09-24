@@ -121,17 +121,26 @@ void Map::addEdge(vector<int> graph[], int source, int destination)
 {
     graph[source].push_back(destination);
     //Uncomment to check if edge has been added
-    string sourceTerritory = getTerritoryNameFromTerritoryID(source);
+    /*string sourceTerritory = getTerritoryNameFromTerritoryID(source);
     string destinationTerritory = getTerritoryNameFromTerritoryID(destination);
     cout << "edge from " << sourceTerritory << " to " <<destinationTerritory << " has been added!" <<endl;
+    */
 }
-//
-//void Map::getEdge(vector<int>graph, int src, int destination)
-//{
-//
-//}
-void Map::printGraph(vector<int> graph)
-{
-    cout << "Adjacency list of vertex << : " << endl;
 
+bool Map::edgeExistance(vector<int>graph, int src, int destination)
+{
+    return false;
+}
+
+void Map::printGraph(vector<int> graph[], int numOfTerritories)
+{
+    string territoryName;
+    for (int v = 0; v < numOfTerritories; ++v) {
+        territoryName = getTerritoryNameFromTerritoryID(v);
+        cout << "\n Adjacency list of territory " << territoryName <<endl;
+        cout << "\n " <<territoryName;
+        for (auto x : graph[v])
+            cout << "-> " << x;
+        printf("\n");
+    }
 }
