@@ -83,8 +83,8 @@ public:
     vector<Continent*> getAllContinent();
     void setMapName(string mName);
     void addEdge(vector<int> graph[], int src, int dest);
-    bool edgeExistance(vector<int>graph, int src, int destination);
-    void printGraph(vector<int> graph[], int V);
+    bool edgeExistance(vector<int>graph[], int src, int destination);
+    void printGraph(vector<int> graph[]);
     //TODO   void validate();
 
 };

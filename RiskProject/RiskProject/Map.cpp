@@ -127,18 +127,27 @@ void Map::addEdge(vector<int> graph[], int source, int destination)
     */
 }
 
-bool Map::edgeExistance(vector<int>graph, int src, int destination)
+bool Map::edgeExistance(vector<int>graph[], int src, int destination)
 {
+    for (int i = 0; i < allTerritory.size(); i++)
+    {
+        for (auto x : graph[i])
+        {
+            if (src == i && destination == x)
+                return true;
+        }
+        
+    }
     return false;
 }
 
-void Map::printGraph(vector<int> graph[], int numOfTerritories)
+void Map::printGraph(vector<int> graph[])
 {
     string territoryName;
-    for (int v = 0; v < numOfTerritories; ++v) {
+    for (int v = 0; v < allTerritory.size(); ++v) {
         territoryName = getTerritoryNameFromTerritoryID(v);
         cout << "\n Adjacency list of territory " << territoryName <<endl;
-        cout << "\n " <<territoryName;
+        cout << "\n " <<v;
         for (auto x : graph[v])
             cout << "-> " << x;
         printf("\n");

@@ -70,7 +70,15 @@ void testLoadMaps() {
      
     cout << "-------------------------------GRAPH REPRESENTATION-------------------------------" << endl;
     int numOfTerritories = mapLoader.myMap->allTerritory.size();
-    mapLoader.myMap->printGraph(mapLoader.myMap->graph, numOfTerritories);
+    mapLoader.myMap->printGraph(mapLoader.myMap->graph);
+
+    cout << "-------------------------------trying things out-------------------------------" << endl;
+    cout << "does edge between " << endl;
+    bool a = mapLoader.myMap->edgeExistance(mapLoader.myMap->graph, 75, 25);
+    bool b = mapLoader.myMap->edgeExistance(mapLoader.myMap->graph, 75, 70);
+    bool c = mapLoader.myMap->edgeExistance(mapLoader.myMap->graph, 75, 13);
+
+    cout << a << b << c;
 
 }
 
