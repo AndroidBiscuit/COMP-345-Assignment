@@ -9,7 +9,6 @@
 #include <typeinfo>
 
 
-
 Territory::Territory()
 {
     tName = "";
