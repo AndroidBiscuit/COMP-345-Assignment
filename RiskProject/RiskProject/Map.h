@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include <set>
-#include<map>
+#include <map>
 #include <list>
 using namespace std;
 
@@ -67,7 +67,8 @@ public:
     vector<Continent*> allContinent;
     map<string, int> territoryIndexDictionary;
     map<string, int> continentIndexDictionary;
-    vector<int> graph[200]; //territories - if territories are connected then the continents MUST be connected -> thus only need to validate the connectedness of territories 
+    vector<int> graph[200]; //territories - if territories are connected then the continents MUST be connected -> 
+    //thus only need to validate the connectedness of territories 
     //friend ostream& operator<< (ostream& out, const Continent& t); // stream insertion operator
 
     Map();                                     //default constructor

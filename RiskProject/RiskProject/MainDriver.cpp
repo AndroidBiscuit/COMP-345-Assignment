@@ -16,6 +16,7 @@ using std::ifstream;
 int main()
 {
     std::cout << "Start to load the map.\n";
+
     testLoadMaps();
 
 }
