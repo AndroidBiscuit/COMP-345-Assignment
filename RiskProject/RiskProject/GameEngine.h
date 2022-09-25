@@ -20,10 +20,10 @@ public:
 		return state;
 	}
 
-	friend ostream& operator << (ostream& out, const GameEngine& ge);
+	friend ostream& operator << (ostream& out, const GameEngine& ge);	//stream insertion operator
 	friend istream& operator >> (istream& in, GameEngine& ge);
 
-	int testGameStates(int opt);
+	int testGameStates(int opt);				//testGameStates function
 };
 
 
