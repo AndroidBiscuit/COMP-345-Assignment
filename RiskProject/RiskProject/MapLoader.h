@@ -2,9 +2,9 @@
 #include "Map.h"
 
 class MapLoader {
-private :
+// private :
 	
-	string inputFileName;               //input file path
+// 	string inputFileName;               //input file path
 
 public:
 	Map* myMap;                         // a map object (pointer)
@@ -21,8 +21,17 @@ public:
 	vector<string> tokenizeString(const string&, char); //tokenizes the line information from the text file by certain delimiter
 	void toUpper(string& str); // captitalizes the first character of the name of Territories or continents
 	void parseMapFile();               //reads the map file and stores the map as a Map object 
+ 
+ 	Map* loadMap(string mapFilePath);
+    vector<string> splitStringForMap(string stringToSplit);
+    void createTerritory(string territoryString, Map* map);
+    void createContinent(int* continentID, string continentString, Map* map);
+    void createAdjacentTerritoryMembers(string adjacentTerritoryMembers, Map* map);
 
 };
+   
+
+
 
 
 
