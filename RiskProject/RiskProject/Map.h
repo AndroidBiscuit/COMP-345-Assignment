@@ -6,88 +6,112 @@
 #include <list>
 using namespace std;
 
-class Territory
-{
+class Player;
+
+//Territory acts a the nodes of the map
+class Territory{
 private:
-    string tName;                      //the name and continent of a territory
-    string continentName;
-    string territoryOwner;            //the owner of a territory
-    int tID;                          // the ID of a territory
-    int playerID;                     // the ID of a player
-    int armyAmount;                   //the amount of army in a territory
+    int territoryID;
+    string name;                      
+    Player* owner;                   
+    vector<Territory*> adjTerritories;
+    int armyAmount;    
+    int continentID;
+  /*  Continent* cont;*/
   
     
 public: 
-    vector<string> adjacentTerritoryMembers;  //the list of adjacent territories
-    friend ostream& operator<< (ostream& out, const Territory& t); // stream insertion operator
+    //Stream Insertion
+    friend ostream& operator<< (ostream& out, const Territory& t); 
 
-    Territory();                                                                //default constructor
-    Territory(const Territory*);                                                //copy constructor
-    Territory(string tName, string continentName, int tID);   //four parameter constructor
-    Territory& operator= (const Territory&);                                   //assigment operator
-    ~Territory();                                                              //destructor
-    
+    //Constructors
+    Territory(int tID, int cID);                                                                
+    Territory(int tID, int cID, string name);
+    Territory(const Territory& other);
+
+    //assignment operator
+    Territory& operator= (const Territory&);  
+
+    //destructor
+    ~Territory();          
+
+    //accessor
     string getTName();
-    string getContinentName();
     int getTID();
-    int getPlayerID();
-    int getArmyAmount();
-    void setTName(string tName);
-    void setTID(int tID);
-    vector<string> getAdjacentTerritoryMembers();
-};
-
-class Continent
-{
-private:
-    string cName;
-    int cID;
-
-public:
-   /* TODO  friend ostream& operator<< (ostream& out, const Continent& t);*/ // stream insertion operator
-
-    Continent();                              //default constructor
-    //TODO  Continent(const Continent*);             //copy constructor
-    Continent(string cName, int cID);        //two parameter constructor
-    //TODO  Continent& operator= (const Continent&);   //assigment operator
-    //TODO   ~Continent();                             //destructor
-
-    string getCName();
     int getCID();
+    int getArmyAmount();
+    vector<Territory*> getAdjTerritories();
+
+    //methods
+    void addAdj(Territory* t);
+    void setOwner(Player* p);
+   
 };
 
-class Map
-{
+struct Continent{
+    int cID;
+    string name;
+    int armyValue;
+    vector<Territory*> subGraph;
+    vector<int> subGraphIndex;
+
+    //constructors
+    Continent(int cID, string name);
+    Continent(int cID, string name, int armyValue);
+    Continent(const Continent& other);
+
+    //friend class
+    friend class MapLoader;
+    friend class Map;
+    Continent& operator=(const Continent& c);
+    //accessor
+    vector<Territory*> getSubGraph();
+    ~Continent();
+};
+
+class Map{
 private:
     string mName;
- 
+    vector<Continent*> allContinent;
+    bool valid = true;
 
 public:
     vector<Territory*> allTerritory;
-    vector<Continent*> allContinent;
-    map<string, int> territoryIndexDictionary;
-    map<string, int> continentIndexDictionary;
-    vector<int> graph[200]; //territories - if territories are connected then the continents MUST be connected -> 
-    //thus only need to validate the connectedness of territories 
-    //friend ostream& operator<< (ostream& out, const Continent& t); // stream insertion operator
+    //Stream insertion:
+    friend ostream& operator << (ostream& out, const Map& p);
 
-    Map();                                     //default constructor
-   /*TODO   Map(const Continent*);     */              //copy constructor
-    Map(string mName);                    //two parameter constructor
-    //TODO   Map& operator= (const Map&);          //assigment operator
-    //TODO  ~Map();
-    
-    string getMName();
-    string getTerritoryNameFromTerritoryID(int tID);
-    int getTerritoryIDFromTName(string tName);
+    bool* visited;
+    int numTerritories;
+    vector<int>* neighbors;
+
+    //friend class
+    friend class Maploader;
+
+    //constructors
+    Map();
+    Map(const Map& toCopy);
+
+    //destructor
+    ~Map();
+
+    void addContinent(Continent* theContinent);
+    void addTerritory(Territory* theTerritory);
+    bool getValid();
+    void setValid(bool);
+    Territory* getTerritory(int territoryID);
     vector<Territory*> getAllTerritory();
     vector<Continent*> getAllContinent();
-    void setMapName(string mName);
-    void addEdge(vector<int> graph[], int src, int dest);
-    bool edgeExistance(vector<int>graph[], int src, int destination);
-    void printGraph(vector<int> graph[]);
-    //TODO   void validate();
 
+    //methods related to validate()
+    void DFS(int s);
+    void DFS_helper(int s, bool* wasVisited);
+    void DFS1(int s, int bond, vector<Territory*> trr);
+    void DFS_helper1(int s, bool* wasVisited, vector<Territory*> trr);
+    bool validate(bool a, bool b, bool c);// Must check the following 3 functions	
+    bool validate(void);
+    bool isConnected(void);// Test to the see if the map is a connected graph	
+    bool continentSubgraphs(Map* map); // Test to see that continents are connected subgraphs	
+    bool countryToContinentRelation(void); // Test to see that each country belongs to only one continent
 };
 
 //Requirments from Assignment #1 description:

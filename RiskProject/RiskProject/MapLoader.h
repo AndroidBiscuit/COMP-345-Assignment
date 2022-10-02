@@ -3,24 +3,37 @@
 
 class MapLoader {
 private :
-	
-	string inputFileName;               //input file path
+	string inputFileName;               
+	Map loadedMap;
 
 public:
-	Map* myMap;                         // a map object (pointer)
-	friend ostream& operator<< (ostream& out, const MapLoader& m); // stream insertion operator
+	// stream insertion operator
+	friend ostream& operator<< (ostream& out, const MapLoader& m); 
 
-	MapLoader();                       //default constructor
-	MapLoader(const MapLoader*);        //copy constructor
-	MapLoader(Map*, string);            //two parameter constructor
-	MapLoader& operator= (const MapLoader&);   //assigment operator
-	~MapLoader();                          //destructor
-	string getInputFileName();          //accessor
-	void setInputFileName(const string&);            //mutator
+	//constuctors
+	MapLoader();                       
+	MapLoader(const MapLoader*);     
+
+	friend class Map;
+
+	//assigment operator
+	MapLoader& operator= (const MapLoader&);  
+
+	//destructor
+	~MapLoader();         
+	//accessor
+	string getInputFileName();   
+	//mutator
+	void setInputFileName(const string&);        
 
 	vector<string> tokenizeString(const string&, char); //tokenizes the line information from the text file by certain delimiter
 	void toUpper(string& str); // captitalizes the first character of the name of Territories or continents
-	void parseMapFile();               //reads the map file and stores the map as a Map object 
+	int getCID(Map*,string cName); //gets the continent ID by given continent name
+	int getTID(Map*, string tName);//gets the territory ID by given territory name
+	//void parseMapFile();               //reads the map file and stores the map as a Map object 
+
+	Map* getMap();
+	Map* loadMap(string mapFile);
 
 };
 

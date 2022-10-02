@@ -6,43 +6,34 @@
 #include "MapLoader.h"
 #include "Map.h"
 
+
 //default constructor
 MapLoader::MapLoader() {
-    myMap = nullptr;
-    inputFileName = "none";
+    cout << "MapLoader created" << endl;
 }
 
 //copy constructor
 MapLoader::MapLoader(const MapLoader* ml) {
-    myMap = ml->myMap;
+    loadedMap = ml->loadedMap;
     inputFileName = ml->inputFileName;
-}
-
-//two parameters constructor
-MapLoader::MapLoader(Map* myMap, string fileName) {
-    this->myMap = new Map();
-    this->inputFileName = fileName;
-    
 }
 
 //assignment operator
 MapLoader& MapLoader::operator = (const MapLoader& ml) {
-    this->myMap = ml.myMap;
+    this->loadedMap = ml.loadedMap;
     this->inputFileName = ml.inputFileName;
     return *this;
 }
 
 //stream insertion operator
-ostream& operator<< (ostream& out, const MapLoader& m) {
-    out << m.myMap << m.inputFileName << endl;
+ostream& operator << (ostream& out, const MapLoader& p) {
+    out << "Loaded File: " << p.inputFileName << endl;
     return out;
 }
 
 //destructor
 MapLoader::~MapLoader() {
-    inputFileName.clear();
-    delete myMap;
-    myMap = NULL;
+    cout << "MapLoader was destroyed" << endl;
 }
 
 //accessor
@@ -53,6 +44,10 @@ string MapLoader::getInputFileName() {
 //mutator
 void MapLoader::setInputFileName(const string& s) {
     inputFileName = s;
+}
+
+Map* MapLoader::getMap(){
+    return &loadedMap;
 }
 
 //splits the line information from the text file by certain delimiter
@@ -76,79 +71,200 @@ void MapLoader::toUpper(std::string& str) {
     str[0] = std::toupper(str[0]);
 }
 
+//gets the continent ID by given continent name
+int MapLoader::getCID(Map* createdMap,string cName) {
+    for (auto conti : createdMap->getAllContinent()) {
+    /*    cout <<"conti:" << conti->name << "find name" << cName;*/
+        if (conti->name == cName) {
+            return conti->cID;
+        }
+    }
+}
+
+//gets the territory ID by given territory name
+int MapLoader::getTID(Map* createdMap, string tName) {
+    for (auto terri : createdMap->getAllTerritory()) {
+        if (terri->getTName() == tName) {
+            return terri->getTID();
+        }
+    }
+}
+
 
 //reads the map file and stores the map as a Map object 
-void MapLoader::parseMapFile() {
-    bool mapFlag = false;
-    bool continentFlag = false;
-    bool territoryFlag = false;
-    int cID = -1;
-    int tID = -1;
-    string lineText;
-    // Read from the text file
-    ifstream MyReadFile(this->inputFileName);
-    // Use a while loop together with the getline() function to read the file line by line
-    while (getline(MyReadFile, lineText)) {
-        if (lineText == "[Map]") {
-            mapFlag = true;
-            continue;
-        }
-        if (mapFlag) {
-            this->myMap = new Map();
-            mapFlag = false;
+Map* MapLoader::loadMap(string mapFile) {
+    ifstream input;
+    bool readingContinents = false;
+    bool readingTerritories = false;
+    Map* createdMap = new Map();
+    vector<string> contents;
+    bool validCondition1 = false, validCondition2 = false;
+    int createdConti = 0;
+    int createdTerri = 0;
+    vector<vector<string>> allAdjTerritories;
 
+    input.open(mapFile);
+    if (input) {
+        string current;
+        cout << "----------------------------------------" << endl;
+        //check if file exists but is empty
+        if (input.peek() == std::ifstream::traits_type::eof()) {
+            cout << "ERROR - File is empty!" << endl;
+            throw invalid_argument("Received Empty File.");
+            return createdMap;
         }
-        if (lineText != "[Continents]" && !continentFlag && !territoryFlag) {
-            continue;
-        }
-        if (lineText == "[Continents]") {
-            continentFlag = true;
-            continue;
-        }
-        if (continentFlag) {
-            cID++;
-            vector<string> lineTokens;
-            lineTokens = tokenizeString(lineText, '=');
-            if (lineText.empty()) {
-                continentFlag = false;
-                territoryFlag = true;
-                continue;
-            }
+        else {
+        
+            while (input.peek() != EOF && getline(input, current)) {
+                if (current == "[Continents]") {
+                    cout << "here1" << current << endl;
+                    getline(input, current);
+                    readingContinents = true;
+                    readingTerritories = false;
+                    validCondition1 = true;
+                    cout << "here1" << endl;
 
-            toUpper(lineTokens[0]);
-            Continent* temp = new Continent(lineTokens[0], cID);
-            myMap->allContinent.push_back(temp);
-            myMap->continentIndexDictionary.insert(pair<string, int>(lineTokens[0], cID));
-            /* cout << "Information" << line[0] << cID << endl;*/
-        }
+                }
+                else if (current == "[Territories]") {
+                    cout << current << endl;
+                    getline(input, current);
+                    readingContinents = false;
+                    readingTerritories = true;
+                    validCondition2 = true;
+                    cout << "here2" << endl;
+                }
 
-            if (lineText == "[Territories]") {
-                territoryFlag = true;
-                continue;
-            }
+                if (readingContinents) { //reads and adds continent objects
+                    cout << current << endl;
+                    createdConti++;
+                    contents = tokenizeString(current, '=');
+                    if (contents.size() > 0) {
+                        string name = contents[0];
+                        int cID = createdConti;
+                        int armyValue = stoi(contents[1]);
+                        Continent* rec = new Continent(cID, name, armyValue);
+                        createdMap->addContinent(rec);
+                    }
 
-            if (territoryFlag) {
-                if (lineText.empty()) {
-                    continue;
+                }
+                else if (readingTerritories) {
+                    cout << current << endl;
+                    contents = tokenizeString(current, ',');
+                    createdTerri++;
+                    if (contents.size() > 0) {
+                        int tID = createdTerri;
+                        string tName = contents[0];
+                        string cName = contents[3];
+                        int cID = getCID(createdMap, cName);
+                        Territory* ret = new Territory(tID, cID, tName);
+                        createdMap->addTerritory(ret);
+                        cout << *ret;
+                        vector<string> adjTerritories;
+                        adjTerritories.push_back(contents[0]);
+                        for (int i = 4; i < contents.size(); i++) {
+                            adjTerritories.push_back(contents[i]);
+                        }
+                        allAdjTerritories.push_back(adjTerritories);
+
+                        for (Continent* cont : createdMap->getAllContinent()) {
+                            if (cont->cID == cID) {
+                                cont->subGraphIndex.push_back(ret->getTID());
+                                cont->subGraph.push_back(ret);
+                            }
+                        }
+                    }
+
+                    createdMap->visited = new bool[createdTerri - 1];
+                    createdMap->numTerritories = createdTerri - 1;
+                    createdMap->neighbors = new vector<int>[createdTerri - 1];
+
                 }
                 else {
-                    tID++;
+                    /*cout << current << endl;*/
+                    readingContinents = false;
+                    readingTerritories = false;
                 }
-                vector<string> lineTokens;
-                lineTokens = tokenizeString(lineText, ',');
-                for( string token : lineTokens){
-                    toUpper(token);
-                }
-                Territory* temp = new Territory(lineTokens[0], lineTokens[3], tID);
-                myMap->allTerritory.push_back(temp);
-                myMap->territoryIndexDictionary.insert(pair<string, int>(lineTokens[0], tID));
-                for (int i = 3; i < lineTokens.size(); i++) {
-                    temp->adjacentTerritoryMembers.push_back(lineTokens[i]);
-                }
-       
-            }
-        }
 
-        // Close the file
-        MyReadFile.close();
+            } 
+            if (validCondition1 && validCondition2) {
+                cout << "EOF" << endl;
+                // adds adjacent territories as a object vector to associated territory 
+                for (auto v : allAdjTerritories) {
+                    if (v.size() > 0) {
+                        vector<int> edges;
+
+                        for (string p : v) {
+                            int tID = getTID(createdMap, p);
+                            cout << "TID:" << tID << p << endl;
+                            edges.push_back(getTID(createdMap, p)); //1 2 3
+                        }
+
+                        Territory* t = createdMap->allTerritory[edges[0] - 1]; // 1
+                        int k = edges[0] - 1;
+
+                        for (int i = 1; i < edges.size(); i++) { // add 2 and 3 to 1's territories
+                            Territory* o = createdMap->allTerritory.at(edges[i] - 1);
+                            t->addAdj(o);
+                          /*  createdMap->neighbors[(k)].push_back(edges[i] - 1);*/ // here is the problem !!!!!!
+                            cout << "hereherherh" << endl;
+                        }
+                        
+                    }
+                    
+                }
+                //Printing territories that belong to the first continent:
+                cout << "here is" << endl;
+                vector<Territory*> temp = createdMap->getAllContinent()[0]->subGraph;
+                for (Territory* p : temp) {
+                    cout << *p;
+                }
+                vector<Territory*> temp1 = createdMap->getAllTerritory();
+                for (Territory* p : temp1) {
+                    cout << *p;
+                    for (Territory* ap : p->getAdjTerritories()) {
+                        cout << "adj" << *ap;
+                    }
+                }
+
+                //// validate() method here
+                //cout << "Validating Map " << endl;
+                //cout << "\n---------------------------------------------------" << endl;
+                //bool a = createdMap->isConnected();
+                //bool b = createdMap->continentSubgraphs(createdMap);
+                //bool c = createdMap->countryToContinentRelation();
+                //bool result = createdMap->validate(a, b, c);
+                //if (result) {
+                //    loadedMap = *createdMap;
+                //    createdMap->setValid(true);
+                //    return createdMap;
+                //}
+                //else {
+                //    loadedMap = *createdMap;
+                //    createdMap->setValid(false);
+                //    return createdMap;
+                //}
+
+            }
+            else {
+                cout << "ERROR - File is of incorrect format! Keywords were not found. Please check that the file meets the Map parameters." << endl;
+                throw invalid_argument("ERROR - File is of incorrect format! Keywords were not found.");
+                return createdMap;
+            }
+        
+        }
+    
     }
+    else {
+    cout << "ERROR - File could not be opened!" << endl;
+    throw invalid_argument("ERROR - File could not be opened!");
+    return createdMap;
+    }
+
+
+    //Map Creation:
+    loadedMap = *createdMap;
+    return createdMap;
+
+
+}
+

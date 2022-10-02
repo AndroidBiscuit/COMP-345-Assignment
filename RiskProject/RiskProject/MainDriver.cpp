@@ -1,6 +1,7 @@
 // MainDriver.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include "MapDriver.h"
+#include "PlayDriver.h"
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -18,6 +19,10 @@ int main()
     std::cout << "Start to load the map.\n";
 
     testLoadMaps();
+
+   /* std::cout << "Start to set the player.\n";
+
+    testPlayers();*/
 
 }
 
