@@ -282,6 +282,7 @@ bool Map::continentSubgraphs(Map* map) {
             for (int j = 0; j < bond; j++) {
                 if (!visited[j])    // check if there is any false value in the above array, which means the graph is not connected
                 {
+                    cout << "Problem" << j << endl;
                     cout << "The continent " << con->name << " is not a connected graph." << endl;  // print which continentID is not inner connected
                     return false;
 

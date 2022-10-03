@@ -79,5 +79,17 @@
     <None Include="Canada1999.map">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Canada.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Japan.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Japan2000.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Africa.map">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

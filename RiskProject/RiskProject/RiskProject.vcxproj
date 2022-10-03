@@ -150,7 +150,11 @@
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Africa.map" />
+    <None Include="Canada.map" />
     <None Include="Canada1999.map" />
+    <None Include="Japan.map" />
+    <None Include="Japan2000.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

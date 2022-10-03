@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 #include<map>
 #include <sstream>
 #include "MapLoader.h"
@@ -63,13 +64,14 @@ vector<string> MapLoader::tokenizeString(const string& s, char delimiter) {
 }
 
 // captitalizes the first character of the name of Territories or continents
-void MapLoader::toUpper(std::string& str) {
-    if (str.length() == 0) {
-        return;
-    }
+//void MapLoader::toUpper(std::string& str) {
+//    if (str.length() == 0) {
+//        return;
+//    }
+//
+//    str[0] = std::toupper(str[0]);
+//}
 
-    str[0] = std::toupper(str[0]);
-}
 
 //gets the continent ID by given continent name
 int MapLoader::getCID(Map* createdMap,string cName) {
@@ -81,10 +83,19 @@ int MapLoader::getCID(Map* createdMap,string cName) {
     }
 }
 
+bool iequals(const string& a, const string& b)
+{
+    return std::equal(a.begin(), a.end(),
+        b.begin(), b.end(),
+        [](char a, char b) {
+            return tolower(a) == tolower(b);
+        });
+}
+
 //gets the territory ID by given territory name
 int MapLoader::getTID(Map* createdMap, string tName) {
     for (auto terri : createdMap->getAllTerritory()) {
-        if (terri->getTName() == tName) {
+        if (iequals(terri->getTName(), tName)) {
             return terri->getTID();
         }
     }
@@ -147,11 +158,13 @@ Map* MapLoader::loadMap(string mapFile) {
                     }
 
                 }
-                else if (readingTerritories) {
+                else if (readingTerritories) 
+                {
                     cout << current << endl;
                     contents = tokenizeString(current, ',');
                     createdTerri++;
-                    if (contents.size() > 0) {
+                    if (contents.size() > 0) 
+                    {
                         int tID = createdTerri;
                         string tName = contents[0];
                         string cName = contents[3];
@@ -172,11 +185,17 @@ Map* MapLoader::loadMap(string mapFile) {
                                 cont->subGraph.push_back(ret);
                             }
                         }
+                     
+                    }
+
+                    else if (contents.size() <= 0) {
+                        createdTerri--;
+                        continue;
                     }
 
                     createdMap->visited = new bool[createdTerri - 1];
                     createdMap->numTerritories = createdTerri - 1;
-                    createdMap->neighbors = new vector<int>[createdTerri - 1];
+                    createdMap->neighbors = new vector<int>[createdTerri];
 
                 }
                 else {
@@ -203,9 +222,9 @@ Map* MapLoader::loadMap(string mapFile) {
                         int k = edges[0] - 1;
 
                         for (int i = 1; i < edges.size(); i++) { // add 2 and 3 to 1's territories
-                            Territory* o = createdMap->allTerritory.at(edges[i] - 1);
+                            Territory* o = createdMap->allTerritory[edges[i] - 1];
                             t->addAdj(o);
-                          /*  createdMap->neighbors[(k)].push_back(edges[i] - 1);*/ // here is the problem !!!!!!
+                            createdMap->neighbors[(k)].push_back(edges[i] - 1); // here is the problem !!!!!!
                             cout << "hereherherh" << endl;
                         }
                         
@@ -226,23 +245,23 @@ Map* MapLoader::loadMap(string mapFile) {
                     }
                 }
 
-                //// validate() method here
-                //cout << "Validating Map " << endl;
-                //cout << "\n---------------------------------------------------" << endl;
-                //bool a = createdMap->isConnected();
-                //bool b = createdMap->continentSubgraphs(createdMap);
-                //bool c = createdMap->countryToContinentRelation();
-                //bool result = createdMap->validate(a, b, c);
-                //if (result) {
-                //    loadedMap = *createdMap;
-                //    createdMap->setValid(true);
-                //    return createdMap;
-                //}
-                //else {
-                //    loadedMap = *createdMap;
-                //    createdMap->setValid(false);
-                //    return createdMap;
-                //}
+                // validate() method here
+                cout << "Validating Map " << endl;
+                cout << "\n---------------------------------------------------" << endl;
+                bool a = createdMap->isConnected();
+                bool b = createdMap->continentSubgraphs(createdMap);
+                bool c = createdMap->countryToContinentRelation();
+                bool result = createdMap->validate(a, b, c);
+                if (result) {
+                    loadedMap = *createdMap;
+                    createdMap->setValid(true);
+                    return createdMap;
+                }
+                else {
+                    loadedMap = *createdMap;
+                    createdMap->setValid(false);
+                    return createdMap;
+                }
 
             }
             else {
