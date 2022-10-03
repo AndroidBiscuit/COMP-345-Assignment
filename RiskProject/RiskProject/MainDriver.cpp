@@ -16,9 +16,9 @@ using std::ifstream;
 
 int main()
 {
-    //std::cout << "Start to load the map.\n";
+    std::cout << "Start to load the map.\n";
 
-    //testLoadMaps();
+    testLoadMaps();
 
    std::cout << "Start to set the player.\n";
 

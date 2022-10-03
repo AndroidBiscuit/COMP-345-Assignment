@@ -157,6 +157,7 @@ Continent& Continent::operator=(const Continent& c){
 
 // Desructor 
 Continent::~Continent() {
+    cout << "The continent " << name << " was deleted." << endl;
     for (auto p : subGraph) {
         delete p;
     }
@@ -180,8 +181,10 @@ Map::Map(const Map& other) {
 
 // Destructor for the Map Class
 Map:: ~Map() {
+    for (auto c : allContinent) { delete c; }
     allContinent.clear();
     allTerritory.clear();
+    cout << "The map " << name << " was deleted." << endl;
 }
 
 //stream Insertion
@@ -211,6 +214,11 @@ bool Map::getValid() { return valid; }
 void Map::setValid(bool b) {
     valid = b;
 }
+
+string Map::getName() { return name; }
+void Map::setName(string n) {
+    name = n;
+}
 vector<Territory*> Map::getAllTerritory() {
     return allTerritory;
 }
@@ -237,7 +245,7 @@ Territory* Map::getTerritory(int territoryToFind) {
 //if not, return false.
 bool Continent::checkSubGraph()
 {
-    int len = this->subGraph.size();//get length of all nodes in one continent
+    int len = int(this->subGraph.size());//get length of all nodes in one continent
     vector<string> visited;//record all visited node in same continent
     for (int i = 0; i < len; i++) {//loop all nodes
         if (visited.empty()) {//add first node into visited list

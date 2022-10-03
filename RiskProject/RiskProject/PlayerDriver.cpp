@@ -115,6 +115,7 @@ void testPlayers() {
 		cout << temp2 << endl;
 	}
 	cout << "----------------------------------------------" << endl;
+	system("pause");
 	cout << "Releasing the memory:" << endl;
 	if (copiedPlayer) {
 		delete copiedPlayer;

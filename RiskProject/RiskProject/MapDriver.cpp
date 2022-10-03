@@ -45,7 +45,5 @@ void testLoadMaps() {
 		}
 	}
 	system("pause");
-	for (auto p : mapsCreated) {
-		delete(p);
-	}
+	
 }

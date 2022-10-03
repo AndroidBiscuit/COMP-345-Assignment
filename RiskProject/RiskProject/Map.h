@@ -76,7 +76,7 @@ struct Continent{
 
 class Map{
 private:
-    string mName;
+    string name;
     vector<Continent*> allContinent;
     bool valid = true;
 
@@ -102,6 +102,8 @@ public:
     void addTerritory(Territory* theTerritory);
     bool getValid();
     void setValid(bool);
+    string getName();
+    void setName(string);
     Territory* getTerritory(int territoryID);
     vector<Territory*> getAllTerritory();
     vector<Continent*> getAllContinent();

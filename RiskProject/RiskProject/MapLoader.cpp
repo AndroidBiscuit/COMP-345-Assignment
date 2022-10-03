@@ -100,6 +100,7 @@ Map* MapLoader::loadMap(string mapFile) {
     bool readingContinents = false;
     bool readingTerritories = false;
     Map* createdMap = new Map();
+    createdMap->setName(mapFile);
     vector<string> contents;
     bool validCondition1 = false, validCondition2 = false;
     int createdConti = 0;
