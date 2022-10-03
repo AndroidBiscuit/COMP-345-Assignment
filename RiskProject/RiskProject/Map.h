@@ -54,7 +54,6 @@ struct Continent{
     string name;
     int armyValue;
     vector<Territory*> subGraph;
-    vector<int> subGraphIndex;
 
     //constructors
     Continent(int cID, string name);
@@ -65,6 +64,7 @@ struct Continent{
     friend class MapLoader;
     friend class Map;
     Continent& operator=(const Continent& c);
+    friend ostream& operator<<(ostream& out, const Continent& p);
     //accessor
     vector<Territory*> getSubGraph();
     bool checkSubGraph();

@@ -63,15 +63,6 @@ vector<string> MapLoader::tokenizeString(const string& s, char delimiter) {
     return tokens;
 }
 
-// captitalizes the first character of the name of Territories or continents
-//void MapLoader::toUpper(std::string& str) {
-//    if (str.length() == 0) {
-//        return;
-//    }
-//
-//    str[0] = std::toupper(str[0]);
-//}
-
 
 //gets the continent ID by given continent name
 int MapLoader::getCID(Map* createdMap,string cName) {
@@ -83,6 +74,7 @@ int MapLoader::getCID(Map* createdMap,string cName) {
     }
 }
 
+//helps to compare the string ignore the case issue
 bool iequals(const string& a, const string& b)
 {
     return std::equal(a.begin(), a.end(),
@@ -128,12 +120,12 @@ Map* MapLoader::loadMap(string mapFile) {
         
             while (input.peek() != EOF && getline(input, current)) {
                 if (current == "[Continents]") {
-                    cout << "here1" << current << endl;
+                    cout << current << endl;
                     getline(input, current);
                     readingContinents = true;
                     readingTerritories = false;
                     validCondition1 = true;
-                    cout << "here1" << endl;
+                  
 
                 }
                 else if (current == "[Territories]") {
@@ -142,7 +134,7 @@ Map* MapLoader::loadMap(string mapFile) {
                     readingContinents = false;
                     readingTerritories = true;
                     validCondition2 = true;
-                    cout << "here2" << endl;
+                  
                 }
 
                 if (readingContinents) { //reads and adds continent objects
@@ -181,7 +173,6 @@ Map* MapLoader::loadMap(string mapFile) {
 
                         for (Continent* cont : createdMap->getAllContinent()) {
                             if (cont->cID == cID) {
-                                cont->subGraphIndex.push_back(ret->getTID());
                                 cont->subGraph.push_back(ret);
                             }
                         }
@@ -230,21 +221,12 @@ Map* MapLoader::loadMap(string mapFile) {
                     
                 }
                 //Printing territories that belong to the first continent:
-                cout << "here is" << endl;
-                vector<Territory*> temp = createdMap->getAllContinent()[0]->subGraph;
-                for (Territory* p : temp) {
-                    cout << *p;
-                }
-              /*  vector<Territory*> temp1 = createdMap->getAllTerritory();
-                for (Territory* p : temp1) {
-                    cout << *p;
-                    for (Territory* ap : p->getAdjTerritories()) {
-                        cout << "adj" << *ap;
-                    }
-                }*/
+                cout << "Here is First Continent Information:" << endl;
+                cout << *createdMap->getAllContinent()[0] << endl;
+             
 
                 // validate() method here
-                cout << "Validating Map " << endl;
+                cout << "\nValidating Map " << endl;
                 cout << "\n---------------------------------------------------" << endl;
                 bool a = createdMap->isConnected();
                 bool b = createdMap->continentSubgraphs(createdMap);
