@@ -20,9 +20,9 @@ int main()
 
     testLoadMaps();
 
-   /* std::cout << "Start to set the player.\n";
+   std::cout << "Start to set the player.\n";
 
-    testPlayers();*/
+    testPlayers();
 
 }
 
