@@ -27,18 +27,27 @@ void Order::execute(Order order) {
 string Order::getOrderName() { return orderName; }
 void Order::setOrderName(string name)
 {
-	orderName = name;
+	this->orderName = name;
+}
+
+string Order::getOrderEffect() { return orderEffect; }
+
+void Order::setOrderEffect(string orderEffect)
+{
+	this->orderEffect = orderEffect;
 }
 /*
 istream& operator >>(istream& input, Order order) {
 
 }
-
+*/
 ostream& operator <<(ostream& input, Order order) {
-	cout << "Order is: " << order << endl;
+	input << "Order is: " << order.getOrderName() << endl;
+	input<<order.getOrderEffect() << endl;
+	return input;
 
 }
-*/
+
 
 //-----------------------DEPLOY FUNCTION IMPLEMENTATION----------------------//
 
@@ -46,6 +55,7 @@ Deploy::Deploy() {}
 
 Deploy::Deploy(string name) {
 	orderName = name;
+	orderEffect = "move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
 }
 
 bool Deploy::validate(string order){
@@ -60,7 +70,7 @@ bool Deploy::validate(string order){
 void Deploy::execute(Order order) {
 	if (validate(order.getOrderName()))
 	{
-		cout << "Deploy: move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories." << endl;
+		cout << this;
 	}
 	
 }

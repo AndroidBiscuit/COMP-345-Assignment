@@ -7,6 +7,7 @@ class Order
 {
 protected:
 	string orderName;
+	string orderEffect;
 
 public:
 	
@@ -18,8 +19,12 @@ public:
 
 	string getOrderName();
 	void setOrderName(string x);
+
+	string getOrderEffect();
+	void setOrderEffect(string x);
+	
 	//friend istream& operator >> (istream& in, Order order);
-	//friend ostream& operator << (ostream& in, Order order);
+	friend ostream& operator << (ostream& in, Order order);
 };
 
 

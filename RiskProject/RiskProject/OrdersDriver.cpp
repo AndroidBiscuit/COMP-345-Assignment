@@ -20,13 +20,24 @@ void testOrdersLists()
 	ordersList.addOrder(&block);
 	ordersList.addOrder(&air);
 	ordersList.addOrder(&neg);
-	cout << "Orders list:" << endl;
+	cout << "Orders list:" <<"\n";
 	ordersList.showOrdersList();
-	
-	
+	cout<<"\n";
+
+	//move orders around
 	ordersList.move(4, 2);
 	cout << "Orders list:" << endl;
 	ordersList.showOrdersList();
-	deploy.execute(deploy);
+	cout << "\n";
+
+	//remove an order
+	ordersList.remove(3);
+	cout << "Orders list:" << endl;
+	ordersList.showOrdersList();
+	cout << "\n";
+
+	//question about stream insertion operator 
+	cout << deploy;
+	//deploy.execute(deploy);
 	bomb.execute(bomb);
 }
