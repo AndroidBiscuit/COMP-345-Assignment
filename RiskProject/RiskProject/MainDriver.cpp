@@ -1,6 +1,7 @@
 // MainDriver.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include "MapDriver.h"
+#include "OrdersDriver.h"
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -10,14 +11,16 @@ using std::ifstream;
 #include <cstdlib> // for exit function
 #include <fstream> // reading a text file
 #include <string>
-#include <sstream>
+#include <sstream>c++
+
 
 
 int main()
 {
     std::cout << "Start to load the map.\n";
 
-    testLoadMaps();
+    //testLoadMaps();
+    testOrdersLists();
 
 }
 
