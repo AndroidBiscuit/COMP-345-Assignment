@@ -16,7 +16,19 @@ Order::Order(string x) {
 	orderName = x;
 }
 
+bool Order::validate(string order) {
+	return false;
+}
+
+void Order::execute(Order order) {
+
+}
+
 string Order::getOrderName() { return orderName; }
+void Order::setOrderName(string name)
+{
+	orderName = name;
+}
 /*
 istream& operator >>(istream& input, Order order) {
 
@@ -29,12 +41,15 @@ ostream& operator <<(ostream& input, Order order) {
 */
 
 //-----------------------DEPLOY FUNCTION IMPLEMENTATION----------------------//
-/*
-Deploy::Deploy() {
-	
+
+Deploy::Deploy() {}
+
+Deploy::Deploy(string name) {
+	orderName = name;
 }
 
 bool Deploy::validate(string order){
+	//for now: if string matches with the name of order, then its validated
 	string deploy = "deploy";
 	if (deploy.compare(order) == 0)
 		return true;
@@ -45,12 +60,137 @@ bool Deploy::validate(string order){
 void Deploy::execute(Order order) {
 	if (validate(order.getOrderName()))
 	{
-		cout << "Deploy: put a certain number of army units on a target territory" << endl;
+		cout << "Deploy: move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories." << endl;
 	}
 	
 }
 
-*/
+
+//-----------------------ADVANCE FUNCTION IMPLEMENTATION----------------------//
+Advance::Advance() {}
+
+Advance::Advance(string name) {
+	orderName = name;
+}
+
+bool Advance::validate(string order) {
+	//for now: if string matches with the name of order, then its validated
+	string deploy = "advance";
+	if (deploy.compare(order) == 0)
+		return true;
+
+	return false;
+}
+
+void Advance::execute(Order order) {
+	if (validate(order.getOrderName()))
+	{
+		cout << "Advance: move a certain number of army units from one territory (source territory) to another territory (target territory)" << endl;
+	}
+
+}
+
+//-----------------------BOMB FUNCTION IMPLEMENTATION----------------------//
+
+Bomb::Bomb() {}
+
+Bomb::Bomb(string name) {
+	orderName = name;
+}
+
+bool Bomb::validate(string order) {
+	//for now: if string matches with the name of order, then its validated
+	string deploy = "bomb";
+	if (deploy.compare(order) == 0)
+		return true;
+
+	return false;
+}
+
+void Bomb::execute(Order order) {
+	if (validate(order.getOrderName()))
+	{
+		cout << "Bomb: destroy half of the army units located on an opponent’s territory that is adjacent to one of the current player’s territories." << endl;
+	}
+
+}
+
+//-----------------------BlOCKADE FUNCTION IMPLEMENTATION----------------------//
+
+Blockade::Blockade() {}
+
+Blockade::Blockade(string name) {
+	orderName = name;
+}
+
+bool Blockade::validate(string order) {
+	//for now: if string matches with the name of order, then its validated
+	string deploy = "blockade";
+	if (deploy.compare(order) == 0)
+		return true;
+
+	return false;
+}
+
+void Blockade::execute(Order order) {
+	if (validate(order.getOrderName()))
+	{
+		cout << "Blockade: triple the number of army units on one of the current player’s territories and make it a neutral	territory" << endl;
+	}
+
+}
+
+//-----------------------AIRLIFT FUNCTION IMPLEMENTATION----------------------//
+
+Airlift::Airlift() {}
+
+Airlift::Airlift(string name) {
+	orderName = name;
+}
+
+bool Airlift::validate(string order) {
+	//for now: if string matches with the name of order, then its validated
+	string deploy = "airlift";
+	if (deploy.compare(order) == 0)
+		return true;
+
+	return false;
+}
+
+
+void Airlift::execute(Order order) {
+	if (validate(order.getOrderName()))
+	{
+		cout << "Airlift: advance a certain number of army units from one of the current player’s territories to any another yerritory" << endl;
+	}
+
+}
+
+//-----------------------NEGOTIATE FUNCTION IMPLEMENTATION----------------------//
+
+Negotiate::Negotiate() {}
+
+Negotiate::Negotiate(string name) {
+	orderName = name;
+}
+
+bool Negotiate::validate(string order) {
+	//for now: if string matches with the name of order, then its validated
+	string deploy = "negotiate";
+	if (deploy.compare(order) == 0)
+		return true;
+
+	return false;
+}
+
+void Negotiate::execute(Order order) {
+	if (validate(order.getOrderName()))
+	{
+		cout << "Negotiate: prevent attacks between the current player and the player targeted by the negotiate order until the end of the turn" << endl;
+	}
+
+}
+
 
 
 //----------------------ORDERSLIST FUNCTION IMPLEMENTATION----------------------//
@@ -59,16 +199,8 @@ OrdersList::OrdersList() {
 
 }
 
-void OrdersList::addOrder(int a) {
-	//alist.push_back(a);
-	alist.emplace_back(a);
-}
-
 void OrdersList::addOrder(Order* orderToBeAdded)
 {
-	//Order a = orderToBeAdded;
-	 //ordersList.emplace_back(orderToBeAdded);
-	//ordersList.insert(ordersList.end(), orderToBeAdded);
 	ordersList.push_back(orderToBeAdded);
 }
 

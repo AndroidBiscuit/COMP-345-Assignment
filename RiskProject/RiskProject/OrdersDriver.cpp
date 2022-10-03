@@ -7,17 +7,19 @@ void testOrdersLists()
 {
 	OrdersList ordersList;
 
-	Order deploya("deploy-a");
-	Order deployb("deploy-b");
-	Order deployc("deploy-c");
-	Order deployd("deploy-d");
-	Order deploye("deploy-e");
-
-	ordersList.addOrder(&deploya);
-	ordersList.addOrder(&deployb);
-	ordersList.addOrder(&deployc);
-	ordersList.addOrder(&deployd);
-	ordersList.addOrder(&deploye);
+	Deploy deploy("deploy");
+	Bomb bomb("bomb");
+	Advance adv("advance");
+	Blockade block("blockade");
+	Airlift air("airlift");
+	Negotiate neg("negotiate");
+	
+	ordersList.addOrder(&deploy);
+	ordersList.addOrder(&bomb);
+	ordersList.addOrder(&adv);
+	ordersList.addOrder(&block);
+	ordersList.addOrder(&air);
+	ordersList.addOrder(&neg);
 	cout << "Orders list:" << endl;
 	ordersList.showOrdersList();
 	
@@ -25,4 +27,6 @@ void testOrdersLists()
 	ordersList.move(4, 2);
 	cout << "Orders list:" << endl;
 	ordersList.showOrdersList();
+	deploy.execute(deploy);
+	bomb.execute(bomb);
 }

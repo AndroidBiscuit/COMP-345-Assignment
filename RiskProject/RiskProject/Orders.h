@@ -5,7 +5,7 @@ using namespace std;
 
 class Order
 {
-private:
+protected:
 	string orderName;
 
 public:
@@ -13,10 +13,11 @@ public:
 	Order(); 
 	Order(string orderName);
 	
-	//virtual void validate(Order order);
-	//virtual void execute(Order order);
+	virtual bool validate(string order);
+	virtual void execute(Order order);
 
 	string getOrderName();
+	void setOrderName(string x);
 	//friend istream& operator >> (istream& in, Order order);
 	//friend ostream& operator << (ostream& in, Order order);
 };
@@ -27,10 +28,7 @@ class OrdersList
 private:
 
 public:
-	list<Order*> ordersList;
-	list<int> alist;
-	list<Order> list2;
-	
+	list<Order*> ordersList;	
 
 	OrdersList(); //constructor
 	//TO DO OrdersList(const OrdersList& originalOrdersList); //copy constructor
@@ -39,7 +37,6 @@ public:
 
 
 	void addOrder(Order* order);
-	void addOrder(int a);
 	void move(int sourceIndex, int destinationIndex);
 	void remove(int indexOfOrder); 
 	void showOrdersList();
@@ -47,7 +44,7 @@ public:
 
 
 
-/*
+
 
 //children classes of Order - override validate() and execute()
 class Deploy: public Order
@@ -55,6 +52,7 @@ class Deploy: public Order
 private:
 public:
 	Deploy();
+	Deploy(string name);
 	bool validate(string order);
 	void execute(Order order);
 
@@ -64,7 +62,9 @@ class Advance : public Order
 {
 private:
 public:
-	void validate(Order order);
+	Advance();
+	Advance(string name);
+	bool validate(string order);
 	void execute(Order order);
 
 };
@@ -73,15 +73,19 @@ class Bomb : public Order
 {
 private:
 public:
-	void validate(Order order);
+	Bomb();
+	Bomb(string name);
+	bool validate(string order);
 	void execute(Order order);
 };
 
-class Block : public Order
+class Blockade : public Order
 {
 private:
 public:
-	void validate(Order order);
+	Blockade();
+	Blockade(string name);
+	bool validate(string order);
 	void execute(Order order);
 
 };
@@ -90,7 +94,9 @@ class Airlift : public Order
 {
 private:
 public:
-	void validate(Order order);
+	Airlift();
+	Airlift(string name);
+	bool validate(string order);
 	void execute(Order order);
 
 };
@@ -99,8 +105,9 @@ class Negotiate : public Order
 {
 private:
 public:
-	void validate(Order order);
+	Negotiate();
+	Negotiate(string name);
+	bool validate(string order);
 	void execute(Order order);
 
 };
-*/
