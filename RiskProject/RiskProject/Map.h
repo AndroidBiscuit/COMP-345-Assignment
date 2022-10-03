@@ -41,6 +41,7 @@ public:
     int getCID();
     int getArmyAmount();
     vector<Territory*> getAdjTerritories();
+    vector<Territory*> getAdjTerritoriesInSameContinent();
 
     //methods
     void addAdj(Territory* t);
@@ -66,6 +67,10 @@ struct Continent{
     Continent& operator=(const Continent& c);
     //accessor
     vector<Territory*> getSubGraph();
+    bool checkSubGraph();
+    bool getAdjacentTerritoryInSameContinent();
+
+    //destructor
     ~Continent();
 };
 
@@ -82,7 +87,6 @@ public:
 
     bool* visited;
     int numTerritories;
-    vector<int>* neighbors;
 
     //friend class
     friend class Maploader;
@@ -103,10 +107,7 @@ public:
     vector<Continent*> getAllContinent();
 
     //methods related to validate()
-    void DFS(int s);
-    void DFS_helper(int s, bool* wasVisited);
-    void DFS1(int s, int bond, vector<Territory*> trr);
-    void DFS_helper1(int s, bool* wasVisited, vector<Territory*> trr);
+ 
     bool validate(bool a, bool b, bool c);// Must check the following 3 functions	
     bool validate(void);
     bool isConnected(void);// Test to the see if the map is a connected graph	

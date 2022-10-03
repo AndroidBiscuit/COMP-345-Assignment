@@ -195,7 +195,6 @@ Map* MapLoader::loadMap(string mapFile) {
 
                     createdMap->visited = new bool[createdTerri - 1];
                     createdMap->numTerritories = createdTerri - 1;
-                    createdMap->neighbors = new vector<int>[createdTerri];
 
                 }
                 else {
@@ -214,7 +213,7 @@ Map* MapLoader::loadMap(string mapFile) {
 
                         for (string p : v) {
                             int tID = getTID(createdMap, p);
-                            cout << "TID:" << tID << p << endl;
+                           /* cout << "TID:" << tID << p << endl;*/
                             edges.push_back(getTID(createdMap, p)); //1 2 3
                         }
 
@@ -224,8 +223,7 @@ Map* MapLoader::loadMap(string mapFile) {
                         for (int i = 1; i < edges.size(); i++) { // add 2 and 3 to 1's territories
                             Territory* o = createdMap->allTerritory[edges[i] - 1];
                             t->addAdj(o);
-                            createdMap->neighbors[(k)].push_back(edges[i] - 1); // here is the problem !!!!!!
-                            cout << "hereherherh" << endl;
+                          
                         }
                         
                     }
@@ -237,13 +235,13 @@ Map* MapLoader::loadMap(string mapFile) {
                 for (Territory* p : temp) {
                     cout << *p;
                 }
-                vector<Territory*> temp1 = createdMap->getAllTerritory();
+              /*  vector<Territory*> temp1 = createdMap->getAllTerritory();
                 for (Territory* p : temp1) {
                     cout << *p;
                     for (Territory* ap : p->getAdjTerritories()) {
                         cout << "adj" << *ap;
                     }
-                }
+                }*/
 
                 // validate() method here
                 cout << "Validating Map " << endl;
