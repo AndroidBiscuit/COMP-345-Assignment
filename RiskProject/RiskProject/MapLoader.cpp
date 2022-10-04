@@ -209,11 +209,11 @@ Map* MapLoader::loadMap(string mapFile) {
                             edges.push_back(getTID(createdMap, p)); //1 2 3
                         }
 
-                        Territory* t = createdMap->allTerritory[edges[0] - 1]; // 1
+                        Territory* t = createdMap->getAllTerritory()[edges[0] - 1]; // 1
                         int k = edges[0] - 1;
 
                         for (int i = 1; i < edges.size(); i++) { // add 2 and 3 to 1's territories
-                            Territory* o = createdMap->allTerritory[edges[i] - 1];
+                            Territory* o = createdMap->getAllTerritory()[edges[i] - 1];
                             t->addAdj(o);
                           
                         }

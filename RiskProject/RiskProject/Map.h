@@ -68,7 +68,6 @@ struct Continent{
     //accessor
     vector<Territory*> getSubGraph();
     bool checkSubGraph();
-    bool getAdjacentTerritoryInSameContinent();
 
     //destructor
     ~Continent();
@@ -78,10 +77,10 @@ class Map{
 private:
     string name;
     vector<Continent*> allContinent;
+    vector<Territory*> allTerritory;
     bool valid = true;
 
 public:
-    vector<Territory*> allTerritory;
     //Stream insertion:
     friend ostream& operator << (ostream& out, const Map& p);
 
