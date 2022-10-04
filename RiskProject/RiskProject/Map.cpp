@@ -243,6 +243,7 @@ Territory* Map::getTerritory(int territoryToFind) {
 // Checks that the given Map object is a connected graph
 bool Map::isConnected() {
     int len = this->allTerritory.size();//get length of all nodes in one map
+    //check forward direction
     vector<string> visited;//record all visited node 
     for (int i = 0; i < len; i++) {//loop all nodes
         if (visited.empty()) {//add first node into visited list
@@ -264,7 +265,30 @@ bool Map::isConnected() {
             }
         }
     }
-    if (visited.size() != len) {//all visited list length should equal length of all nodes in one map
+
+    //check backward direction
+    vector<string> visited_reverse; //record all visited node
+    for (int i = len - 1; i >= 0; i--) {//loop all nodes
+        if (visited_reverse.empty()) {//add first node into visited list
+            visited_reverse.push_back(this->allTerritory[i]->getTName());
+        }
+        int len1 = this->allTerritory[i]->getAdjTerritories().size();//get length of each node's adjacent list
+        for (int j = 0; j < len1; j++) {//loop the adjacent list
+            string temp = this->allTerritory[i]->getAdjTerritories()[j]->getTName();//get the adjacent node name
+            int len2 = visited_reverse.size();//get the length of visited list
+            for (int k = 0; k < len2; k++) {//loop visited list
+                if (temp == visited_reverse[k]) {//if adjacent node id exist in visited list, go to next adjacent node
+                    break;
+                }
+                if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
+                    if (temp != visited_reverse[k]) {
+                        visited_reverse.push_back(temp);
+                    }
+                }
+            }
+        }
+    }
+    if (visited.size() != len || visited_reverse.size() != len) {//all visited list length should equal length of all nodes in one map
         cout << "The map is not connected" << endl;
         return false;//graph is not connected
     }
@@ -278,6 +302,7 @@ bool Map::isConnected() {
 bool Continent::checkSubGraph()
 {
     int len = int(this->subGraph.size());//get length of all nodes in one continent
+    //check forward direction
     vector<string> visited;//record all visited node in same continent
     for (int i = 0; i < len; i++) {//loop all nodes
         if (visited.empty()) {//add first node into visited list
@@ -299,7 +324,35 @@ bool Continent::checkSubGraph()
             }
         }
     }
-    if (visited.size() != len) {//all visited list length should equal length of all nodes in one continent
+
+    //check backward direction
+    vector<string> visited_reverse; //record all visited node in same continent
+    for (int i = len-1; i >= 0; i--) {//loop all nodes
+        if (visited_reverse.empty()) {//add first node into visited list
+            visited_reverse.push_back(this->subGraph[i]->getTName());
+        }
+        int len1 = this->subGraph[i]->getAdjTerritoriesInSameContinent().size();//get length of each node's adjacent list in same continent
+        for (int j = 0; j < len1; j++) {//loop the adjacent list
+            string temp = this->subGraph[i]->getAdjTerritoriesInSameContinent()[j]->getTName();//get the adjacent node string
+            int len2 = visited_reverse.size();//get the length of visited list
+            for (int k = 0; k < len2; k++) {//loop visited list
+                if (temp == visited_reverse[k]) {//if adjacent node  exist in visited list, goto next adjacent node
+                    break;
+                }
+                if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
+                    if (temp != visited_reverse[k]) {
+                        visited_reverse.push_back(temp);
+                    }
+                }
+            }
+        }
+    }
+    //cout << "visited" << endl;
+    //printVector(visited);
+    //cout << "visited_reverse" << endl;
+    //printVector(visited_reverse);
+
+    if (visited.size() != len || visited_reverse.size() != len ) {//all visited list length should equal length of all nodes in one continent
         return false;//subgraph is not connected
     }
     return true;//subgraph is connected
@@ -309,13 +362,15 @@ bool Continent::checkSubGraph()
 bool Map::continentSubgraphs(Map* map) {
     for (Continent* con : map->getAllContinent()) {
         if (!con->checkSubGraph()) {
-            cout << "The continent " << con->name << " is not a connected graph." << endl;  // print which continentID is not inner connected
+            cout << "The continent " << con->name << " is not a connected graph." << endl;  
                     return false;
         }
-        cout << "All the continents are connected subgraphs" << endl;
-        return true;
+        else {
+            cout << "The continent " << con->name << " is a connected graph." << endl;
+        }
     }
-
+    cout << "All the continents are connected subgraphs" << endl;
+    return true;
 }
 
 
@@ -369,4 +424,8 @@ bool Map::validate(void) {
 }
 
 
-
+//void Continent::printVector(vector<string> s) {
+//    for (string content : s) {
+//        cout << content << endl;
+//    }
+//}

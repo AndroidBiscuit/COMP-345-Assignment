@@ -68,6 +68,7 @@ struct Continent{
     //accessor
     vector<Territory*> getSubGraph();
     bool checkSubGraph();
+    void printVector(vector<string> s);
 
     //destructor
     ~Continent();
@@ -114,6 +115,7 @@ public:
     bool isConnected(void);// Test to the see if the map is a connected graph	
     bool continentSubgraphs(Map* map); // Test to see that continents are connected subgraphs	
     bool countryToContinentRelation(void); // Test to see that each country belongs to only one continent
+    
 };
 
 //Requirments from Assignment #1 description:
