@@ -18,19 +18,19 @@ void testLoadMaps() {
 
 
 	int numberOfMaps = -1;
-	string fileName;
+	string fileName = "Africa.map";
 	MapLoader load;
 	Map* created = nullptr;
 	vector<Map*> mapsCreated;
 
 
-	while (numberOfMaps < 1) {
+	/*while (numberOfMaps < 1) {
 		cout << "Please enter the number of Map files to be read. Number must be greater than zero." << endl;
 		cin >> numberOfMaps;
 	}
 	for (int i = 0; i < numberOfMaps; i++) {
 		cout << "Enter the name of the Map file you would like to read. Do not forget to add the extension." << endl;
-		cin >> fileName;
+		cin >> fileName;*/
 		try {
 			created = load.loadMap(fileName);
 			mapsCreated.push_back(created);
@@ -43,7 +43,10 @@ void testLoadMaps() {
 		catch (const invalid_argument& e) {
 			cout << "The map file provided was invalid. " << endl;
 		}
-	}
+	/*}*/
 	system("pause");
+	/*for (auto p : mapsCreated) {
+		delete(p);
+	}*/
 	
 }
