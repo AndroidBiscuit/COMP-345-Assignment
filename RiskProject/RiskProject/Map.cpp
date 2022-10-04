@@ -240,54 +240,20 @@ Territory* Map::getTerritory(int territoryToFind) {
 
 
 // Functions for Map Validation
-//check continent's subGraph is a connected graph or not
-//if subGraph is good, return true.
-//if not, return false.
-bool Continent::checkSubGraph()
-{
-    int len = int(this->subGraph.size());//get length of all nodes in one continent
-    vector<string> visited;//record all visited node in same continent
-    for (int i = 0; i < len; i++) {//loop all nodes
-        if (visited.empty()) {//add first node into visited list
-            visited.push_back(this->subGraph[i]->getTName());
-        }
-        int len1 = this->subGraph[i]->getAdjTerritoriesInSameContinent().size();//get length of each node's adjacent list
-        for (int j = 0; j < len1; j++) {//loop the adjacent list
-            string temp = this->subGraph[i]->getAdjTerritoriesInSameContinent()[j]->getTName();//get the adjacent node id
-            int len2 = visited.size();//get the length of visited list
-            for (int k = 0; k < len2; k++) {//loop visited list
-                if (temp == visited[k]) {//if adjacent node id exist in visited list, goto next adjacent node
-                    break;
-                }
-                if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
-                    if (temp != visited[k]) {
-                        visited.push_back(temp);
-                    }
-                }
-            }
-        }
-    }
-    if (visited.size() != len) {//all visited list length should equal length of all nodes in one continent
-        return false;//subgraph is not connected
-    }
-    return true;//subgraph is connected
-}
-
-
 // Checks that the given Map object is a connected graph
 bool Map::isConnected() {
     int len = this->allTerritory.size();//get length of all nodes in one map
-    vector<string> visited;//record all visited node in same continent
+    vector<string> visited;//record all visited node 
     for (int i = 0; i < len; i++) {//loop all nodes
         if (visited.empty()) {//add first node into visited list
             visited.push_back(this->allTerritory[i]->getTName());
         }
         int len1 = this->allTerritory[i]->getAdjTerritories().size();//get length of each node's adjacent list
         for (int j = 0; j < len1; j++) {//loop the adjacent list
-            string temp = this->allTerritory[i]->getAdjTerritories()[j]->getTName();//get the adjacent node id
+            string temp = this->allTerritory[i]->getAdjTerritories()[j]->getTName();//get the adjacent node name
             int len2 = visited.size();//get the length of visited list
             for (int k = 0; k < len2; k++) {//loop visited list
-                if (temp == visited[k]) {//if adjacent node id exist in visited list, goto next adjacent node
+                if (temp == visited[k]) {//if adjacent node id exist in visited list, go to next adjacent node
                     break;
                 }
                 if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
@@ -305,6 +271,40 @@ bool Map::isConnected() {
     cout << "The map is a connected graph." << endl;
     return true;//graph is connected
 }
+
+//check continent's subGraph is a connected graph or not
+//if subGraph is good, return true.
+//if not, return false.
+bool Continent::checkSubGraph()
+{
+    int len = int(this->subGraph.size());//get length of all nodes in one continent
+    vector<string> visited;//record all visited node in same continent
+    for (int i = 0; i < len; i++) {//loop all nodes
+        if (visited.empty()) {//add first node into visited list
+            visited.push_back(this->subGraph[i]->getTName());
+        }
+        int len1 = this->subGraph[i]->getAdjTerritoriesInSameContinent().size();//get length of each node's adjacent list in same continent
+        for (int j = 0; j < len1; j++) {//loop the adjacent list
+            string temp = this->subGraph[i]->getAdjTerritoriesInSameContinent()[j]->getTName();//get the adjacent node string
+            int len2 = visited.size();//get the length of visited list
+            for (int k = 0; k < len2; k++) {//loop visited list
+                if (temp == visited[k]) {//if adjacent node  exist in visited list, goto next adjacent node
+                    break;
+                }
+                if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
+                    if (temp != visited[k]) {
+                        visited.push_back(temp);
+                    }
+                }
+            }
+        }
+    }
+    if (visited.size() != len) {//all visited list length should equal length of all nodes in one continent
+        return false;//subgraph is not connected
+    }
+    return true;//subgraph is connected
+}
+
 
 bool Map::continentSubgraphs(Map* map) {
     for (Continent* con : map->getAllContinent()) {
@@ -353,16 +353,6 @@ bool Map::countryToContinentRelation() {
 
 // Checks isConnected, continentSubgraphs and countryToContinentRelation. Returns True when all are True.
 // Is called during MapLoader::loadMap()
-bool Map::validate(bool a, bool b, bool c) {
-    if (a && b && c) {
-        cout << "MAP VALIDITY: The Map is valid." << endl;
-        return true;
-    }
-    else {
-        cout << "MAP VALIDITY: The Map is NOT valid." << endl;
-        return false;
-    }
-}
 
 bool Map::validate(void) {
     bool a = isConnected();

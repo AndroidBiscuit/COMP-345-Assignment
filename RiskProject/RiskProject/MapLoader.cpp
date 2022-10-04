@@ -229,10 +229,7 @@ Map* MapLoader::loadMap(string mapFile) {
                 // validate() method here
                 cout << "\nValidating Map " << endl;
                 cout << "\n---------------------------------------------------" << endl;
-                bool a = createdMap->isConnected();
-                bool b = createdMap->continentSubgraphs(createdMap);
-                bool c = createdMap->countryToContinentRelation();
-                bool result = createdMap->validate(a, b, c);
+                bool result = createdMap->validate();
                 if (result) {
                     loadedMap = *createdMap;
                     createdMap->setValid(true);
