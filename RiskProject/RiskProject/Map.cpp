@@ -227,143 +227,105 @@ vector<Continent*> Map::getAllContinent() {
     return allContinent;
 }
 
-// Given a territory ID, will return the associate Territory Object
-Territory* Map::getTerritory(int territoryToFind) {
+// Given a territory string, will return the associate Territory Object
+Territory* Map::getTerritory(string territoryToFind) {
     vector<Territory*> currentTerritoryVector = this->getAllTerritory();
     Territory* theTerritory = 0;
     for (auto t : currentTerritoryVector) {
-        if (t->getTID() == territoryToFind)
+        if (t->getTName() == territoryToFind)
             theTerritory = t;
     }
     return theTerritory;
 }
 
+// Functions for Map Validation 
+//helper function for the DFS_helper to check a certain string in a string vector or not
+bool Map::isContains(string s, vector<string> s_v) {
+    return (find(s_v.begin(), s_v.end(), s) != s_v.end());
+}
 
-// Functions for Map Validation
 // Checks that the given Map object is a connected graph
 bool Map::isConnected() {
-    int len = this->allTerritory.size();//get length of all nodes in one map
-    //check forward direction
-    vector<string> visited;//record all visited node 
-    for (int i = 0; i < len; i++) {//loop all nodes
-        if (visited.empty()) {//add first node into visited list
-            visited.push_back(this->allTerritory[i]->getTName());
-        }
-        int len1 = this->allTerritory[i]->getAdjTerritories().size();//get length of each node's adjacent list
-        for (int j = 0; j < len1; j++) {//loop the adjacent list
-            string temp = this->allTerritory[i]->getAdjTerritories()[j]->getTName();//get the adjacent node name
-            int len2 = visited.size();//get the length of visited list
-            for (int k = 0; k < len2; k++) {//loop visited list
-                if (temp == visited[k]) {//if adjacent node id exist in visited list, go to next adjacent node
-                    break;
-                }
-                if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
-                    if (temp != visited[k]) {
-                        visited.push_back(temp);
-                    }
-                }
+    for (auto t : this->getAllTerritory()) {
+        DFS(t->getTName(), t);
+        for (auto t : this->getAllTerritory()) { 
+            if (!(_visited.size() == this->getAllTerritory().size()))  // check if the traverse nodes is equal all nodes, which means the graph is not connected
+            { 
+                cout << "Territory " << t->getTName() << " cannot reach to all the other territories: ";  // print which continent is not inner connected
+                cout << "The map is not connected" << endl;
+                return false;
+            
             }
         }
-    }
 
-    //check backward direction
-    vector<string> visited_reverse; //record all visited node
-    for (int i = len - 1; i >= 0; i--) {//loop all nodes
-        if (visited_reverse.empty()) {//add first node into visited list
-            visited_reverse.push_back(this->allTerritory[i]->getTName());
-        }
-        int len1 = this->allTerritory[i]->getAdjTerritories().size();//get length of each node's adjacent list
-        for (int j = 0; j < len1; j++) {//loop the adjacent list
-            string temp = this->allTerritory[i]->getAdjTerritories()[j]->getTName();//get the adjacent node name
-            int len2 = visited_reverse.size();//get the length of visited list
-            for (int k = 0; k < len2; k++) {//loop visited list
-                if (temp == visited_reverse[k]) {//if adjacent node id exist in visited list, go to next adjacent node
-                    break;
-                }
-                if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
-                    if (temp != visited_reverse[k]) {
-                        visited_reverse.push_back(temp);
-                    }
-                }
-            }
-        }
     }
-    if (visited.size() != len || visited_reverse.size() != len) {//all visited list length should equal length of all nodes in one map
-        cout << "The map is not connected" << endl;
-        return false;//graph is not connected
-    }
+    _visited.clear();
     cout << "The map is a connected graph." << endl;
-    return true;//graph is connected
+    return true;
 }
 
-//check continent's subGraph is a connected graph or not
-//if subGraph is good, return true.
-//if not, return false.
-bool Continent::checkSubGraph()
-{
-    int len = int(this->subGraph.size());//get length of all nodes in one continent
-    //check forward direction
-    vector<string> visited;//record all visited node in same continent
-    for (int i = 0; i < len; i++) {//loop all nodes
-        if (visited.empty()) {//add first node into visited list
-            visited.push_back(this->subGraph[i]->getTName());
-        }
-        int len1 = this->subGraph[i]->getAdjTerritoriesInSameContinent().size();//get length of each node's adjacent list in same continent
-        for (int j = 0; j < len1; j++) {//loop the adjacent list
-            string temp = this->subGraph[i]->getAdjTerritoriesInSameContinent()[j]->getTName();//get the adjacent node string
-            int len2 = visited.size();//get the length of visited list
-            for (int k = 0; k < len2; k++) {//loop visited list
-                if (temp == visited[k]) {//if adjacent node  exist in visited list, goto next adjacent node
-                    break;
-                }
-                if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
-                    if (temp != visited[k]) {
-                        visited.push_back(temp);
-                    }
-                }
-            }
-        }
-    }
+// Assists the isConnected function
+void Map::DFS(string s, Territory* t) {
+    _visited.clear(); //starting with all nodes as not visited
+    DFS_helper(s, t->getAdjTerritories()); 	// Let the helper do the DFS recursively
 
-    //check backward direction
-    vector<string> visited_reverse; //record all visited node in same continent
-    for (int i = len-1; i >= 0; i--) {//loop all nodes
-        if (visited_reverse.empty()) {//add first node into visited list
-            visited_reverse.push_back(this->subGraph[i]->getTName());
-        }
-        int len1 = this->subGraph[i]->getAdjTerritoriesInSameContinent().size();//get length of each node's adjacent list in same continent
-        for (int j = 0; j < len1; j++) {//loop the adjacent list
-            string temp = this->subGraph[i]->getAdjTerritoriesInSameContinent()[j]->getTName();//get the adjacent node string
-            int len2 = visited_reverse.size();//get the length of visited list
-            for (int k = 0; k < len2; k++) {//loop visited list
-                if (temp == visited_reverse[k]) {//if adjacent node  exist in visited list, goto next adjacent node
-                    break;
-                }
-                if (k == (len2 - 1)) {//if adjacent node not exist in visited list, add it into visited list
-                    if (temp != visited_reverse[k]) {
-                        visited_reverse.push_back(temp);
-                    }
-                }
-            }
-        }
-    }
-    //cout << "visited" << endl;
-    //printVector(visited);
-    //cout << "visited_reverse" << endl;
-    //printVector(visited_reverse);
-
-    if (visited.size() != len || visited_reverse.size() != len ) {//all visited list length should equal length of all nodes in one continent
-        return false;//subgraph is not connected
-    }
-    return true;//subgraph is connected
 }
 
+// Assists the isConnected function
+void Map::DFS_helper(string s, vector<Territory*> terr) {
+    _visited.push_back(s); // mark the current node as visited
+    for (auto t : terr) { // Go through the neighbors vector, if not visited, go visit, if visited, iterate to next one
+        if (!isContains(t->getTName(), _visited)) {
+            DFS_helper(t->getTName(), t->getAdjTerritories());
+            
+        }
+    }
+}
 
+//Almost the same checking steps for the subgraph
+bool Map::checkSubGraph(vector<Territory*> subGraph) {
+    for (auto t : subGraph) {
+        DFS1(t->getTName(), t);
+        for (auto t : subGraph) {
+        
+            if (!(_visited.size() == subGraph.size())) {
+               
+                cout << "Territory " << t->getTName() << " cannot reach to all the other territories: ";  // print which continentID is not inner connected
+                return false;
+
+            }
+        }
+
+    }
+    _visited.clear();
+    return true;
+}
+
+void Map::DFS1(string s, Territory* t) {
+    _visited.clear();
+    DFS_helper1(s, t->getAdjTerritoriesInSameContinent());
+
+}
+
+void Map::DFS_helper1(string s, vector<Territory*> terr) {
+    _visited.push_back(s);
+    for (auto t : terr) {
+   /*     cout << "_visited.size" << _visited.size() << endl;*/
+        if (!isContains(t->getTName(), _visited)) {
+         /*   cout << t->getTName() << endl;*/
+          /*  cout << "_visited.size" << _visited.size() << endl;*/
+            DFS_helper1(t->getTName(), t->getAdjTerritoriesInSameContinent());
+
+        }
+    }
+}
+
+//checks the continent as subgraph one by one
 bool Map::continentSubgraphs(Map* map) {
     for (Continent* con : map->getAllContinent()) {
-        if (!con->checkSubGraph()) {
+        if (!checkSubGraph(con->subGraph)) {
             cout << "The continent " << con->name << " is not a connected graph." << endl;  
-                    return false;
+            return false;
         }
         else {
             cout << "The continent " << con->name << " is a connected graph." << endl;
@@ -424,8 +386,3 @@ bool Map::validate(void) {
 }
 
 
-//void Continent::printVector(vector<string> s) {
-//    for (string content : s) {
-//        cout << content << endl;
-//    }
-//}

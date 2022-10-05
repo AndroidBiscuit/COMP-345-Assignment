@@ -67,8 +67,6 @@ struct Continent{
     friend ostream& operator<<(ostream& out, const Continent& p);
     //accessor
     vector<Territory*> getSubGraph();
-    bool checkSubGraph();
-    void printVector(vector<string> s);
 
     //destructor
     ~Continent();
@@ -85,7 +83,7 @@ public:
     //Stream insertion:
     friend ostream& operator << (ostream& out, const Map& p);
 
-    bool* visited;
+    vector<string> _visited;
     int numTerritories;
 
     //friend class
@@ -98,24 +96,30 @@ public:
     //destructor
     ~Map();
 
+
+    Territory* getTerritory(string territoryName);
     void addContinent(Continent* theContinent);
     void addTerritory(Territory* theTerritory);
     bool getValid();
     void setValid(bool);
     string getName();
     void setName(string);
-    Territory* getTerritory(int territoryID);
     vector<Territory*> getAllTerritory();
     vector<Continent*> getAllContinent();
+   
 
     //methods related to validate()
- 
-    bool validate(bool a, bool b, bool c);// Must check the following 3 functions	
-    bool validate(void);
     bool isConnected(void);// Test to the see if the map is a connected graph	
+    void DFS(string s, Territory* t);
+    void DFS_helper(string s, vector<Territory*>);
+    bool isContains(string s, vector<string> s_v);
+    bool validate(void);
     bool continentSubgraphs(Map* map); // Test to see that continents are connected subgraphs	
     bool countryToContinentRelation(void); // Test to see that each country belongs to only one continent
-    
+    void DFS1(string s, Territory* t);
+    void DFS_helper1(string s,vector<Territory*> terr);
+    bool checkSubGraph(vector<Territory*>);
+
 };
 
 //Requirments from Assignment #1 description:

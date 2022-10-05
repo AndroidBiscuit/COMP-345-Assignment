@@ -185,8 +185,7 @@ Map* MapLoader::loadMap(string mapFile) {
                         continue;
                     }
 
-                    createdMap->visited = new bool[createdTerri - 1];
-                    createdMap->numTerritories = createdTerri - 1;
+                    createdMap->numTerritories = createdTerri;
 
                 }
                 else {

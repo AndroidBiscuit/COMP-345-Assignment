@@ -18,7 +18,7 @@ void testLoadMaps() {
 
 
 	int numberOfMaps = -1;
-	string fileName = "Africa.map";
+	string fileName = "Japan.map";
 	MapLoader load;
 	Map* created = nullptr;
 	vector<Map*> mapsCreated;
