@@ -8,6 +8,7 @@ class Order
 protected:
 	string orderName;
 	string orderEffect;
+	bool orderExecutionFlag;
 
 public:
 	
@@ -15,13 +16,16 @@ public:
 	Order(string orderName);
 	
 	virtual bool validate(string order);
-	virtual void execute(Order order);
+	virtual void execute();
 
 	string getOrderName();
 	void setOrderName(string x);
 
 	string getOrderEffect();
 	void setOrderEffect(string x);
+
+	bool getOrderExecutionFlag();
+	void setOrderExecutionFlag(bool flag);
 	
 	//friend istream& operator >> (istream& in, Order order);
 	friend ostream& operator << (ostream& in, Order order);
@@ -59,7 +63,7 @@ public:
 	Deploy();
 	Deploy(string name);
 	bool validate(string order);
-	void execute(Order order);
+	void execute();
 
 };
 
@@ -70,7 +74,7 @@ public:
 	Advance();
 	Advance(string name);
 	bool validate(string order);
-	void execute(Order order);
+	void execute();
 
 };
 
@@ -81,7 +85,7 @@ public:
 	Bomb();
 	Bomb(string name);
 	bool validate(string order);
-	void execute(Order order);
+	void execute();
 };
 
 class Blockade : public Order
@@ -91,7 +95,7 @@ public:
 	Blockade();
 	Blockade(string name);
 	bool validate(string order);
-	void execute(Order order);
+	void execute();
 
 };
 
@@ -102,7 +106,7 @@ public:
 	Airlift();
 	Airlift(string name);
 	bool validate(string order);
-	void execute(Order order);
+	void execute();
 
 };
 
@@ -113,6 +117,6 @@ public:
 	Negotiate();
 	Negotiate(string name);
 	bool validate(string order);
-	void execute(Order order);
+	void execute();
 
 };

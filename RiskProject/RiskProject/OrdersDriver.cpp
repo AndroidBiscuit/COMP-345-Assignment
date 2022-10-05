@@ -38,6 +38,14 @@ void testOrdersLists()
 
 	//question about stream insertion operator 
 	cout << deploy;
-	//deploy.execute(deploy);
-	bomb.execute(bomb);
+	cout << endl;
+
+	deploy.execute();
+	cout << deploy;
+	cout << endl;
+
+	cout << bomb;
+	cout << endl;
+	bomb.execute();
+	cout << bomb;
 }

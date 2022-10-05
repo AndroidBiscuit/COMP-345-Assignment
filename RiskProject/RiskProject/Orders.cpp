@@ -10,17 +10,19 @@ using namespace std;
 
 Order::Order() {
 	orderName = "";
+	orderExecutionFlag = false;
 }
 
 Order::Order(string x) {
 	orderName = x;
+	orderExecutionFlag = false;
 }
 
 bool Order::validate(string order) {
 	return false;
 }
 
-void Order::execute(Order order) {
+void Order::execute() {
 
 }
 
@@ -36,6 +38,14 @@ void Order::setOrderEffect(string orderEffect)
 {
 	this->orderEffect = orderEffect;
 }
+
+bool Order::getOrderExecutionFlag() { return orderExecutionFlag; }
+
+void Order::setOrderExecutionFlag(bool flag) 
+{
+	orderExecutionFlag = flag;
+}
+
 /*
 istream& operator >>(istream& input, Order order) {
 
@@ -43,7 +53,14 @@ istream& operator >>(istream& input, Order order) {
 */
 ostream& operator <<(ostream& input, Order order) {
 	input << "Order is: " << order.getOrderName() << endl;
-	input<<order.getOrderEffect() << endl;
+	if (order.getOrderExecutionFlag())
+	{
+		input << "This order has been executed. \n";
+		input << order.getOrderEffect() << endl;
+	}
+	else
+		input << "This order has not been executed. \n";
+	
 	return input;
 
 }
@@ -55,7 +72,7 @@ Deploy::Deploy() {}
 
 Deploy::Deploy(string name) {
 	orderName = name;
-	orderEffect = "move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
+	orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
 }
 
 bool Deploy::validate(string order){
@@ -67,12 +84,9 @@ bool Deploy::validate(string order){
 	return false;
 }
 
-void Deploy::execute(Order order) {
-	if (validate(order.getOrderName()))
-	{
-		cout << this;
-	}
-	
+void Deploy::execute() {
+	if (validate(getOrderName()))
+		this->setOrderExecutionFlag(true);
 }
 
 
@@ -81,6 +95,7 @@ Advance::Advance() {}
 
 Advance::Advance(string name) {
 	orderName = name;
+	orderEffect = "Move a certain number of army units from one territory (source territory) to another territory (target territory)";
 }
 
 bool Advance::validate(string order) {
@@ -92,12 +107,9 @@ bool Advance::validate(string order) {
 	return false;
 }
 
-void Advance::execute(Order order) {
-	if (validate(order.getOrderName()))
-	{
-		cout << "Advance: move a certain number of army units from one territory (source territory) to another territory (target territory)" << endl;
-	}
-
+void Advance::execute() {
+	if (validate(getOrderName()))
+		this->setOrderExecutionFlag(true);
 }
 
 //-----------------------BOMB FUNCTION IMPLEMENTATION----------------------//
@@ -106,6 +118,7 @@ Bomb::Bomb() {}
 
 Bomb::Bomb(string name) {
 	orderName = name;
+	orderEffect = "Destroy half of the army units located on an opponent’s territory that is adjacent to one of the current player’s territories.";
 }
 
 bool Bomb::validate(string order) {
@@ -117,12 +130,9 @@ bool Bomb::validate(string order) {
 	return false;
 }
 
-void Bomb::execute(Order order) {
-	if (validate(order.getOrderName()))
-	{
-		cout << "Bomb: destroy half of the army units located on an opponent’s territory that is adjacent to one of the current player’s territories." << endl;
-	}
-
+void Bomb::execute() {
+	if (validate(getOrderName()))
+		this->setOrderExecutionFlag(true);
 }
 
 //-----------------------BlOCKADE FUNCTION IMPLEMENTATION----------------------//
@@ -131,6 +141,7 @@ Blockade::Blockade() {}
 
 Blockade::Blockade(string name) {
 	orderName = name;
+	orderEffect = "Triple the number of army units on one of the current player’s territories and make it a neutral	territory";
 }
 
 bool Blockade::validate(string order) {
@@ -142,12 +153,9 @@ bool Blockade::validate(string order) {
 	return false;
 }
 
-void Blockade::execute(Order order) {
-	if (validate(order.getOrderName()))
-	{
-		cout << "Blockade: triple the number of army units on one of the current player’s territories and make it a neutral	territory" << endl;
-	}
-
+void Blockade::execute() {
+	if (validate(getOrderName()))
+		this->setOrderExecutionFlag(true);
 }
 
 //-----------------------AIRLIFT FUNCTION IMPLEMENTATION----------------------//
@@ -156,6 +164,7 @@ Airlift::Airlift() {}
 
 Airlift::Airlift(string name) {
 	orderName = name;
+	orderEffect = "Advance a certain number of army units from one of the current player’s territories to any another yerritory ";
 }
 
 bool Airlift::validate(string order) {
@@ -168,12 +177,9 @@ bool Airlift::validate(string order) {
 }
 
 
-void Airlift::execute(Order order) {
-	if (validate(order.getOrderName()))
-	{
-		cout << "Airlift: advance a certain number of army units from one of the current player’s territories to any another yerritory" << endl;
-	}
-
+void Airlift::execute() {
+	if (validate(getOrderName()))
+		this->setOrderExecutionFlag(true);
 }
 
 //-----------------------NEGOTIATE FUNCTION IMPLEMENTATION----------------------//
@@ -182,6 +188,7 @@ Negotiate::Negotiate() {}
 
 Negotiate::Negotiate(string name) {
 	orderName = name;
+	orderEffect = "Prevent attacks between the current player and the player targeted by the negotiate order until the end of the turn";
 }
 
 bool Negotiate::validate(string order) {
@@ -193,12 +200,9 @@ bool Negotiate::validate(string order) {
 	return false;
 }
 
-void Negotiate::execute(Order order) {
-	if (validate(order.getOrderName()))
-	{
-		cout << "Negotiate: prevent attacks between the current player and the player targeted by the negotiate order until the end of the turn" << endl;
-	}
-
+void Negotiate::execute() {
+	if (validate(getOrderName()))
+		this->setOrderExecutionFlag(true);
 }
 
 
