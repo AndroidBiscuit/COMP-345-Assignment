@@ -112,13 +112,47 @@ public:
     bool isConnected(void);// Test to the see if the map is a connected graph	
     void DFS(string s, Territory* t);
     void DFS_helper(string s, vector<Territory*>);
-    bool isContains(string s, vector<string> s_v);
+    bool isContains(string s, vector<string> s_v);//helper function to check string in a vector or not
     bool validate(void);
     bool continentSubgraphs(Map* map); // Test to see that continents are connected subgraphs	
     bool countryToContinentRelation(void); // Test to see that each country belongs to only one continent
     void DFS1(string s, Territory* t);
     void DFS_helper1(string s,vector<Territory*> terr);
     bool checkSubGraph(vector<Territory*>);
+
+};
+
+class MapLoader {
+private:
+    string inputFileName;
+    Map loadedMap;
+
+public:
+    // stream insertion operator
+    friend ostream& operator<< (ostream& out, const MapLoader& m);
+
+    //constuctors
+    MapLoader();
+    MapLoader(const MapLoader*);
+
+    friend class Map;
+
+    //assigment operator
+    MapLoader& operator= (const MapLoader&);
+
+    //destructor
+    ~MapLoader();
+    //accessor
+    string getInputFileName();
+    //mutator
+    void setInputFileName(const string&);
+
+    vector<string> tokenizeString(const string&, char); //tokenizes the line information from the text file by certain delimiter
+    int getCID(Map*, string cName); //gets the continent ID by given continent name
+    int getTID(Map*, string tName);//gets the territory ID by given territory name
+
+    Map* getMap();
+    Map* loadMap(string mapFile);
 
 };
 

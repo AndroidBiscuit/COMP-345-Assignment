@@ -1,5 +1,5 @@
 #include "MapDriver.h"
-#include "MapLoader.h"
+#include "Map.h"
 #include <iostream>
 #include<string>
 using std::cerr;
