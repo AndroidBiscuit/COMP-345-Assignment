@@ -17,36 +17,31 @@ void testLoadMaps() {
 	cout << "This driver demonstrates the functionality of the Maps" << endl;
 
 
-	int numberOfMaps = -1;
-	string fileName = "Japan.map";
-	MapLoader load;
-	Map* created = nullptr;
-	vector<Map*> mapsCreated;
+	//int numberOfMaps = -1;
+	string fileName1 = "Japan.map";
+	string fileName2 = "Canada.map";
+	string fileName3 = "Invalid1.map";
+	string fileName4 = "Invalid2.map";
+    
+	MapLoader* load = new MapLoader();
 
 
-	/*while (numberOfMaps < 1) {
-		cout << "Please enter the number of Map files to be read. Number must be greater than zero." << endl;
-		cin >> numberOfMaps;
+	try{
+		
+		load->loadMap(fileName1);
+		load->loadMap(fileName2);
+		load->loadMap(fileName3);
+		load->loadMap(fileName4);
+		
 	}
-	for (int i = 0; i < numberOfMaps; i++) {
-		cout << "Enter the name of the Map file you would like to read. Do not forget to add the extension." << endl;
-		cin >> fileName;*/
-		try {
-			created = load.loadMap(fileName);
-			mapsCreated.push_back(created);
-			int sum = 0;
-			for (Territory* p : created->getAllTerritory()) {
-				sum++;
-			}
-			cout << "Territories placed: " << sum << endl;
-		}
-		catch (const invalid_argument& e) {
-			cout << "The map file provided was invalid. " << endl;
-		}
-	/*}*/
+	catch (const invalid_argument& e) {
+		cout << "The map file provided was invalid. " << endl;
+	}
+	
 	system("pause");
-	/*for (auto p : mapsCreated) {
-		delete(p);
-	}*/
+	
+	delete load;
+	
+	
 	
 }

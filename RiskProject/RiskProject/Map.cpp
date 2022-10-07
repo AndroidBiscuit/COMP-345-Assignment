@@ -139,7 +139,7 @@ Continent::Continent(const Continent& other) : subGraph(other.subGraph.size()) {
 // stream insertion
 ostream& operator<<(ostream& out, const Continent& p)
 {
-    out << "Territories that belong to the Continent: " << endl;
+    out << "Territories that belong to " << p.name << "the Continent : " << endl;
     for (Territory* a : p.subGraph) {
         out << *a;
     }
@@ -174,11 +174,13 @@ vector<Territory*> Continent::getSubGraph() {
 MapLoader::MapLoader() {
     cout << "MapLoader created" << endl;
 }
+ 
 
 //copy constructor
-MapLoader::MapLoader(const MapLoader* ml) {
-    loadedMap = ml->loadedMap;
-    inputFileName = ml->inputFileName;
+MapLoader::MapLoader(const MapLoader& other) {
+    inputFileName = other.inputFileName;
+    loadedMap = other.loadedMap;
+
 }
 
 //assignment operator
@@ -197,6 +199,10 @@ ostream& operator << (ostream& out, const MapLoader& p) {
 //destructor
 MapLoader::~MapLoader() {
     cout << "MapLoader was destroyed" << endl;
+    for (auto p : loadedMap) {
+        delete p;
+    }
+    loadedMap.clear();
 }
 
 //accessor
@@ -209,8 +215,8 @@ void MapLoader::setInputFileName(const string& s) {
     inputFileName = s;
 }
 
-Map* MapLoader::getMap() {
-    return &loadedMap;
+vector<Map*> MapLoader::getMaps() {
+    return loadedMap;
 }
 
 //splits the line information from the text file by certain delimiter
@@ -253,6 +259,7 @@ int MapLoader::getTID(Map* createdMap, string tName) {
             return terri->getTID();
         }
     }
+    return -1;
 }
 
 
@@ -283,7 +290,6 @@ Map* MapLoader::loadMap(string mapFile) {
 
             while (input.peek() != EOF && getline(input, current)) {
                 if (current == "[Continents]") {
-                    cout << current << endl;
                     getline(input, current);
                     readingContinents = true;
                     readingTerritories = false;
@@ -292,7 +298,6 @@ Map* MapLoader::loadMap(string mapFile) {
 
                 }
                 else if (current == "[Territories]") {
-                    cout << current << endl;
                     getline(input, current);
                     readingContinents = false;
                     readingTerritories = true;
@@ -301,7 +306,6 @@ Map* MapLoader::loadMap(string mapFile) {
                 }
 
                 if (readingContinents) { //reads and adds continent objects
-                    cout << current << endl;
                     createdConti++;
                     contents = tokenizeString(current, '=');
                     if (contents.size() > 0) {
@@ -315,7 +319,6 @@ Map* MapLoader::loadMap(string mapFile) {
                 }
                 else if (readingTerritories)
                 {
-                    cout << current << endl;
                     contents = tokenizeString(current, ',');
                     createdTerri++;
                     if (contents.size() > 0)
@@ -326,7 +329,6 @@ Map* MapLoader::loadMap(string mapFile) {
                         int cID = getCID(createdMap, cName);
                         Territory* ret = new Territory(tID, cID, tName);
                         createdMap->addTerritory(ret);
-                        cout << *ret;
                         vector<string> adjTerritories;
                         adjTerritories.push_back(contents[0]);
                         for (int i = 4; i < contents.size(); i++) {
@@ -366,12 +368,16 @@ Map* MapLoader::loadMap(string mapFile) {
 
                         for (string p : v) {
                             int tID = getTID(createdMap, p);
-                            /* cout << "TID:" << tID << p << endl;*/
+                             if (tID < 0) {
+                                 cout << "ERROR - File is of incorrect format! Tertitories message is missing. Please check that the file meets the Map parameters." << endl;
+                                 throw invalid_argument("ERROR - File is of incorrect format! Keywords were not found.");
+                                 return createdMap;
+                             }
                             edges.push_back(getTID(createdMap, p)); //1 2 3
                         }
 
                         Territory* t = createdMap->getAllTerritory()[edges[0] - 1]; // 1
-                        int k = edges[0] - 1;
+                      /*  int k = edges[0] - 1;*/
 
                         for (int i = 1; i < edges.size(); i++) { // add 2 and 3 to 1's territories
                             Territory* o = createdMap->getAllTerritory()[edges[i] - 1];
@@ -383,7 +389,7 @@ Map* MapLoader::loadMap(string mapFile) {
 
                 }
                 //Printing territories that belong to the first continent:
-                cout << "Here is First Continent Information:" << endl;
+                cout << "Reading file is complete! Here is First Continent Information:" << endl;
                 cout << *createdMap->getAllContinent()[0] << endl;
 
 
@@ -392,12 +398,12 @@ Map* MapLoader::loadMap(string mapFile) {
                 cout << "\n---------------------------------------------------" << endl;
                 bool result = createdMap->validate();
                 if (result) {
-                    loadedMap = *createdMap;
+                    loadedMap.push_back(createdMap);
                     createdMap->setValid(true);
                     return createdMap;
                 }
                 else {
-                    loadedMap = *createdMap;
+                    loadedMap.push_back(createdMap);
                     createdMap->setValid(false);
                     return createdMap;
                 }
@@ -420,7 +426,7 @@ Map* MapLoader::loadMap(string mapFile) {
 
 
     //Map Creation:
-    loadedMap = *createdMap;
+    loadedMap.push_back(createdMap);
     return createdMap;
 
 
@@ -509,7 +515,7 @@ bool Map::isConnected() {
             if (!(_visited.size() == this->getAllTerritory().size()))  // check if the traverse nodes is equal all nodes, which means the graph is not connected
             { 
                 cout << "Territory " << t->getTName() << " cannot reach to all the other territories: ";  // print which continent is not inner connected
-                cout << "The map is not connected" << endl;
+                cout << "The map" << this->name << " is not connected" << endl;
                 return false;
             
             }
@@ -517,7 +523,7 @@ bool Map::isConnected() {
 
     }
     _visited.clear();
-    cout << "The map is a connected graph." << endl;
+    cout << "The map " << this->name << " is a connected graph." << endl;
     return true;
 }
 

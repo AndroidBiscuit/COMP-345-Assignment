@@ -149,6 +149,8 @@
     <None Include="Africa.map" />
     <None Include="Canada.map" />
     <None Include="Canada1999.map" />
+    <None Include="Invalid1.map" />
+    <None Include="Invalid2.map" />
     <None Include="Japan.map" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

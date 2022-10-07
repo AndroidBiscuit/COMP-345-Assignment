@@ -1,0 +1,28 @@
+
+[Map]
+author=Sean O'Connor
+warn=yes
+image=Africa.bmp
+wrap=no
+scroll=horizontal
+
+[Continents]
+Northern Africa=4
+Southern Africa=3
+Western Africa=7
+Eastern Africa=3
+Central Africa=6
+The Horn=3
+The Congo=5
+
+
+[Territories]
+Morocco,127,46,Northern Africa,Western Sahara,Algeria
+Algeria,193,85,Northern Africa,Morocco,Western Sahara,Mauritania,Mali,Niger,Libya,Tunisia
+Tunisia,252,33,Northern Africa,Algeria,Libya
+Libya,314,94,Northern Africa,North Sudan,Tunisia,Algeria,Niger,Chad,Egypt
+Egypt,415,99,Northern Africa,Libya,North Sudan
+
+
+
+

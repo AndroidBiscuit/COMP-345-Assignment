@@ -76,5 +76,11 @@
     <None Include="Africa.map">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="Invalid2.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Invalid1.map">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
