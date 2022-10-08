@@ -382,15 +382,45 @@ OrdersList::OrdersList(const OrdersList& originalOrdersList) {
 		{
 			Blockade* temp = new Blockade("negotiate");
 			addOrder(temp);
-		}
-
-		
+		}		
 	}
 }
 
 //assignment operator
 OrdersList& OrdersList:: operator= (const OrdersList& ol) {
 	cout << "OrdersList assignment operator called. \n";
+	for (auto x : ol.ordersList) {
+		if (x->getOrderName().compare("deploy") == 0)
+		{
+			Deploy* temp = new Deploy("deploy");
+			addOrder(temp);
+		}
+		else if (x->getOrderName().compare("advance") == 0)
+		{
+			Advance* temp = new Advance("advance");
+			addOrder(temp);
+		}
+		else if (x->getOrderName().compare("bomb") == 0)
+		{
+			Bomb* temp = new Bomb("bomb");
+			addOrder(temp);
+		}
+		else if (x->getOrderName().compare("blockade") == 0)
+		{
+			Blockade* temp = new Blockade("blockade");
+			addOrder(temp);
+		}
+		else if (x->getOrderName().compare("airlift") == 0)
+		{
+			Airlift* temp = new Airlift("airlift");
+			addOrder(temp);
+		}
+		else if (x->getOrderName().compare("negotiate") == 0)
+		{
+			Blockade* temp = new Blockade("negotiate");
+			addOrder(temp);
+		}
+	}
 	return *this;
 }
 

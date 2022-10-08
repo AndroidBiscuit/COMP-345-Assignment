@@ -26,7 +26,7 @@ void testOrdersLists()
 	ordersList.showOrdersList();
 	cout<<"\n";
 
-	//Demonstrate copy constructor
+	//Demonstrate copy constructor of ordersList
 	OrdersList ordersListCopy = ordersList;
 
 	//move orders around
@@ -58,6 +58,4 @@ void testOrdersLists()
 
 	ordersListCopy.showOrdersList(); //should still be 6 orders in the list
 	
-
-	//Demonstrate Assignment operator
 }
