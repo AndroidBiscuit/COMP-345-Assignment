@@ -20,9 +20,11 @@
 
 # Work distribution
 - Assignment 1: 
-  - Part 1: 
+  - Part 1: Monica Chen, Ziad Taifour, Lin Ling
   - Part 2: 
-  - Part 3: 
+  - Part 3: Monica Chen
+  - Part 4: 
+  - Part 5: Wuyang Peng
 
 # Getting Started
  Make sure you have Visual Studio 2022 installed on your local machine. This will be our IDE for this project. 
