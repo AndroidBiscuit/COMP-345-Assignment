@@ -2,6 +2,7 @@
 //
 #include "MapDriver.h"
 #include "PlayDriver.h"
+#include "OrdersDriver.h"
 #include <iostream>
 using std::cerr;
 using std::cout;
@@ -18,7 +19,8 @@ int main()
 {
     std::cout << "Start to load the map.\n";
 
-    testLoadMaps();
+    //testLoadMaps();
+    testOrdersLists();
 
    std::cout << "Start to set the player.\n";
 
