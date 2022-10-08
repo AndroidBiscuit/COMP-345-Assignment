@@ -26,14 +26,19 @@ void testOrdersLists()
 	ordersList.showOrdersList();
 	cout<<"\n";
 
+	//Demonstrate copy constructor
+	OrdersList ordersListCopy = ordersList;
+
 	//move orders around
 	ordersList.move(4, 2);
+	cout << "After moving order in 4th position to 2nd position \n";
 	cout << "Orders list:" << endl;
 	ordersList.showOrdersList();
 	cout << "\n";
 
 	//remove an order
 	ordersList.remove(3);
+	cout << "After removing order in 3rd position \n";
 	cout << "Orders list:" << endl;
 	ordersList.showOrdersList();
 	cout << "\n";
@@ -50,4 +55,9 @@ void testOrdersLists()
 	cout << endl;
 	bomb.execute();
 	cout << bomb;
+
+	ordersListCopy.showOrdersList(); //should still be 6 orders in the list
+	
+
+	//Demonstrate Assignment operator
 }

@@ -73,8 +73,8 @@ private:
 public:
 	Deploy();
 	Deploy(const Deploy& d); 
-	Deploy& operator= (const Deploy& d); //to do 
-	~Deploy(); //to do 
+	Deploy& operator= (const Deploy& d);  
+	~Deploy();  
 	Deploy(string name);
 	bool validate(string order);
 	void execute();
@@ -87,6 +87,9 @@ private:
 public:
 	Advance();
 	Advance(string name);
+	Advance(const Advance& a);
+	Advance& operator= (const Advance& a);
+	~Advance();
 	bool validate(string order);
 	void execute();
 
@@ -98,6 +101,9 @@ private:
 public:
 	Bomb();
 	Bomb(string name);
+	Bomb(const Bomb& b);
+	Bomb& operator= (const Bomb& b);
+	~Bomb();
 	bool validate(string order);
 	void execute();
 };
@@ -108,6 +114,9 @@ private:
 public:
 	Blockade();
 	Blockade(string name);
+	Blockade(const Blockade& b);
+	Blockade& operator= (const Blockade& b);
+	~Blockade();
 	bool validate(string order);
 	void execute();
 
@@ -119,6 +128,9 @@ private:
 public:
 	Airlift();
 	Airlift(string name);
+	Airlift(const Airlift& a);
+	Airlift& operator= (const Airlift& a);
+	~Airlift();
 	bool validate(string order);
 	void execute();
 
@@ -130,6 +142,9 @@ private:
 public:
 	Negotiate();
 	Negotiate(string name);
+	Negotiate(const Negotiate& a);
+	Negotiate& operator= (const Negotiate& a);
+	~Negotiate();
 	bool validate(string order);
 	void execute();
 
