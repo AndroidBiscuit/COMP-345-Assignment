@@ -23,7 +23,7 @@
   - Part 1: Monica Chen, Ziad Taifour, Lin Ling
   - Part 2: 
   - Part 3: Monica Chen
-  - Part 4: 
+  - Part 4: Faizan Ahmad
   - Part 5: Wuyang Peng
 
 # Getting Started
