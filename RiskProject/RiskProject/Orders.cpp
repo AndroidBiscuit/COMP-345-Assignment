@@ -10,47 +10,47 @@ using namespace std;
 
 Order::Order() {
 	orderName = "";
+	orderEffect = "";
 	orderExecutionFlag = false;
 }
 
 Order::Order(string x) {
 	orderName = x;
+	orderEffect = "";
 	orderExecutionFlag = false;
 }
 
-bool Order::validate(string order) {
-	return false;
+//copy constructor
+Order::Order(const Order& originalOrder) {
+	this->orderName = originalOrder.orderName;
+	this->orderExecutionFlag = originalOrder.orderExecutionFlag;
+	this->orderEffect = originalOrder.orderEffect;
 }
 
-void Order::execute() {
-
+//assignment operator
+Order& Order::operator= (const Order& order) {
+	orderName = order.orderName;
+	orderEffect = order.orderEffect;
+	orderExecutionFlag = order.orderExecutionFlag;
+	return *this;
 }
+
+bool Order::validate(string order) {return false;}
+
+void Order::execute() {}
 
 string Order::getOrderName() { return orderName; }
-void Order::setOrderName(string name)
-{
-	this->orderName = name;
-}
+
+void Order::setOrderName(string name) { this->orderName = name; }
 
 string Order::getOrderEffect() { return orderEffect; }
 
-void Order::setOrderEffect(string orderEffect)
-{
-	this->orderEffect = orderEffect;
-}
+void Order::setOrderEffect(string orderEffect){	this->orderEffect = orderEffect;}
 
 bool Order::getOrderExecutionFlag() { return orderExecutionFlag; }
 
-void Order::setOrderExecutionFlag(bool flag) 
-{
-	orderExecutionFlag = flag;
-}
+void Order::setOrderExecutionFlag(bool flag) {orderExecutionFlag = flag;}
 
-/*
-istream& operator >>(istream& input, Order order) {
-
-}
-*/
 ostream& operator <<(ostream& input, Order order) {
 	input << "Order is: " << order.getOrderName() << endl;
 	if (order.getOrderExecutionFlag())
@@ -65,6 +65,11 @@ ostream& operator <<(ostream& input, Order order) {
 
 }
 
+//destructor
+Order::~Order() {
+	cout << this->getOrderName() << " will now be destroyed. \n";
+}
+
 
 //-----------------------DEPLOY FUNCTION IMPLEMENTATION----------------------//
 
@@ -73,6 +78,20 @@ Deploy::Deploy() {}
 Deploy::Deploy(string name) {
 	orderName = name;
 	orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
+}
+
+Deploy::Deploy(const Deploy& d): Order(d) {
+	this->orderName = d.orderName;
+	this->orderEffect = d.orderEffect;
+	this->orderExecutionFlag = d.orderExecutionFlag;
+}
+
+Deploy& Deploy:: operator= (const Deploy& d) {
+	orderName = d.orderName;
+	orderEffect = d.orderEffect;
+	orderExecutionFlag = d.orderExecutionFlag;
+
+	return *this;
 }
 
 bool Deploy::validate(string order){
@@ -87,6 +106,10 @@ bool Deploy::validate(string order){
 void Deploy::execute() {
 	if (validate(getOrderName()))
 		this->setOrderExecutionFlag(true);
+}
+
+Deploy::~Deploy() {
+	cout << this->getOrderName() << " will now be destroyed!!!!AHHHH \n";
 }
 
 
@@ -213,6 +236,16 @@ OrdersList::OrdersList() {
 
 }
 
+OrdersList::OrdersList(const OrdersList& originalOrdersList) {
+
+}
+
+//assignment operator
+OrdersList& OrdersList:: operator= (const OrdersList& ol) {
+
+	return *this;
+}
+
 void OrdersList::addOrder(Order* orderToBeAdded)
 {
 	ordersList.push_back(orderToBeAdded);
@@ -235,7 +268,6 @@ void OrdersList::remove(int indexOfOrder) {
 	list<Order*>::iterator iterator = ordersList.begin();
 	advance(iterator, indexOfOrder - 1);
 	iterator = ordersList.erase(iterator);
-
 }
 
 void OrdersList::showOrdersList() {
@@ -245,6 +277,12 @@ void OrdersList::showOrdersList() {
 		cout << index << ": " << x->getOrderName() << endl;
 		index++;
 	}
+}
 
+//destructor
+OrdersList::~OrdersList() {
+	cout << "OrdersList will now be destroyed \n";
 
+	//release memory
+	ordersList.clear();
 }

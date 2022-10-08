@@ -12,22 +12,32 @@ protected:
 
 public:
 	
+	//constructors
 	Order(); 
 	Order(string orderName);
+	Order(const Order& originalOrder); 
 	
+	//assignment operator
+	Order& operator= (const Order& o); 
+
+	//destructor
+	~Order(); 
+	
+	//Assignment methods
+	void setOrderName(string x);
+	void setOrderEffect(string x);
+	void setOrderExecutionFlag(bool flag);
+
+	//Accessor methods
+	string getOrderName();
+	string getOrderEffect();
+	bool getOrderExecutionFlag();
+
+	//methods
 	virtual bool validate(string order);
 	virtual void execute();
-
-	string getOrderName();
-	void setOrderName(string x);
-
-	string getOrderEffect();
-	void setOrderEffect(string x);
-
-	bool getOrderExecutionFlag();
-	void setOrderExecutionFlag(bool flag);
 	
-	//friend istream& operator >> (istream& in, Order order);
+	//stream insertion
 	friend ostream& operator << (ostream& in, Order order);
 };
 
@@ -35,24 +45,25 @@ public:
 class OrdersList
 {
 private:
-
+	list<Order*> ordersList;
 public:
-	list<Order*> ordersList;	
 
-	OrdersList(); //constructor
-	//TO DO OrdersList(const OrdersList& originalOrdersList); //copy constructor
-	//TO DO OrdersList& operator= (const OrdersList& ol); //assignment operator
-	//~OrdersList(); //destructor
+	//constructors
+	OrdersList(); 
+	OrdersList(const OrdersList& originalOrdersList); 
+	
+	//assignment operator
+	OrdersList& operator= (const OrdersList& ol); 
 
+	//destructor
+	~OrdersList();  
 
+	//methods
 	void addOrder(Order* order);
 	void move(int sourceIndex, int destinationIndex);
 	void remove(int indexOfOrder); 
 	void showOrdersList();
 };
-
-
-
 
 
 //children classes of Order - override validate() and execute()
@@ -61,6 +72,9 @@ class Deploy: public Order
 private:
 public:
 	Deploy();
+	Deploy(const Deploy& d); 
+	Deploy& operator= (const Deploy& d); //to do 
+	~Deploy(); //to do 
 	Deploy(string name);
 	bool validate(string order);
 	void execute();

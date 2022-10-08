@@ -7,6 +7,7 @@ void testOrdersLists()
 {
 	OrdersList ordersList;
 
+	//creating orders objects
 	Deploy deploy("deploy");
 	Bomb bomb("bomb");
 	Advance adv("advance");
@@ -14,6 +15,7 @@ void testOrdersLists()
 	Airlift air("airlift");
 	Negotiate neg("negotiate");
 	
+	//Adding orders to the orders list
 	ordersList.addOrder(&deploy);
 	ordersList.addOrder(&bomb);
 	ordersList.addOrder(&adv);
@@ -36,7 +38,7 @@ void testOrdersLists()
 	ordersList.showOrdersList();
 	cout << "\n";
 
-	//question about stream insertion operator 
+	//stream insertion operator 
 	cout << deploy;
 	cout << endl;
 
