@@ -151,7 +151,7 @@ public:
     int getTID(Map*, string tName);//gets the territory ID by given territory name
 
     vector<Map*> getMaps();
-    Map* loadMap(string mapFile);
+    void loadMap(string mapFile);
 
 };
 

@@ -31,13 +31,20 @@ void testLoadMaps() {
 		load->loadMap(fileName1);
 		load->loadMap(fileName2);
 		load->loadMap(fileName3);
-		load->loadMap(fileName4);
 		
 	}
 	catch (const invalid_argument& e) {
 		cout << "The map file provided was invalid. " << endl;
 	}
-	
+
+	try{
+		load->loadMap(fileName4);
+	}
+	catch (const invalid_argument& e) {
+		cout << "The map file provided was invalid. " << endl;
+	}
+
+
 	system("pause");
 	
 	delete load;
