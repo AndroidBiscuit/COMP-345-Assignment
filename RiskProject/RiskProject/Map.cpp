@@ -430,10 +430,6 @@ void MapLoader::loadMap(string mapFile) {
     }
 
 
-    //Map Creation:
-    //loadedMap.push_back(createdMap);
-
-
 }
 //constructors
 Map::Map(){

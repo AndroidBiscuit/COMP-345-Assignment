@@ -49,6 +49,4 @@ void testLoadMaps() {
 	
 	delete load;
 	
-	
-	
 }
