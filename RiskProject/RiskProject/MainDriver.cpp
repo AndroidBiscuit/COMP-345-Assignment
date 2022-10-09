@@ -1,24 +1,26 @@
 // MainDriver.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include "MapDriver.h"
+#include "PlayDriver.h"
+#include "OrdersDriver.h"
 #include <iostream>
-using std::cerr;
 using std::cout;
-using namespace std; 
-using std::endl;
-using std::ifstream;
-#include <cstdlib> // for exit function
-#include <fstream> // reading a text file
-#include <string>
-#include <sstream>
+
 
 
 int main()
 {
-    std::cout << "Start to load the map.\n";
+    cout << "Start to load the map.\n";
 
     testLoadMaps();
 
+    cout << "Start to set the player.\n";
+
+    testPlayers();
+
+    cout << "Start to handle the orderslists.\n";
+
+    testOrdersLists();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

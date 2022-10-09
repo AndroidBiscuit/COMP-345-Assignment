@@ -1,5 +1,5 @@
 #include "MapDriver.h"
-#include "MapLoader.h"
+#include "Map.h"
 #include <iostream>
 #include<string>
 using std::cerr;
@@ -13,73 +13,40 @@ using std::ifstream;
 
 void testLoadMaps() {
 
-    //Extracts data from .map 
-	MapLoader mapLoader;
-	mapLoader.setInputFileName("Canada1999.map");
-	cout << mapLoader.getInputFileName() << endl;
-	mapLoader.parseMapFile();
+	cout << "Welcome to Warzone!" << endl;
+	cout << "This driver demonstrates the functionality of the Maps" << endl;
 
-    //print adjacent relation line by line
-    //each line represent each territory's adjacent relation with other t in map
-    cout << "-------------------------Territory vector-----------------------------" << endl;
-    cout << mapLoader.myMap->allTerritory.size() << endl;
-    cout << mapLoader.myMap->allContinent.size() << endl;
-    for (int i = 0; i < mapLoader.myMap->allTerritory.size(); i++) {
-        cout << mapLoader.myMap->allTerritory[i]->getTName() << ": ";
-        for (string j : mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers) {
-            cout << j << ", ";
-        }
-        cout << endl;
-    }
-    cout << "-------------------------continent vector-----------------------------" << endl;
-    for (int i = 0; i < mapLoader.myMap->allContinent.size(); i++) {
-      cout << mapLoader.myMap->allContinent[i]->getCName() << endl;
-    }
 
-    //print adjacent relation line by line
-  //each line represent each territory's adjacent relation with other t in map
-    cout << "-------------------------Territory dictionary-----------------------------" << endl;
-    cout << mapLoader.myMap->territoryIndexDictionary.size() << endl;
-    cout << mapLoader.myMap->continentIndexDictionary.size() << endl;
-    for (auto pair : mapLoader.myMap->territoryIndexDictionary) {
-        cout << pair.first << ": " << pair.second << endl;
-        cout << endl;
-    }
-
-    cout << "-------------------------Continent dictionary-----------------------------" << endl;
-    for (auto pair : mapLoader.myMap->continentIndexDictionary) {
-        cout << pair.first << ": " << pair.second << endl;
-        cout << endl;
-    }
-
-    cout << "-------------------------setting up graph-----------------------------"  << endl;
-    //Creates graph from data
-    int nodesAmount = mapLoader.myMap->territoryIndexDictionary.size();
+	//int numberOfMaps = -1;
+	string fileName1 = "Japan.map";
+	string fileName2 = "Canada.map";
+	string fileName3 = "Invalid1.map";
+	string fileName4 = "Invalid2.map";
     
-    for (int i = 0; i < mapLoader.myMap->allTerritory.size(); i++)
-    {
-        //for each territory
+	MapLoader* load = new MapLoader();
 
-        for (int j = 1; j < mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers.size(); j++)
-        { 
-            string adjTerritoryName = mapLoader.myMap->allTerritory[i]->adjacentTerritoryMembers[j];
-            int destTerritoryID = mapLoader.myMap->getTerritoryIDFromTName(adjTerritoryName);
-           mapLoader.myMap->addEdge(mapLoader.myMap->graph, i, destTerritoryID);
-        }
-    }
-     
-    cout << "-------------------------------GRAPH REPRESENTATION-------------------------------" << endl;
-    int numOfTerritories = mapLoader.myMap->allTerritory.size();
-    mapLoader.myMap->printGraph(mapLoader.myMap->graph);
 
-    cout << "-------------------------------trying things out-------------------------------" << endl;
-    cout << "does edge between " << endl;
-    bool a = mapLoader.myMap->edgeExistance(mapLoader.myMap->graph, 75, 25);
-    bool b = mapLoader.myMap->edgeExistance(mapLoader.myMap->graph, 75, 70);
-    bool c = mapLoader.myMap->edgeExistance(mapLoader.myMap->graph, 75, 13);
+	try{
+		
+		load->loadMap(fileName1);
+		load->loadMap(fileName2);
+		load->loadMap(fileName3);
+		
+	}
+	catch (const invalid_argument& e) {
+		cout << "The map file provided was invalid. " << endl;
+	}
 
-    cout << a << b << c;
+	try{
+		load->loadMap(fileName4);
+	}
+	catch (const invalid_argument& e) {
+		cout << "The map file provided was invalid. " << endl;
+	}
 
+
+	system("pause");
+	
+	delete load;
+	
 }
-
-//mapLoader contains all territories and continents 

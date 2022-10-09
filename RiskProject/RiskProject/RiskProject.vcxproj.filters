@@ -21,9 +21,6 @@
     <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MapDriver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -45,12 +42,15 @@
     <ClCompile Include="PlayerDriver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Orders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrdersDriver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MapLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MapDriver.h">
@@ -65,9 +65,33 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayDriver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Orders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OrdersDriver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Canada1999.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Canada.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Japan.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Africa.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Invalid2.map">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Invalid1.map">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
