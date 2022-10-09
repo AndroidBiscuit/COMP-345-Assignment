@@ -4,7 +4,6 @@ using std::string;
 using std::endl;
 using std::cout;
 
-class Order;
 class Territroy;
 int Player::createdPlayers = 0;
 
@@ -13,7 +12,7 @@ Player::Player() {
 	createdPlayers++;
 	name = "default";
 	playerID = createdPlayers;
-	orders = new OrdersList();
+	ordersT = new OrdersListT();
 }
 
 Player::Player(const Player& p) {
@@ -26,15 +25,15 @@ Player::Player(const Player& p) {
 
 	}
 	for (auto p : p.handCard) {
-		Card* temp = new Card(*p);
+		CardT* temp = new CardT(*p);
 		addCard(temp);
 
 	}
-	orders = new OrdersList();
-	for (auto p : p.orders->listOfOrders) {
-		Order* temp = new Order();
+	ordersT = new OrdersListT();
+	for (auto p : p.ordersT->listOfOrders) {
+		OrderT* temp = new OrderT();
 		temp->getName() = p->getName();
-		orders->addOrder(temp);
+		ordersT->addOrder(temp);
 	}
 }
 
@@ -46,15 +45,15 @@ Player& Player::operator=(const Player& p) {
 		addTerritory(temp);
 	}
 	for (auto p : p.handCard) {
-		Card* temp = new Card(*p);
+		CardT* temp = new CardT(*p);
 		addCard(temp);
 
 	}
-	orders = new OrdersList();
-	for (auto p : p.orders->listOfOrders) {
-		Order* temp = new Order();
+	ordersT = new OrdersListT();
+	for (auto p : p.ordersT->listOfOrders) {
+		OrderT* temp = new OrderT();
 		temp->setName(p->getName());
-		orders->addOrder(temp);
+		ordersT->addOrder(temp);
 	}
 	return *this;
 }
@@ -68,12 +67,12 @@ ostream& operator<< (ostream& out, const Player& p) {
 	}
 	out << endl;
 	out << "Handed Cards: " <<endl;
-	for (Card* i : p.handCard) {
+	for (CardT* i : p.handCard) {
 		out << *i;
 	}
 	out << endl;
 	out << "Orders issued: " << endl;
-	for (Order* i : p.orders->listOfOrders) {
+	for (OrderT* i : p.ordersT->listOfOrders) {
 		out << *i;
 	}
 	return out;
@@ -82,8 +81,8 @@ ostream& operator<< (ostream& out, const Player& p) {
 //destructor
 Player::~Player() {
 	cout << "Player " << this->getName() << " will now be destroyed." << endl;
-	if(orders != NULL) {
-		delete orders;
+	if(ordersT != NULL) {
+		delete ordersT;
 	}
 	//release memory
 	territory.clear();
@@ -102,12 +101,12 @@ void Player::setTerritory(vector<Territory*> const& other) {
 	territory = other;
 }
 
-void Player::setCards(vector<Card*>& cards){
+void Player::setCards(vector<CardT*>& cards){
 	this->handCard = cards;
 }
 
-void Player::setOrdersList(OrdersList* orders){
-	this->orders = orders;
+void Player::setOrdersList(OrdersListT* orders){
+	this->ordersT = orders;
 }
 
 string Player::getName() {
@@ -122,18 +121,18 @@ vector<Territory*> Player::getTerritory() {
 	return territory;
 }
 
-vector<Card*> Player::getCards(void) {
+vector<CardT*> Player::getCards(void) {
 	return handCard;
 }
 
-OrdersList* Player::getOrders(void) {
-	return orders;
+OrdersListT* Player::getOrders(void) {
+	return ordersT;
 }
 
 void Player::addTerritory(Territory* ter) {
 	territory.push_back(ter);
 }
-void Player::addCard(Card* other) {
+void Player::addCard(CardT* other) {
 	handCard.push_back(other);
 }
 
@@ -149,7 +148,7 @@ void Player::printOrderList(void) {
 	cout << "----------------------------------" << endl;
 }
 
-void Player::discoverOrderType(string x, Order* issued) {
+void Player::discoverOrderType(string x, OrderT* issued) {
 	string options[] = { "DEPLOY", "ADVANCE", "BOMB", "BLOCKADE", "AIRLIFT", "NEGOTIATE" };
 
 	for (int i = 0; i < 6; i++)
@@ -190,85 +189,85 @@ vector<Territory*> Player::toDefend()
 
 void Player::issueOrder()
 {
-	Order* issued = new Order();
+	OrderT* issued = new OrderT();
 	string x;
 
 	printOrderList();
 	cout << "Please type out the order you would like to issue: " << endl;
 	cin >> x;
 	discoverOrderType(x, issued);
-	orders->addOrder(issued);
+	ordersT->addOrder(issued);
 	cout << "Order was issued: " << issued->getName() << endl;
 	cout << "Current Player orders: " << endl;
-	for (auto o : orders->listOfOrders) {
+	for (auto o : ordersT->listOfOrders) {
 		cout << *o;
 	}
 }
 
-Order::Order() {
+OrderT::OrderT() {
 	string orderName;
 }
 
-Order::Order(string n) {
+OrderT::OrderT(string n) {
 	this->orderName = n;
 }
 
-Order::~Order() {
+OrderT::~OrderT() {
 	cout << "Order " << orderName << " will be deleted." << endl;
 	orderName.clear();
 }
 
-string Order::getName() {
+string OrderT::getName() {
 	return orderName;
 }
 
-void Order::setName(string name) {
+void OrderT::setName(string name) {
 	orderName = name;
 }
 
-ostream& operator<<(ostream& out, const Order& o) {
+ostream& operator<<(ostream& out, const OrderT& o) {
 	out << o.orderName << endl;
 	return out;
 }
 
-Card::Card() {
+CardT::CardT() {
 	string cardName;
 }
 
-Card::Card(string n) {
+CardT::CardT(string n) {
 	this->cardName = n;
 }
 
-Card::~Card() {
+CardT::~CardT() {
 	cout << "The Card " << cardName << " was deleted." << endl;
 	cardName.clear();
 }
 
-string Card::getName() {
+string CardT::getName() {
 	return cardName;
 }
 
-ostream& operator<<(ostream& out, const Card& o) {
+ostream& operator<<(ostream& out, const CardT& o) {
 	out << o.cardName << endl;
 	return out;
 }
 
-void OrdersList::addOrder(Order* other) {
+void OrdersListT::addOrder(OrderT* other) {
 	listOfOrders.push_back(other);
 	count++;
 }
 
-OrdersList::OrdersList() {
+OrdersListT::OrdersListT() {
 	count = 0;
 }
-OrdersList::~OrdersList() {
+OrdersListT::~OrdersListT() {
 	cout << "This list of orders will be deleted." << endl;
 	for (auto o : listOfOrders) {
 		delete o;
 	}
 }
 
-ostream& operator<<(ostream& out, const OrdersList& p) {
+ostream& operator<<(ostream& out, const OrdersListT& p) {
 	out << "The player has the following list of orders:" << endl;
 	for (auto i : p.listOfOrders) {
 		out << *i;

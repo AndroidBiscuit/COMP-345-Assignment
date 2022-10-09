@@ -12,42 +12,42 @@ using std::vector;
 class Map;
 class Territory;
 
-class Order {
+class OrderT {
 private:
 	string orderName;
 
 
 public:
-	Order();
-	Order(string);
-	~Order();
+	OrderT();
+	OrderT(string);
+	~OrderT();
 	string getName();
 	void setName(string);
-	friend ostream& operator<<(ostream& out, const Order& p);
+	friend ostream& operator<<(ostream& out, const OrderT& p);
 
 };
 
-class OrdersList {
+class OrdersListT {
 public:
-	vector<Order*> listOfOrders;
+	vector<OrderT*> listOfOrders;
 	int count;
-	void addOrder(Order* other);
-	friend ostream& operator << (ostream& out, const OrdersList& p);
-	OrdersList();
-	~OrdersList();
+	void addOrder(OrderT* other);
+	friend ostream& operator << (ostream& out, const OrdersListT& p);
+	OrdersListT();
+	~OrdersListT();
 };
 
-class Card {
+class CardT {
 private:
 	string cardName;
 
 
 public:
-	Card();
-	Card(string);
-	~Card();
+	CardT();
+	CardT(string);
+	~CardT();
 	string getName();
-	friend ostream& operator<<(ostream& out, const Card& p);
+	friend ostream& operator<<(ostream& out, const CardT& p);
 
 };
 
@@ -57,8 +57,8 @@ private:
 	int playerID;
 	string name;
 	vector<Territory*> territory;
-	vector<Card*> handCard;
-	OrdersList* orders;
+	vector<CardT*> handCard;
+	OrdersListT* ordersT;
 
 	friend class Card;
 	friend class GameEngine;
@@ -80,24 +80,24 @@ public:
 	void setPlayerID(int playerID);
 	void setName(string name);
 	void setTerritory(vector<Territory*> const& other);
-	void setCards(vector<Card*>& cards);
-	void setOrdersList(OrdersList* orders);
+	void setCards(vector<CardT*>& cards);
+	void setOrdersList(OrdersListT* orders);
 
 	//Accessor methods
 	string getName();
 	int getPlayerID();
 	vector<Territory*> getTerritory();
-	vector<Card*> getCards();
-	OrdersList* getOrders();
+	vector<CardT*> getCards();
+	OrdersListT* getOrders();
 
 	//method
 	void printOrderList(void);
-	void discoverOrderType(string x, Order* issued);
+	void discoverOrderType(string x, OrderT* issued);
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack(vector<Territory*>);
 	void issueOrder();
 	void addTerritory(Territory*);
-	void addCard(Card*);
+	void addCard(CardT*);
 
 };
 

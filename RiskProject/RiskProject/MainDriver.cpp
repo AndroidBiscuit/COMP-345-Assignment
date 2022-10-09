@@ -19,13 +19,15 @@ int main()
 {
     std::cout << "Start to load the map.\n";
 
-    //testLoadMaps();
-    testOrdersLists();
+    testLoadMaps();
 
    std::cout << "Start to set the player.\n";
 
     testPlayers();
 
+    std::cout << "Start to handle the orderslists.\n";
+
+    testOrdersLists();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

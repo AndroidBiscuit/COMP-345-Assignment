@@ -26,8 +26,8 @@ void testPlayers() {
 	territories.push_back(t4);
 	
 
-	Card* c1 = new Card("bomb");
-	Card* c2 = new Card("airlift");
+	CardT* c1 = new CardT("bomb");
+	CardT* c2 = new CardT("airlift");
 	
 
 
