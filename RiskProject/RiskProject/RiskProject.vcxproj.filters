@@ -74,18 +74,15 @@
     <ClInclude Include="OrdersDriver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MapLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Canada1999.map">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="Canada.map">
       <Filter>Source Files</Filter>
     </None>
     <None Include="Japan.map">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="Africa.map">
       <Filter>Source Files</Filter>
     </None>
     <None Include="Invalid2.map">
