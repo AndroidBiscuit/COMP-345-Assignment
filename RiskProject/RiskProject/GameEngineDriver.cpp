@@ -1,15 +1,28 @@
-#include "MapDriver.h"
 #include <iostream>
-#include<string>
-using std::cerr;
-using std::cout;
-using std::endl;
-#include <fstream>
-using std::ifstream;
-#include <cstdlib> // for exit function
+#include "GameEngine.h"
+#include "GameEngineDriver.h"
+using namespace std;
 
-void  testGameStates() {
+/*initialize static pointers, scope the variable*/
+State* State::loadmap = new MapState();
+State* State::validatemap = new ValidteMapState();
+State* State::start = new StartState();
+State* State::addplayer = new AddPlayersState();
+State* State::assigncountries = new AssignReinforcementState();
+State* State::issueorder = new IssueOrdersState();
+State* State::execorder = new ExecuteOrdersState();
+State* State::endissueorders = new ExecuteOrdersState();
+State* State::win = new WinState();
+State* State::current = State::start;
 
-	cout << "Please choose your map: " << endl;
-
+void testGameStates() {
+	while (true) {
+		State::current->state();
+		State::current->transition();
+		State::current->command();
+		system("CLS");
+	}
 }
+
+
+

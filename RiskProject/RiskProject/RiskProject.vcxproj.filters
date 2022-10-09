@@ -77,6 +77,9 @@
     <ClInclude Include="MapLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineDriver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Canada.map">
