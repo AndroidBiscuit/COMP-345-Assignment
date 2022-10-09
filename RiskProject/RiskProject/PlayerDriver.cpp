@@ -33,19 +33,11 @@ void testPlayers() {
 
 	cout << "Welcome to Warzone!" << endl;
 	cout << "This is the Player creation menu." << endl;
-	/*while (n < 1) {
-		cout << "Please enter the number of desired players. " << endl;
-		cout << "The number should be greater than or equal to one." << endl;
-		cin >> n;
-	}*/
-
 
 	//Creating Player Objects:
 	for (int i = 0; i < n; i++)
 	{
 		Player* temp = new Player();
-		/*cout << "Player " << (i + 1) << " - Enter Player's name: " << endl;
-		cin >> name;*/
 		(*temp).setName(names[i]);
 		cout << "Welcome to Warzone, " << names[i] << "!" << endl;
 		players.push_back(temp);
