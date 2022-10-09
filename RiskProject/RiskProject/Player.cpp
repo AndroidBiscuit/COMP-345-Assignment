@@ -81,7 +81,7 @@ ostream& operator<< (ostream& out, const Player& p) {
 //destructor
 Player::~Player() {
 	cout << "Player " << this->getName() << " will now be destroyed." << endl;
-	if(ordersT != NULL) {
+	if(ordersT != nullptr) {
 		delete ordersT;
 	}
 	//release memory

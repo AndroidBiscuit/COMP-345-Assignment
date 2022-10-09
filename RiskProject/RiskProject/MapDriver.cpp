@@ -29,7 +29,9 @@ void testLoadMaps() {
 	try{
 		
 		load->loadMap(fileName1);
+		system("pause");
 		load->loadMap(fileName2);
+		system("pause");
 		load->loadMap(fileName3);
 		
 	}
@@ -46,7 +48,9 @@ void testLoadMaps() {
 
 
 	system("pause");
-	
+	cout << "----------------------------------------------" << endl;
+	cout << "Releasing the memory:" << endl;
 	delete load;
+	system("pause");
 	
 }

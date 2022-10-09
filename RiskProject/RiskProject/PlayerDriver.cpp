@@ -84,12 +84,14 @@ void testPlayers() {
 	players[0]->toAttack(territories);
 	cout << endl;
 	cout << "----------------------------------------------" << endl;
+	system("pause");
 	//Demonstrating toDefend():
 	cout << "Player " << players[0]->getPlayerID() << " - " << players[0]->getName() << endl;
 	cout << "Territories to Defend:" << endl;
     players[0]->toDefend();
 	cout << endl;
 	cout << "----------------------------------------------" << endl;
+	system("pause");
 	//Comparing the copied Players:
 	cout << "Comparing the copied Players:" << endl;
 	cout << *players[0] << endl;
@@ -105,8 +107,8 @@ void testPlayers() {
 		cout << *players[1] << endl;
 		cout << temp2 << endl;
 	}
-	cout << "----------------------------------------------" << endl;
 	system("pause");
+	cout << "----------------------------------------------" << endl;
 	cout << "Releasing the memory:" << endl;
 	if (copiedPlayer) {
 		delete copiedPlayer;
@@ -122,5 +124,5 @@ void testPlayers() {
 			delete p;
 		}
 	}
-
+	system("pause");
 }
