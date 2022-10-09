@@ -1,217 +1,230 @@
+#include <iostream>
 #include "GameEngine.h"
 
-State::State() {}
+using namespace std;
 
-State::~State() {}
 
-void State::state() {}
-void State::transition() {}
-void State::command() {}
-/*------------------------------------------------------------------StartState---------*/
-StartState::StartState() {}
-
-StartState::~StartState() {}
-void StartState::state() {
-	system("CLS");
-	cout << "Welcome to Warzone Game!" << endl;
-	cout << "This is Start State." << endl;
-}
-void StartState::transition() {
-	current = loadmap;												/*current pointer to loadmap*/
-}
-void StartState::command() {
-	cout << "Process to load map state..." << endl;
+GameEngine::GameEngine()		
+{
+	state = "startState";									/*set first state as startState*/
 }
 
-/*-------------------------------------------------------------MapState-----*/
-
-MapState::MapState() {}
-
-MapState::~MapState() {}
-
-void MapState::state() {
-	cout << "This is loadmap state" << endl;
-	cout << "Please input (loadmap) to load  map or (validatemap) to validte map" << endl;
+GameEngine::GameEngine(const GameEngine& other)
+{
+	state = other.state;
 }
 
-void MapState::transition() {
+void GameEngine::setState(string currentState)
+{
+	state = currentState;
+}
+
+string GameEngine::getState()
+{
+	return state;
+}
+
+GameEngine& GameEngine::operator =(const GameEngine& other) {
+	state = other.state;
+	return *this;
+}
+
+istream& operator>>(istream& in, GameEngine& ge)
+{
+	in >> ge.state;
+	return in;
+}
+
+ostream& operator<<(ostream& out, const GameEngine& ge)
+{
+	out << ge.state << endl;
+	return out;
+}
+
+
+int GameEngine::gameStates(int i)
+{
 	string input;
-	cin >> input;
-	if (input == "loadmap") {
-		cout << "map was loaded." << endl;
-		current = loadmap;
-	}
-	else if (input == "validatemap") {
-		current = validatemap;
-	}
-	else {
-		cout << "Invalid command, please enter (loadmap) or (validatemap)." << endl;
+	switch (i) {
+	case 0:
+		cout << "Welcome to Warzone!" << endl;										/*start state*/
+		cout << "This is " << getState() << " State." << endl << endl;
+		system("pause");
+		return ++i;
+
+	case 1:																			/*loadmap state*/
+		system("CLS");
+		cout << "Input (loadmap) to load map(s)." << endl;
+		cin >> input;
+		if (input == "loadmap") {
+			setState("load map");
+			return ++i;
+		}
+		else {
+			cout << "Invalid input, please input (loadmap)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
+
+	case 2:																			/*validate map state*/
+		cout << "Input (loadmap) to load map or input (validatemap) to validate map(s)." << endl;
+		cout << "This is " << getState() << " State." << endl << endl;
+		cin >> input;
+		if (input == "loadmap") {
+			setState("load map");
+			cout << "Map Loaded" << endl;
+			system("pause");
+			return i;
+		}
+		else if (input == "validatemap") {
+			setState("validate map");
+			cout << "This is " << getState() << " State." << endl << endl;
+			cout << "Map is valid" << endl;
+			system("pause");
+			return ++i;
+		}
+		else {
+			cout << "Invalid input, please input (loadmap) or (validatemap)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
+
+	case 3:																			/*add player state*/
+		cout << "Input (addplayer) to add player(s)" << endl;
+		cin >> input;
+		if (input == "addplayer") {
+			setState("add player");
+			return ++i;
+		}
+		else {
+			cout << "Invalid input, please input (addplayer)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
+
+	case 4:																			/*add player state to add reinforcement state*/
+		cout << "Input (addplayer) to add player(s) or (assigncountries) to add reinforcement" << endl;
+		cout << "This is " << getState() << " State." << endl << endl;
+		cin >> input;
+		if (input == "addplayer") {
+			setState("add player");
+			cout << "Player added" << endl;
+			system("pause");
+			return i;
+		}
+		else if (input == "assigncountries") {
+			setState("assign reinforcement");
+			cout << "This is " << getState() << " State." << endl << endl;
+			system("pause");
+			return ++i;
+		}
+		else {
+			cout << "Invalid input, please input (addplayer)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
+
+	case 5:																		/*add reinforcement state*/
+		cout << "Input (assigncountries) to add reinforcement" << endl;
+		cout << "This is " << getState() << " State." << endl << endl;
+		cin >> input;
+		 if (input == "assigncountries") {
+			setState("assign reinforcement");
+			cout << "reinforcement added" << endl;
+			system("pause");
+			return ++i;
+		}
+		else {
+			cout << "Invalid input, please input (addplayer)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
+
+	case 6:																		/*issueorder state*/
+		cout << "Input (issueorder) to issue order" << endl;
+		cin >> input;
+		if (input == "issueorder") {
+			setState("Issue Orders");
+			return ++i;
+		}
+		else {
+			cout << "Invalid input, please input (issueorder)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
+
+	case 7:																	/*issueorder state to execute order state*/
+		cout << "Input (issueorder) to issue order or (endissueorders) to execute order" << endl;
+		cout << "This is " << getState() << " State." << endl << endl;
+		cin >> input;
+		if (input == "issueorder") {
+			cout << "order issued" << endl;
+			system("pause");
+			return i;
+		}
+		else if (input == "endissueorders") {
+			setState("execute orders");
+			return ++i;
+		}
+		else {
+			cout << "Invalid input, please input (issueorder)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
+
+	case 8:																								/*execute order state to add reinforcement state or win state*/
+		cout << "Input (execorder) to execute order or (endexecorders) to assign reinforcement."<< endl;
+		cout << "Or input (win)." << endl;
+		cout << "This is " << getState() << " State." << endl << endl;
+		cin >> input;
+		if (input == "execorder") {
+			cout << "order executed" << endl;
+			system("pause");
+			return i;
+		}
+		else if (input == "endexecorders") {
+			setState("assign reinforcement");
+			return 5;
+		}
+		else if (input == "win") {
+			setState("Win");
+			return ++i;
+		}
+		else {
+			cout << "Invalid input, please input (execorder) or (endexecorders) or (win)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
+
+	case 9:																				/*win state to end or player again*/
+		cout << "Input (play) to start another game or (end) to exit." << endl;
+		cin >> input;
+		if (input == "play") {
+			setState("Start");
+			cout << "This is " << getState() << " State." << endl << endl;
+			system("pause");
+			return (i = 0);
+		}
+		else if (input == "end") {
+			setState("End");
+			cout << "This is " << getState() << " State. Thank you!" << endl << endl;
+			system("pause");
+			return -1;
+		}
+		else {
+			cout << "Invalid input, please input (play) or (end)." << endl << endl;
+			system("pause");
+			return i;
+		}
+		break;
 	}
 }
 
-void MapState::command() {
-	system("pause");
-}
-
-/*-------------------------------------------------------------------ValidteMapState----------*/
-ValidteMapState::ValidteMapState() {}
-
-ValidteMapState::~ValidteMapState() {}
-
-void ValidteMapState::state() {
-	cout << "This is validatemap state" << endl;
-
-}
-void ValidteMapState::transition() {
-	cout << "Validated Map(s)." << endl;
-	cout << "Input (addplayer) to state add player State" << endl;
-	string input;
-	cin >> input;
-
-	if (input == "addplayer") {
-		current = addplayer;
-	}
-	else {
-		cout << "Invalid command, please input (addplayer)." << endl;
-	}
-
-}
-void ValidteMapState::command() {
-	system("pause");
-}
-/*------------------------------------------------------------AddPlayersState---------*/
-
-AddPlayersState::AddPlayersState() {}
-
-AddPlayersState::~AddPlayersState() {}
-void AddPlayersState::state() {
-	cout << "This is AddPlayers State" << endl;
-	cout << "Please input (addplayer) to add player or (assigncountries) to assign reinforcement:" << endl;
-}
-void AddPlayersState::transition() {
-	string input;
-	cin >> input;
-	if (input == "addplayer") {
-		cout << "Player Added" << endl;
-		current = addplayer;
-	}
-	else if (input == "assigncountries") {
-		current = assigncountries;
-	}
-
-	else {
-		cout << "Invalid command, please input (addplayer) or (assigncountries)." << endl;
-
-	}
-}
-void AddPlayersState::command() {
-	system("pause");
-}
-
-/*---------------------------------------------------------------------AssignReinforcementState-------*/
-AssignReinforcementState::AssignReinforcementState() {}
-
-AssignReinforcementState::~AssignReinforcementState() {}
-void AssignReinforcementState::state() {
-	cout << "This is AssignReinforcement State" << endl;
-	cout << "Reinforcement assigned" << endl;
-	cout << "Please input (issueorder) to assign reinforcement:" << endl;
-}
-void AssignReinforcementState::transition() {
-	string input;
-	cin >> input;
-	if (input == "issueorder") {
-		current = issueorder;
-	}
-	else {
-		cout << "Invalid command, please input (issueorder) to issue order." << endl;
-	}
-
-}
-void AssignReinforcementState::command() {
-	system("pause");
-}
-/*-------------------------------------------------------------------------IssueOrdersState----------*/
-IssueOrdersState::IssueOrdersState() {}
-
-IssueOrdersState::~IssueOrdersState() {}
-void IssueOrdersState::state() {
-	cout << "This is Issue Orders State" << endl;
-	cout << "Please input (issueorder) to issue order or (endissueorders) to end issue order:" << endl;
-}
-void IssueOrdersState::transition() {
-	string input;
-	cin >> input;
-	if (input == "issueorder") {
-		cout << "Order issued" << endl;
-		current = issueorder;
-	}
-	else if (input == "endissueorders") {
-		current = endissueorders;
-	}
-	else {
-		cout << "invalid command, please input (issueorder) or (endissueorders)." << endl;
-	}
-
-}
-void IssueOrdersState::command() {
-	system("pause");
-}
-
-/*-------------------------------------------------------------------------------ExecuteOrdersState-------------*/
-
-ExecuteOrdersState::ExecuteOrdersState() {}
-
-ExecuteOrdersState::~ExecuteOrdersState() {}
-void ExecuteOrdersState::state() {
-	cout << "This is Execute Orders State" << endl;
-	cout << "Please state (execorder) to execute order or (endexecorders) to end execute order:" << endl;
-	cout << "If there's winner please enter (win)." << endl;
-}
-void ExecuteOrdersState::transition() {
-	string input;
-	cin >> input;
-	if (input == "execorder") {
-		cout << "Order Executed" << endl;
-		current = execorder;
-	}
-	else if (input == "endexecorders") {
-		current = assigncountries;
-	}
-	else if (input == "win") {
-		current = win;
-	}
-	else {
-		cout << "Invalid command, please input (execorder) or (endexecorders) or (win)." << endl;
-	}
-
-}
-void ExecuteOrdersState::command() {
-	system("pause");
-}
-/*--------------------------------------------------------------------WinState---*/
-WinState::WinState() {}
-
-WinState::~WinState() {}
-void WinState::state() {
-	cout << "This is Win State" << endl;
-	cout << "Please input (end) to end game or (play) to start another game:" << endl;
-}
-void WinState::transition() {
-	string input;
-	cin >> input;
-	if (input == "end") {
-		cout << "Thnanks for playing, see you next time!" << endl;
-		exit(0);
-	}
-	else if (input == "play") {
-		current = start;
-	}
-	else {
-		cout << "Invalid command, please input (end) or (play)." << endl;
-	}
-
-}
-void WinState::command() {
-	system("pause");
-}
