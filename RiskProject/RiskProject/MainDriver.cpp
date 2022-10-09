@@ -3,24 +3,48 @@
 #include "MapDriver.h"
 #include "PlayDriver.h"
 #include "OrdersDriver.h"
+#include "GameEngineDriver.h"
 #include <iostream>
 using std::cout;
-
+using namespace std;
 
 
 int main()
 {
-    cout << "Start to load the map.\n";
+    bool round = true;
+    while (round) {
+        system("CLS");
+        cout << "\n-------------------Test Menu-----------------------------" << endl;
+        cout << "1. Start to load the map.\n";
+        cout << "2. Start to set the player.\n";
+        cout << "3. Start to handle the orderslists.\n";
+        cout << "5. Start to test Game Engine.\n";
+        cout << "\nPlease input your choice: ";
+        int opt;
+        cin >> opt;
 
-    testLoadMaps();
+        switch (opt) {
+        case 1:
+            testLoadMaps();
+            continue;
+        case 2:
+            testPlayers();
+            continue;
+        case 3:
+            testOrdersLists();
+            system("pause");
+            continue;
+        case 5:
+            testGameStates();
+            round = false;
 
-    cout << "Start to set the player.\n";
+        default:
+            round = false;
+        }
+        
+    }
+    
 
-    testPlayers();
-
-    cout << "Start to handle the orderslists.\n";
-
-    testOrdersLists();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

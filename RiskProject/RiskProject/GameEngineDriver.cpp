@@ -1,15 +1,16 @@
-#include "MapDriver.h"
-#include <iostream>
-#include<string>
-using std::cerr;
-using std::cout;
-using std::endl;
-#include <fstream>
-using std::ifstream;
-#include <cstdlib> // for exit function
+#include "GameEngine.h"
 
-void  testGameStates() {
 
-	cout << "Please choose your map: " << endl;
+void testGameStates() {
+	int current = 0;
+	int next = 0;
+	GameEngine* g = new GameEngine ;
+	do {										/*game state transit to next*/
+		system("CLS");
+		next = g->gameStates(current);
+		current = next;
+	} while (current != -1);
 
+	//release memory
+	delete g;
 }

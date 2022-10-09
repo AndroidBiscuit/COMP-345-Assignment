@@ -1,29 +1,24 @@
 #pragma once
 #include <string>
 #include <iostream>
+
 using namespace std;
 
 class GameEngine {
-private:
 	string state;
 
 public:
-	GameEngine();
-	GameEngine(const GameEngine*);				//copy constructor
+	GameEngine(void);								/*Constructors*/
+	GameEngine(const GameEngine& other);			/*Copy Constructors*/
+													
+	void setState(string newState);					/*Getter and setter*/
+	string getState();
 
-	GameEngine& operator =(const GameEngine&);	//assign operator
+	GameEngine& operator =(const GameEngine& other);	/*assignment operator*/
 
-	void setState(string s) {					//getter and setter
-		state = s;
-	}
-	string getState() {
-		return state;
-	}
+	friend ostream& operator << (ostream& out, const GameEngine& g);		/*Stream Insertion*/
+	friend istream& operator >> (istream& in, GameEngine& g);
+	~GameEngine();
 
-	friend ostream& operator << (ostream& out, const GameEngine& ge);	//stream insertion operator
-	friend istream& operator >> (istream& in, GameEngine& ge);
-
-	int testGameStates(int opt);				//testGameStates function
+	int gameStates(int i);								/*main game loop*/
 };
-
-
