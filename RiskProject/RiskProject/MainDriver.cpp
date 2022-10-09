@@ -4,28 +4,21 @@
 #include "PlayDriver.h"
 #include "OrdersDriver.h"
 #include <iostream>
-using std::cerr;
 using std::cout;
-using namespace std; 
-using std::endl;
-using std::ifstream;
-#include <cstdlib> // for exit function
-#include <fstream> // reading a text file
-#include <string>
-#include <sstream>
+
 
 
 int main()
 {
-    std::cout << "Start to load the map.\n";
+    cout << "Start to load the map.\n";
 
     testLoadMaps();
 
-   std::cout << "Start to set the player.\n";
+    cout << "Start to set the player.\n";
 
     testPlayers();
 
-    std::cout << "Start to handle the orderslists.\n";
+    cout << "Start to handle the orderslists.\n";
 
     testOrdersLists();
 }
