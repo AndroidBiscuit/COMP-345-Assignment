@@ -41,6 +41,9 @@ ostream& operator<<(ostream& out, const GameEngine& ge)
 	return out;
 }
 
+GameEngine::~GameEngine() {
+	cout << "GameEngine will now be destroyed!" << endl;
+}
 
 int GameEngine::gameStates(int i)
 {

@@ -18,6 +18,7 @@ public:
 
 	friend ostream& operator << (ostream& out, const GameEngine& g);		/*Stream Insertion*/
 	friend istream& operator >> (istream& in, GameEngine& g);
+	~GameEngine();
 
 	int gameStates(int i);								/*main game loop*/
 };

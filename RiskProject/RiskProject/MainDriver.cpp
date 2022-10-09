@@ -11,28 +11,39 @@ using namespace std;
 
 int main()
 {
-    cout << "1. Start to load the map.\n";
-    cout << "2. Start to set the player.\n";
-    cout << "3. Start to handle the orderslists.\n";
-    cout << "4. Start to test Game Engine.\n";
-    cout << "\nPlease input your choice: ";
-    int opt;
-    cin >> opt;
+    bool round = true;
+    while (round) {
+        system("CLS");
+        cout << "\n-------------------Test Menu-----------------------------" << endl;
+        cout << "1. Start to load the map.\n";
+        cout << "2. Start to set the player.\n";
+        cout << "3. Start to handle the orderslists.\n";
+        cout << "5. Start to test Game Engine.\n";
+        cout << "\nPlease input your choice: ";
+        int opt;
+        cin >> opt;
 
-    switch (opt) {
-    case 1:
-        testLoadMaps();
-        break;
-    case 2:
-        testPlayers();
-        break;
-    case 3:
-        testOrdersLists();
-        break;
-    case 4:
-        testGameStates();
-        break;
+        switch (opt) {
+        case 1:
+            testLoadMaps();
+            continue;
+        case 2:
+            testPlayers();
+            continue;
+        case 3:
+            testOrdersLists();
+            system("pause");
+            continue;
+        case 5:
+            testGameStates();
+            round = false;
+
+        default:
+            round = false;
+        }
+        
     }
+    
 
 }
 
