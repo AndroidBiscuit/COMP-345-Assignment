@@ -68,8 +68,6 @@ void testCards() {
     // Test play method
     vector<Order*> orderList;
 
-    cout << newHand->getCards().size() << endl;
-
     for (int i = 0; i < newHand->getCards().size(); i++) {
         newHand->getCards()[i]->play(orderList, *newDeck);
     }
