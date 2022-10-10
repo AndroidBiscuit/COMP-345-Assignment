@@ -208,8 +208,6 @@ Hand::Hand() {
         // Generate random number
         int random = rand() % 5;
 
-        cout << "***" << random << endl;
-
         // Compare random number output to card type
         if (random == 0) {
             this->cards.push_back(new Card(Card::BOMB));
