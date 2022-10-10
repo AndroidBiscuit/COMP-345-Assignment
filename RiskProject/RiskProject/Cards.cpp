@@ -38,7 +38,7 @@ Card::Card(const Card& card) {
 
 // Destructor
 Card::~Card() {
-    delete this;
+    //delete this;
 }
 
 // Assignment operator
@@ -138,7 +138,7 @@ Deck::Deck(const Deck& deck) {
 
 // Destructor
 Deck::~Deck() {
-    delete this;
+    //delete this;
 }
 
 // Assignment operator
@@ -240,7 +240,7 @@ Hand::Hand(const Hand& hand) {
 
 // Destructor
 Hand::~Hand() {
-    delete this;
+    //delete this;
 }
 
 // Assignment operator
