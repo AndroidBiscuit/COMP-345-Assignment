@@ -4,6 +4,7 @@
 #include "PlayDriver.h"
 #include "OrdersDriver.h"
 #include "GameEngineDriver.h"
+#include "CardsDriver.h"
 #include <iostream>
 using std::cout;
 using namespace std;
@@ -18,6 +19,7 @@ int main()
         cout << "1. Start to load the map.\n";
         cout << "2. Start to set the player.\n";
         cout << "3. Start to handle the orderslists.\n";
+        cout << "4. Start to set the cards.\n";
         cout << "5. Start to test Game Engine.\n";
         cout << "\nPlease input your choice: ";
         int opt;
@@ -33,6 +35,9 @@ int main()
         case 3:
             testOrdersLists();
             system("pause");
+            continue;
+        case 4:
+            testCards();
             continue;
         case 5:
             testGameStates();
