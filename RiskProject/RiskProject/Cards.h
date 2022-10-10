@@ -1,11 +1,148 @@
-#pragma once
-#include <string>
+/*******************************************/
+// COMP 345 - Part 4 - Cards deck / hand
+// 
+// Team DN07, Fall 2022
+//
+// Assignment 1: Faizan Ahmad 
+// Due date: October 9th 2022
+/*******************************************/
+
+#ifndef CARD_H
+#define CARD_H
+
+#include <iostream>
 #include <vector>
-#include <set>
-#include <map>
-#include <list>
+#include <string>
+
+// #include <Orders.h>
+
 using namespace std;
 
-class Card {
+class Deck;
+class Card;
+class Hand;
 
+// Use it as is for now. Intergation with other parts will be done in Assignment 2
+class Order;
+
+
+
+
+//-------------------------------------------------------------------------------------------------
+// Card object
+//-------------------------------------------------------------------------------------------------
+
+class Card {
+public:
+    // Each card has a type
+    enum CardType {
+        BOMB, REINFORCEMENT, BLOCKADE, AIRLIFT, DIPLOMACY
+    };
+
+    // Constructor
+    Card(CardType type);
+
+    // Copy constructor
+    Card(const Card& card);
+
+    // Deconstructor
+    ~Card();
+
+    // Assignment operator
+    Card& operator = (const Card& card);
+
+    // Stream operator
+    friend ostream& operator << (std::ostream& out, const Card& card);
+
+    // Getter for card type
+    CardType getCardType();
+
+    // Play method to use the card in hand and return it to the deck
+    void play(vector<Order*>& orderList, Deck& deck);
+
+private:
+    CardType cardType;
 };
+
+
+
+
+//-------------------------------------------------------------------------------------------------
+// Deck object
+// Contains a finite collection of Warzone cards
+//-------------------------------------------------------------------------------------------------
+
+class Deck {
+public:
+    // Constructor
+    Deck();
+
+    // Copy constructor
+    Deck(const Deck& deck);
+
+    // Destructor
+    ~Deck();
+
+    // Assignment operator
+    Deck& operator = (const Deck& deck);
+
+    // 
+    Deck(vector<Card*>& cards);
+
+    // Stream operator
+    friend ostream& operator << (std::ostream& out, const Deck& deck);
+
+    // Draw a card at random from the remaining cards in the deck and place it in the hand
+    Card draw();
+
+    // Add card to deck
+    void addCard(Card& card);
+
+    // Accessors
+    int getDeckSize();
+
+private:
+    vector<Card*> cards;
+};
+
+
+
+
+//-------------------------------------------------------------------------------------------------
+// Hand object
+//-------------------------------------------------------------------------------------------------
+
+class Hand {
+public:
+    // Constructor
+    Hand();
+
+    // Copy constructor
+    Hand(const Hand& hand);
+
+    // Destructor
+    ~Hand();
+
+    // Assignment operator
+    Hand& operator = (const Hand& hand);
+
+    // Stream operator
+    friend ostream& operator << (std::ostream& out, const Hand& hand);
+
+    // Add cards in hand
+    void addCard(Card& card);
+
+    // Accessor: get cards from hand
+    vector<Card*> getCards();
+
+    // Accessor: get number of cards in hand
+    int getNumberCards();
+
+private:
+    vector<Card*> cards;
+    int cardsInHard;
+};
+
+#endif
+
+// EOF
