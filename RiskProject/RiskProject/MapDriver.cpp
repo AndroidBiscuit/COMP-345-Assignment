@@ -17,7 +17,7 @@ void testLoadMaps() {
 	cout << "This driver demonstrates the functionality of the Maps" << endl;
 
 
-	//int numberOfMaps = -1;
+
 	string fileName1 = "Japan.map";
 	string fileName2 = "Canada.map";
 	string fileName3 = "Invalid1.map";
