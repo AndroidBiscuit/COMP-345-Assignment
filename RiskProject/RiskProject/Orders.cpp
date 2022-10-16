@@ -9,7 +9,7 @@ using namespace std;
 //-----------------------ORDERS FUNCTION IMPLEMENTATION----------------------//
 
 Order::Order() {
-	cout << "Empty order constructor called. \n";
+	//cout << "Empty order constructor called. \n";
 	orderName = "";
 	orderEffect = "";
 	orderExecutionFlag = false;
@@ -17,7 +17,7 @@ Order::Order() {
 }
 
 Order::Order(string x) {
-	cout << "Order constructor with string called. \n";
+	//cout << "Order constructor with string called. \n";
 	orderName = x;
 	orderEffect = "";
 	orderExecutionFlag = false;
@@ -26,7 +26,7 @@ Order::Order(string x) {
 
 //copy constructor
 Order::Order(const Order& originalOrder) {
-	cout << "Order Copy constructor called. \n";
+	//cout << "Order Copy constructor called. \n";
 	this->orderName = originalOrder.orderName;
 	this->orderExecutionFlag = originalOrder.orderExecutionFlag;
 	this->orderEffect = originalOrder.orderEffect;
@@ -35,7 +35,7 @@ Order::Order(const Order& originalOrder) {
 
 //assignment operator
 Order& Order::operator= (const Order& order) {
-	cout << "Order Assignment operator called. \n";
+	//cout << "Order Assignment operator called. \n";
 	orderName = order.orderName;
 	orderEffect = order.orderEffect;
 	orderExecutionFlag = order.orderExecutionFlag;
@@ -59,44 +59,45 @@ bool Order::getOrderExecutionFlag() { return orderExecutionFlag; }
 void Order::setOrderExecutionFlag(bool flag) {orderExecutionFlag = flag;}
 
 ostream& operator <<(ostream& input, Order order) {
-	input << "Order is: " << order.getOrderName() << endl;
+	input << order.getOrderName() << endl;
+	/*
 	if (order.getOrderExecutionFlag())
 	{
 		input << "This order has been executed. \n";
 		input << order.getOrderEffect() << endl;
 	}
 	else
-		input << "This order has not been executed. \n";
-	
+		input << "This order has not been executed.\n";
+	*/
 	return input;
 
 }
 
 //destructor
 Order::~Order() {
-	cout <<"Order will now be destroyed. \n";
+	//cout <<"Order will now be destroyed. \n";
 }
 
 
 //-----------------------DEPLOY FUNCTION IMPLEMENTATION----------------------//
 
-Deploy::Deploy() { cout << "Empty deploy constructor called. \n"; }
+Deploy::Deploy() {/* cout << "Empty deploy constructor called. \n";*/ }
 
 Deploy::Deploy(string name) {
-	cout << "Deploy constructor with string called. \n";
+	//cout << "Deploy constructor with string called. \n";
 	orderName = name;
 	orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
 }
 
 Deploy::Deploy(const Deploy& d): Order(d) {
-	cout << "deploy copy constructor called. \n";
+	//cout << "deploy copy constructor called. \n";
 	this->orderName = d.orderName;
 	this->orderEffect = d.orderEffect;
 	this->orderExecutionFlag = d.orderExecutionFlag;
 }
 
 Deploy& Deploy:: operator= (const Deploy& d) {
-	cout << "deploy assignment operator called. \n";
+	//cout << "deploy assignment operator called. \n";
 	orderName = d.orderName;
 	orderEffect = d.orderEffect;
 	orderExecutionFlag = d.orderExecutionFlag;
@@ -119,7 +120,7 @@ void Deploy::execute() {
 }
 
 Deploy::~Deploy() {
-	cout << this->getOrderName() << " in derived class will now be destroyed. \n";
+	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
 
@@ -127,13 +128,13 @@ Deploy::~Deploy() {
 Advance::Advance() {}
 
 Advance::Advance(string name) {
-	cout << "Advance constructor with string called. \n";
+	//cout << "Advance constructor with string called. \n";
 	orderName = name;
 	orderEffect = "Move a certain number of army units from one territory (source territory) to another territory (target territory)";
 }
 
 Advance::Advance(const Advance& a): Order(a) {
-	cout << "Advance copy constructor called. \n";
+	//cout << "Advance copy constructor called. \n";
 	this->orderName = a.orderName;
 	this->orderEffect = a.orderEffect;
 	this->orderExecutionFlag = a.orderExecutionFlag;
@@ -141,7 +142,7 @@ Advance::Advance(const Advance& a): Order(a) {
 }
 
 Advance& Advance:: operator= (const Advance& a) {
-	cout << "Advance assignment operator called. \n";
+	//cout << "Advance assignment operator called. \n";
 	orderName = a.orderName;
 	orderEffect = a.orderEffect;
 	orderExecutionFlag = a.orderExecutionFlag;
@@ -151,7 +152,7 @@ Advance& Advance:: operator= (const Advance& a) {
 }
 
 Advance::~Advance() {
-	cout << this->getOrderName() << " in derived class will now be destroyed. \n";
+	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
 bool Advance::validate(string order) {
@@ -173,20 +174,20 @@ void Advance::execute() {
 Bomb::Bomb() {}
 
 Bomb::Bomb(string name) {
-	cout << "Bomb constructor with string called. \n";
+	//cout << "Bomb constructor with string called. \n";
 	orderName = name;
 	orderEffect = "Destroy half of the army units located on an opponent’s territory that is adjacent to one of the current player’s territories.";
 }
 
 Bomb::Bomb(const Bomb& b):Order(b) {
-	cout << "Bomb copy constructor called. \n";
+	//cout << "Bomb copy constructor called. \n";
 	this->orderName = b.orderName;
 	this->orderEffect = b.orderEffect;
 	this->orderExecutionFlag = b.orderExecutionFlag;
 
 }
 Bomb& Bomb::operator= (const Bomb& b) {
-	cout << "Bomb assignment operator called. \n";
+	//cout << "Bomb assignment operator called. \n";
 	orderName = b.orderName;
 	orderEffect = b.orderEffect;
 	orderExecutionFlag = b.orderExecutionFlag;
@@ -194,7 +195,7 @@ Bomb& Bomb::operator= (const Bomb& b) {
 }
 
 Bomb::~Bomb() {
-	cout << this->getOrderName() << " in derived class will now be destroyed. \n";
+	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
 bool Bomb::validate(string order) {
@@ -216,20 +217,20 @@ void Bomb::execute() {
 Blockade::Blockade() {}
 
 Blockade::Blockade(string name) {
-	cout << "Blockade constructor with string called. \n";
+	//cout << "Blockade constructor with string called. \n";
 	orderName = name;
 	orderEffect = "Triple the number of army units on one of the current player’s territories and make it a neutral	territory";
 }
 
 Blockade::Blockade(const Blockade& b): Order(b) {
-	cout << "Blockade copy constructor called. \n";
+	//cout << "Blockade copy constructor called. \n";
 	this->orderName = b.orderName;
 	this->orderEffect = b.orderEffect;
 	this->orderExecutionFlag = b.orderExecutionFlag;
 
 }
 Blockade& Blockade:: operator= (const Blockade& b) {
-	cout << "Blockade assignment operator called. \n";
+	//cout << "Blockade assignment operator called. \n";
 	orderName = b.orderName;
 	orderEffect = b.orderEffect;
 	orderExecutionFlag = b.orderExecutionFlag;
@@ -237,7 +238,7 @@ Blockade& Blockade:: operator= (const Blockade& b) {
 }
 
 Blockade::~Blockade() {
-	cout << this->getOrderName() << " in derived class will now be destroyed. \n";
+	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
 bool Blockade::validate(string order) {
@@ -259,27 +260,27 @@ void Blockade::execute() {
 Airlift::Airlift() {}
 
 Airlift::Airlift(string name) {
-	cout << "Airlift constructor with string called. \n";
+	//cout << "Airlift constructor with string called. \n";
 	orderName = name;
 	orderEffect = "Advance a certain number of army units from one of the current player’s territories to any another yerritory ";
 }
 
 Airlift::Airlift(const Airlift& a) :Order(a) {
-	cout << "Airlift copy constructor called. \n";
+	//cout << "Airlift copy constructor called. \n";
 	this->orderName = a.orderName;
 	this->orderEffect = a.orderEffect;
 	this->orderExecutionFlag = a.orderExecutionFlag;
 
 }
 Airlift& Airlift:: operator= (const Airlift& a) {
-	cout << "Airlift assignment operator called. \n";
+	//cout << "Airlift assignment operator called. \n";
 	orderName = a.orderName;
 	orderEffect = a.orderEffect;
 	orderExecutionFlag = a.orderExecutionFlag;
 	return *this;
 }
 Airlift::~Airlift() {
-	cout << this->getOrderName() << " in derived class will now be destroyed. \n";
+	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
 bool Airlift::validate(string order) {
@@ -302,20 +303,20 @@ void Airlift::execute() {
 Negotiate::Negotiate() {}
 
 Negotiate::Negotiate(string name) {
-	cout << "Negotiate constructor with string called. \n";
+	//cout << "Negotiate constructor with string called. \n";
 	orderName = name;
 	orderEffect = "Prevent attacks between the current player and the player targeted by the negotiate order until the end of the turn";
 }
 
 Negotiate::Negotiate(const Negotiate& n):Order(n) {
-	cout << "Negotiate copy constructor called. \n";
+	//cout << "Negotiate copy constructor called. \n";
 	this->orderName = n.orderName;
 	this->orderEffect = n.orderEffect;
 	this->orderExecutionFlag = n.orderExecutionFlag;
 
 }
 Negotiate& Negotiate::operator= (const Negotiate& n) {
-	cout << "Negotiate assignment operator called. \n";
+	//cout << "Negotiate assignment operator called. \n";
 	orderName = n.orderName;
 	orderEffect = n.orderEffect;
 	orderExecutionFlag = n.orderExecutionFlag;
@@ -323,7 +324,7 @@ Negotiate& Negotiate::operator= (const Negotiate& n) {
 
 }
 Negotiate::~Negotiate() {
-	cout << this->getOrderName() << " in derived class will now be destroyed. \n";
+	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
 bool Negotiate::validate(string order) {
@@ -345,12 +346,12 @@ void Negotiate::execute() {
 //----------------------ORDERSLIST FUNCTION IMPLEMENTATION----------------------//
 
 OrdersList::OrdersList() {
-	cout << "OrdersList constructor called. \n";
+	//cout << "OrdersList constructor called. \n";
 
 }
 
 OrdersList::OrdersList(const OrdersList& originalOrdersList) {
-	cout << "OrdersList copy constructor called. \n";
+	//cout << "OrdersList copy constructor called. \n";
 	for (auto x : originalOrdersList.ordersList) {
 		if (x->getOrderName().compare("deploy") == 0)
 		{
@@ -388,7 +389,7 @@ OrdersList::OrdersList(const OrdersList& originalOrdersList) {
 
 //assignment operator
 OrdersList& OrdersList:: operator= (const OrdersList& ol) {
-	cout << "OrdersList assignment operator called. \n";
+	//cout << "OrdersList assignment operator called. \n";
 	for (auto x : ol.ordersList) {
 		if (x->getOrderName().compare("deploy") == 0)
 		{
@@ -424,6 +425,10 @@ OrdersList& OrdersList:: operator= (const OrdersList& ol) {
 	return *this;
 }
 
+list<Order*> OrdersList::getOrdersList()
+{
+	return ordersList;
+}
 void OrdersList::addOrder(Order* orderToBeAdded)
 {
 	ordersList.push_back(orderToBeAdded);
@@ -460,7 +465,7 @@ void OrdersList::showOrdersList() {
 
 //destructor
 OrdersList::~OrdersList() {
-	cout << "OrdersList will now be destroyed \n";
+	//cout << "OrdersList will now be destroyed \n";
 
 	//release memory
 	ordersList.clear();

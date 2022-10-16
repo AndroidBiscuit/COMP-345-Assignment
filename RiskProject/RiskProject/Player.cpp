@@ -12,7 +12,7 @@ Player::Player() {
 	createdPlayers++;
 	name = "default";
 	playerID = createdPlayers;
-	ordersT = new OrdersListT();
+	ordersList = new OrdersList();
 }
 
 Player::Player(const Player& p) {
@@ -29,11 +29,11 @@ Player::Player(const Player& p) {
 		addCard(temp);
 
 	}
-	ordersT = new OrdersListT();
-	for (auto p : p.ordersT->listOfOrders) {
-		OrderT* temp = new OrderT();
-		temp->getName() = p->getName();
-		ordersT->addOrder(temp);
+	ordersList = new OrdersList();
+	for (auto p : p.ordersList->getOrdersList()) {//unsure if this works?
+		Order* temp = new Order();
+		temp->setOrderName(p->getOrderName());
+		ordersList->addOrder(temp);
 	}
 }
 
@@ -49,11 +49,11 @@ Player& Player::operator=(const Player& p) {
 		addCard(temp);
 
 	}
-	ordersT = new OrdersListT();
-	for (auto p : p.ordersT->listOfOrders) {
-		OrderT* temp = new OrderT();
-		temp->setName(p->getName());
-		ordersT->addOrder(temp);
+	ordersList = new OrdersList();
+	for (auto p : p.ordersList->getOrdersList()) {
+		Order* temp = new Order();
+		temp->setOrderName(p->getOrderName());
+		ordersList->addOrder(temp);
 	}
 	return *this;
 }
@@ -72,7 +72,7 @@ ostream& operator<< (ostream& out, const Player& p) {
 	}
 	out << endl;
 	out << "Orders issued: " << endl;
-	for (OrderT* i : p.ordersT->listOfOrders) {
+	for (Order* i : p.ordersList->getOrdersList()) { //not sure if this works
 		out << *i;
 	}
 	return out;
@@ -81,8 +81,8 @@ ostream& operator<< (ostream& out, const Player& p) {
 //destructor
 Player::~Player() {
 	cout << "Player " << this->getName() << " will now be destroyed." << endl;
-	if(ordersT != nullptr) {
-		delete ordersT;
+	if(ordersList != nullptr) {
+		delete ordersList; //or is it ordersList.clear() ? 
 	}
 	//release memory
 	territory.clear();
@@ -105,8 +105,8 @@ void Player::setCards(vector<CardT*>& cards){
 	this->handCard = cards;
 }
 
-void Player::setOrdersList(OrdersListT* orders){
-	this->ordersT = orders;
+void Player::setOrdersList(OrdersList* ordersList){
+	this->ordersList = ordersList;
 }
 
 string Player::getName() {
@@ -125,8 +125,8 @@ vector<CardT*> Player::getCards(void) {
 	return handCard;
 }
 
-OrdersListT* Player::getOrders(void) {
-	return ordersT;
+OrdersList* Player::getOrders(void) {
+	return ordersList;
 }
 
 void Player::addTerritory(Territory* ter) {
@@ -148,18 +148,18 @@ void Player::printOrderList(void) {
 	cout << "----------------------------------" << endl;
 }
 
-void Player::discoverOrderType(string x, OrderT* issued) {
-	string options[] = { "DEPLOY", "ADVANCE", "BOMB", "BLOCKADE", "AIRLIFT", "NEGOTIATE" };
+void Player::discoverOrderType(string x, Order* issued) {
+	string options[] = { "deploy", "advance", "bomb", "blockade", "airlift", "negotiate" };
 
 	for (int i = 0; i < 6; i++)
 	{
 		if (options[i].compare(x) == 0) {
-			issued->setName(options[i]);
+			issued->setOrderName(options[i]);
 			return;
 		}
 	}
 
-	issued->setName("UNKOWN ORDER");
+	issued->setOrderName("UNKOWN ORDER");
 	return;
 }
 
@@ -189,21 +189,23 @@ vector<Territory*> Player::toDefend()
 
 void Player::issueOrder()
 {
-	OrderT* issued = new OrderT();
+	//Order* issued = new Order();
 	string x;
 
 	printOrderList();
 	cout << "Please type out the order you would like to issue: " << endl;
 	cin >> x;
-	discoverOrderType(x, issued);
-	ordersT->addOrder(issued);
-	cout << "Order was issued: " << issued->getName() << endl;
+	//discoverOrderType(x, issued);
+	Order* issued = new Order(x);
+	ordersList->addOrder(issued);
+	cout << "Order was issued: " << issued->getOrderName() << endl;
 	cout << "Current Player orders: " << endl;
-	for (auto o : ordersT->listOfOrders) {
+	for (auto o : ordersList->getOrdersList()) {
 		cout << *o;
 	}
 }
 
+/*
 OrderT::OrderT() {
 	string orderName;
 }
@@ -228,7 +230,7 @@ void OrderT::setName(string name) {
 ostream& operator<<(ostream& out, const OrderT& o) {
 	out << o.orderName << endl;
 	return out;
-}
+}*/
 
 CardT::CardT() {
 	string cardName;
@@ -252,6 +254,7 @@ ostream& operator<<(ostream& out, const CardT& o) {
 	return out;
 }
 
+/*
 void OrdersListT::addOrder(OrderT* other) {
 	listOfOrders.push_back(other);
 	count++;
@@ -275,3 +278,4 @@ ostream& operator<<(ostream& out, const OrdersListT& p) {
 	return out;
 
 }
+*/

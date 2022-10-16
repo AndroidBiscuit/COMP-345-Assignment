@@ -47,7 +47,7 @@ class OrdersList
 private:
 	list<Order*> ordersList;
 public:
-
+	//list<Order*> ordersList;
 	//constructors
 	OrdersList(); 
 	OrdersList(const OrdersList& originalOrdersList); 
@@ -59,6 +59,7 @@ public:
 	~OrdersList();  
 
 	//methods
+	list<Order*> getOrdersList();
 	void addOrder(Order* order);
 	void move(int sourceIndex, int destinationIndex);
 	void remove(int indexOfOrder); 
