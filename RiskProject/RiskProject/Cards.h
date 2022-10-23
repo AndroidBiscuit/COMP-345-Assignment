@@ -13,8 +13,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "Orders.h"
 
-// #include <Orders.h>
 
 using namespace std;
 
@@ -58,7 +58,7 @@ public:
     CardType getCardType();
 
     // Play method to use the card in hand and return it to the deck
-    void play(vector<Order*>& orderList, Deck& deck);
+    void play(OrdersList* ordersList, Deck& deck);
 
 private:
     CardType cardType;
