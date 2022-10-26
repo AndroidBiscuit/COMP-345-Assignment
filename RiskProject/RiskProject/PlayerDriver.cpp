@@ -25,9 +25,14 @@ void testPlayers() {
 	territories.push_back(t3);
 	territories.push_back(t4);
 	
+	Deck* newDeck = new Deck();
+	//Hand* newHand = new Hand();
 
-	CardT* c1 = new CardT("bomb");
-	CardT* c2 = new CardT("airlift");
+	Card firstCard = newDeck->draw();
+	Card secondCard = newDeck->draw();
+	//newHand->addCard(firstCard);
+	//Card* c1 = new Card("BOMB");
+	//Card* c2 = new Card("airlift");
 	
 
 
@@ -56,10 +61,11 @@ void testPlayers() {
 	cout << "Player " << copiedPlayer->getPlayerID() << " - " << copiedPlayer->getName() << endl;
 	players[0]->addTerritory(t1);
 	players[0]->addTerritory(t2);
-	players[0]->addCard(c1);
-	players[0]->addCard(c2);
+	players[0]->getPlayerHand()->addCard(firstCard);
+	players[0]->getPlayerHand()->addCard(secondCard);
 	cout << "----------------------------------------------" << endl;
 	cout << "Issuing orders for Players:" << endl;
+	
 	//Issuing orders for example Player:
 	for (auto p : players) {
 		cout << "Player " << p->getPlayerID() << " - " << p->getName() << endl;

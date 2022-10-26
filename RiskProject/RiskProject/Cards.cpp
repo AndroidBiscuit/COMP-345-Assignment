@@ -251,7 +251,11 @@ Hand& Hand::operator = (const Hand& hand) {
 
 // Stream operator
 ostream& operator<<(ostream& out, const Hand& hand) {
-    return out << "Your hand has " << hand.cards.size() << " cards.";
+    out << "Your hand has " << hand.cards.size() << " cards.";
+    for (auto x : hand.cards) {
+        out << *x << endl;
+    }
+    return out;
 }
 
 // Add cards in hand

@@ -13,6 +13,7 @@ Player::Player() {
 	name = "default";
 	playerID = createdPlayers;
 	ordersList = new OrdersList();
+	hand = new Hand();
 }
 
 Player::Player(const Player& p) {
@@ -24,17 +25,19 @@ Player::Player(const Player& p) {
 		addTerritory(temp);
 
 	}
-	for (auto p : p.handCard) {
-		CardT* temp = new CardT(*p);
-		addCard(temp);
+	hand = new Hand(*p.hand);
+	/*for (auto p : p.hand->getCards()) {
+		Card* temp = new Card(p->getCardType());
+		hand->addCard(temp);
 
-	}
-	ordersList = new OrdersList();
-	for (auto p : p.ordersList->getOrdersList()) {//unsure if this works?
-		Order* temp = new Order();
-		temp->setOrderName(p->getOrderName());
-		ordersList->addOrder(temp);
-	}
+	}*/
+	ordersList = new OrdersList(*p.ordersList);
+	//for (auto p : p.ordersList->getOrdersList()) {//unsure if this works?
+	//	Order* temp = new Order();
+	//	temp->setOrderName(p->getOrderName());
+	//	ordersList->addOrder(temp);
+	//}
+	
 }
 
 Player& Player::operator=(const Player& p) {
@@ -44,17 +47,18 @@ Player& Player::operator=(const Player& p) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
 	}
-	for (auto p : p.handCard) {
-		CardT* temp = new CardT(*p);
-		addCard(temp);
+	hand = new Hand(*p.hand);
+	//for (auto p : p.handCard) {
+	//	Card* temp = new Card(*p);
+	//	addCard(temp);
 
-	}
-	ordersList = new OrdersList();
-	for (auto p : p.ordersList->getOrdersList()) {
+	//}
+	ordersList = new OrdersList(*p.ordersList);
+	/*for (auto p : p.ordersList->getOrdersList()) {
 		Order* temp = new Order();
 		temp->setOrderName(p->getOrderName());
 		ordersList->addOrder(temp);
-	}
+	}*/
 	return *this;
 }
 
@@ -67,14 +71,13 @@ ostream& operator<< (ostream& out, const Player& p) {
 	}
 	out << endl;
 	out << "Handed Cards: " <<endl;
-	for (CardT* i : p.handCard) {
-		out << *i;
-	}
+	out << *(p.hand);
 	out << endl;
 	out << "Orders issued: " << endl;
-	for (Order* i : p.ordersList->getOrdersList()) { //not sure if this works
-		out << *i;
-	}
+	out << *(p.ordersList);
+	//for (Order* i : p.ordersList->getOrdersList()) { //not sure if this works
+	//	out << *i;
+	//}
 	return out;
 }
 
@@ -84,9 +87,12 @@ Player::~Player() {
 	if(ordersList != nullptr) {
 		delete ordersList; //or is it ordersList.clear() ? 
 	}
+	if (hand != nullptr) {
+		delete hand; //or is it ordersList.clear() ? 
+	}
 	//release memory
 	territory.clear();
-	handCard.clear();
+	
 }
 
 void Player::setName(string s) {
@@ -101,9 +107,9 @@ void Player::setTerritory(vector<Territory*> const& other) {
 	territory = other;
 }
 
-void Player::setCards(vector<CardT*>& cards){
-	this->handCard = cards;
-}
+//void Player::setCards(vector<Card*>& cards){
+//	this->handCard = cards;
+//}
 
 void Player::setOrdersList(OrdersList* ordersList){
 	this->ordersList = ordersList;
@@ -121,9 +127,13 @@ vector<Territory*> Player::getTerritory() {
 	return territory;
 }
 
-vector<CardT*> Player::getCards(void) {
-	return handCard;
+Hand* Player::getPlayerHand() {
+	return hand;
 }
+
+//vector<Card*> Player::getCards(void) {
+//	return handCard;
+//}
 
 OrdersList* Player::getOrders(void) {
 	return ordersList;
@@ -132,9 +142,9 @@ OrdersList* Player::getOrders(void) {
 void Player::addTerritory(Territory* ter) {
 	territory.push_back(ter);
 }
-void Player::addCard(CardT* other) {
-	handCard.push_back(other);
-}
+//void Player::addCard(Card* other) {
+//	handCard.push_back(other);
+//}
 
 void Player::printOrderList(void) {
 	cout << "----------------------------------" << endl;
@@ -232,27 +242,27 @@ ostream& operator<<(ostream& out, const OrderT& o) {
 	return out;
 }*/
 
-CardT::CardT() {
-	string cardName;
-}
-
-CardT::CardT(string n) {
-	this->cardName = n;
-}
-
-CardT::~CardT() {
-	cout << "The Card " << cardName << " was deleted." << endl;
-	cardName.clear();
-}
-
-string CardT::getName() {
-	return cardName;
-}
-
-ostream& operator<<(ostream& out, const CardT& o) {
-	out << o.cardName << endl;
-	return out;
-}
+//CardT::CardT() {
+//	string cardName;
+//}
+//
+//CardT::CardT(string n) {
+//	this->cardName = n;
+//}
+//
+//CardT::~CardT() {
+//	cout << "The Card " << cardName << " was deleted." << endl;
+//	cardName.clear();
+//}
+//
+//string CardT::getName() {
+//	return cardName;
+//}
+//
+//ostream& operator<<(ostream& out, const CardT& o) {
+//	out << o.cardName << endl;
+//	return out;
+//}
 
 /*
 void OrdersListT::addOrder(OrderT* other) {

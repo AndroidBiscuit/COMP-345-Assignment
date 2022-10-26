@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include "Map.h"
-//#include "Cards.h"
+#include "Cards.h"
 #include "Orders.h"
 
 using std::string;
@@ -40,18 +40,18 @@ public:
 };
 */
 
-class CardT {
-private:
-	string cardName;
-
-
-public:
-	CardT();
-	CardT(string);
-	~CardT();
-	string getName();
-	friend ostream& operator<<(ostream& out, const CardT& p);
-};
+//class CardT {
+//private:
+//	string cardName;
+//
+//
+//public:
+//	CardT();
+//	CardT(string);
+//	~CardT();
+//	string getName();
+//	friend ostream& operator<<(ostream& out, const CardT& p);
+//};
 
 class Player{
 	static int createdPlayers;
@@ -59,7 +59,7 @@ private:
 	int playerID;
 	string name;
 	vector<Territory*> territory;
-	vector<CardT*> handCard;
+	Hand* hand;
 	//OrdersListT* ordersT; //here
 	OrdersList* ordersList;
 
@@ -83,7 +83,7 @@ public:
 	void setPlayerID(int playerID);
 	void setName(string name);
 	void setTerritory(vector<Territory*> const& other);
-	void setCards(vector<CardT*>& cards);
+	//void setCards(vector<Card*>& cards);
 	//void setOrdersList(OrdersListT* orders); //here
 	void setOrdersList(OrdersList* ordersList);
 
@@ -91,7 +91,8 @@ public:
 	string getName();
 	int getPlayerID();
 	vector<Territory*> getTerritory();
-	vector<CardT*> getCards();
+	Hand* getPlayerHand();
+	//vector<Card*> getCards();
 	//OrdersListT* getOrders(); //here
 	OrdersList* getOrders();
 
@@ -102,7 +103,7 @@ public:
 	vector<Territory*> toAttack(vector<Territory*>);
 	void issueOrder(); //here
 	void addTerritory(Territory*);
-	void addCard(CardT*);
+	//void addCard(Card*);
 
 };
 

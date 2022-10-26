@@ -60,6 +60,7 @@ void Order::setOrderExecutionFlag(bool flag) {orderExecutionFlag = flag;}
 
 ostream& operator <<(ostream& input, Order order) {
 	input << order.getOrderName() << endl;
+	input << order.getOrderEffect() << endl;
 	/*
 	if (order.getOrderExecutionFlag())
 	{
@@ -451,6 +452,15 @@ void OrdersList::remove(int indexOfOrder) {
 	list<Order*>::iterator iterator = ordersList.begin();
 	advance(iterator, indexOfOrder - 1);
 	iterator = ordersList.erase(iterator);
+}
+
+//stream insertion
+ostream& operator << (ostream& out, OrdersList ordersList) {
+	list<Order*> orders = ordersList.getOrdersList();
+	for (auto x : orders) {
+		out << *x << endl;
+	}
+	return out;
 }
 
 void OrdersList::showOrdersList() {
