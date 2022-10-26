@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "Cards.h"
+#include "Orders.h"
 
 using namespace std;
 
@@ -58,28 +59,34 @@ Card::CardType Card::getCardType() {
 }
 
 // Play method to use the card in hand and return it to the deck
-void Card::play(vector<Order*>& orderList, Deck& deck) {
+//not sure if passing ptr here is the correct way- to recheck when integrating more
+//need to connect to player ? cuz rn cards and player are not connected in any way except for orders in between
+void Card::play(OrdersList* orderList, Deck& deck) {
 
     // Temp
-    Order* playOrder;
+    //Order* playOrder;
 
     if (this->cardType == CardType::BOMB) {
-        //
+        Bomb bomb("bomb");
+        orderList->addOrder(&bomb);
     }
     if (this->cardType == CardType::REINFORCEMENT) {
-        //
+        //not an order- its an immediate effect
     }
     if (this->cardType == CardType::BLOCKADE) {
-        //
+        Blockade blockade("blockade");
+        orderList->addOrder(&blockade);
     }
     if (this->cardType == CardType::AIRLIFT) {
-        //
+        Airlift airlift("airlift");
+        orderList->addOrder(&airlift);
     }
     if (this->cardType == CardType::DIPLOMACY) {
-        //
+        Negotiate negotiate("negotiate");
+        orderList->addOrder(&negotiate);
     }
 
-    orderList.push_back(playOrder);
+    //orderList.push_back(playOrder);
 
     // Show which card was used
     switch (this->getCardType()) {
