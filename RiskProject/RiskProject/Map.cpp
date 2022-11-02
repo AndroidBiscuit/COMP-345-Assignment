@@ -16,8 +16,7 @@ class Player;
 //for the Territory Class
 // Constructors 
 Territory::Territory(int tID, int cID) {
-    Player* nullPlayer = new Player();
-    owner = nullPlayer;
+    owner = NULL;
     name = "Default";
     continentID = cID;
     territoryID = tID;
@@ -41,13 +40,17 @@ ostream& operator<<(ostream& out, const Territory& p)
 }
 
 //copy constructor
-Territory::Territory(const Territory& other) {
+Territory::Territory(const Territory& other) : adjTerritories(other.adjTerritories.size()) {
     continentID = other.continentID;
     territoryID = other.territoryID;
     name = other.name;
     armyAmount = other.armyAmount;
     owner = other.owner;
-    adjTerritories = other.adjTerritories;
+
+    for (auto p : other.adjTerritories) {
+        Territory* temp = new Territory(*p);
+        adjTerritories.push_back(temp);
+    }
 
 }
 

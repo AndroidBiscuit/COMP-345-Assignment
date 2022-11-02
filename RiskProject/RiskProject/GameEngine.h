@@ -1,11 +1,18 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include "Player.h"
+#include "Cards.h"
+#include "Map.h"
+#include "Orders.h"
 
 using namespace std;
 
 class GameEngine {
-	string state;
+private:
+    string state;
+	vector<Player*> players;
+
 
 public:
 	GameEngine(void);								/*Constructors*/

@@ -17,7 +17,6 @@ private:
     vector<Territory*> adjTerritories;
     int armyAmount;    
     int continentID;
-  /*  Continent* cont;*/
   
     
 public: 
