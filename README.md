@@ -10,8 +10,8 @@
 - Faizan Ahmad (40100581); GH: AndroidBiscuit
 - Monica Chen (40022537); GH: Chen-808
 - Ziad Taifour (40097049) : GH: KingZiad
-- Wuyang Peng (40037681) : GH: peng2611878
 - Lin Ling (40153877) : GH: janeeyre912
+- Wuyang Peng (40037681) : GH: peng2611878 (Assignment 1 only)
 
 # Deadlines
 - Assignment 1: Friday, 7 October 2022, 11:59 PM
@@ -21,13 +21,14 @@
 # Work distribution
 - Assignment 1: 
   - Part 1: Monica Chen, Ziad Taifour, Lin Ling
-  - Part 2: 
+  - Part 2: Lin
   - Part 3: Monica Chen
   - Part 4: Faizan Ahmad
   - Part 5: Wuyang Peng
-
-# Getting Started
- Make sure you have Visual Studio 2022 installed on your local machine. This will be our IDE for this project. 
-
- ## Deployment
- TODO
+- Assignment 2: 
+  - Part 1: Ziad
+  - Part 2: Lin
+  - Part 3: Monica and Faizan
+  - Part 4: Monica and Faizan
+  - Part 5: Ziad
+  - Game engine: everyone
