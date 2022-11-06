@@ -82,6 +82,9 @@ vector<Territory*> Territory::getAdjTerritories(){
     return adjTerritories;
 }
 
+Player* Territory::getOwner(void){
+    return owner;
+}
 vector<Territory*> Territory::getAdjTerritoriesInSameContinent() {
     vector<Territory*> adjTerritoriesInSameContinent;
     for (auto t : adjTerritories) {
@@ -195,10 +198,6 @@ ostream& operator << (ostream& out, const MapLoader& p) {
 //destructor
 MapLoader::~MapLoader() {
     cout << "MapLoader was destroyed" << endl;
-    for (auto p : loadedMap) {
-        delete p;
-    }
-    loadedMap.clear();
 }
 
 //accessor
@@ -211,8 +210,8 @@ void MapLoader::setInputFileName(const string& s) {
     inputFileName = s;
 }
 
-vector<Map*> MapLoader::getMaps() {
-    return loadedMap;
+Map* MapLoader::getMap() {
+    return &loadedMap;
 }
 
 //splits the line information from the text file by certain delimiter
@@ -261,7 +260,7 @@ int MapLoader::getTID(Map* createdMap, string tName) {
 
 
 //reads the map file and stores the map as a Map object 
-void MapLoader::loadMap(string mapFile) {
+Map* MapLoader::loadMap(string mapFile) {
     ifstream input;
     bool readingContinents = false;
     bool readingTerritories = false;
@@ -281,6 +280,7 @@ void MapLoader::loadMap(string mapFile) {
         if (input.peek() == std::ifstream::traits_type::eof()) {
             cout << "ERROR - File is empty!" << endl;
             throw invalid_argument("Received Empty File.");
+            return createdMap;
         }
         else {
 
@@ -373,10 +373,8 @@ void MapLoader::loadMap(string mapFile) {
                             int tID = getTID(createdMap, p);
                              if (tID < 0) {
                                  cout << "ERROR - File is of incorrect format! Tertitories message is missing. Please check that the file meets the Map parameters." << endl;
-                                 delete createdMap;
-                                 createdMap = nullptr;
                                  throw invalid_argument("ERROR - File is of incorrect format! Keywords were not found.");
-                             
+                                 return createdMap;
                              }
                             edges.push_back(getTID(createdMap, p)); //1 2 3
                         }
@@ -403,21 +401,18 @@ void MapLoader::loadMap(string mapFile) {
                 cout << "\n---------------------------------------------------" << endl;
                 bool result = createdMap->validate();
                 if (result) {
-                    loadedMap.push_back(createdMap);
                     createdMap->setValid(true);
-                  
+                    return createdMap;
                 }
                 else {
-                    loadedMap.push_back(createdMap);
                     createdMap->setValid(false);
-                    
+                    return createdMap;
                 }
 
             }
             else {
                 cout << "ERROR - File is of incorrect format! Keywords were not found. Please check that the file meets the Map parameters." << endl;
-                delete createdMap;
-                createdMap = nullptr;
+                return createdMap;
                 throw invalid_argument("ERROR - File is of incorrect format! Keywords were not found.");
                 
             }
@@ -427,12 +422,11 @@ void MapLoader::loadMap(string mapFile) {
     }
     else {
         cout << "ERROR - File could not be opened!" << endl;
-        delete createdMap;
-        createdMap = nullptr;
         throw invalid_argument("ERROR - File could not be opened!");
+        return createdMap;
     }
 
-
+    return createdMap;
 }
 //constructors
 Map::Map(){

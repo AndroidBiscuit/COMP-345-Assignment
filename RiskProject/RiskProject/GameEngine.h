@@ -5,6 +5,7 @@
 #include "Cards.h"
 #include "Map.h"
 #include "Orders.h"
+#include "CommandProcessing.h"
 
 using namespace std;
 
@@ -12,7 +13,12 @@ class GameEngine {
 private:
     string state;
 	vector<Player*> players;
+	Map* map;
+	Deck* deck;
 
+public:
+	//Neutral Player:
+	Player* neutral;
 
 public:
 	GameEngine(void);								/*Constructors*/
@@ -24,8 +30,14 @@ public:
 	GameEngine& operator =(const GameEngine& other);	/*assignment operator*/
 
 	friend ostream& operator << (ostream& out, const GameEngine& g);		/*Stream Insertion*/
-	friend istream& operator >> (istream& in, GameEngine& g);
 	~GameEngine();
 
-	int gameStates(int i);								/*main game loop*/
+	//Methods
+	void startupPhase();
+	void transition(string newState);
+	bool loadMap(string fileName);
+	void addPlayer();
+	void addPlayer(string name);
+	void removePlayer(Player* toRemove);
+	bool gameStartSetting();
 };

@@ -17,6 +17,7 @@ class Hand;
 class Order;
 class OrdersList;
 class Deploy;
+class Cards;
 
 
 class Player{
@@ -68,26 +69,24 @@ public:
 	vector<Territory*> getTerritory();
 	void removeTerritory(Territory* toRemove);
 	Hand* getHand();
-	vector<Card*> getCards();
+	/*vector<Card*> getCards();*/
 	OrdersList* getOrders(); 
 	vector<Player*> getCanNotAttack();
 	bool getConquered();
 
 	//method
 	void printOrderList(void);
-	int deployArmies();
-	Order* discoverOrderType(string x);
+	//int deployArmies();
+	void discoverOrderType(string x, Order* issued);
 	vector<Territory*> toDefend();
 	vector<Territory*> toAttack();
-	void determineTarget(int state, Order* order);
-	void determineSource(int state, Order* order);
 	void issueOrder(); //here
 	void addTerritory(Territory*);
 
 	//From Cards
-    void addCard(Card* card);
-	void addOrder(Order* order);
-	Hand* getHand();
+ /*   void addCard(Card* card);*/
+	/*void addOrder(Order* order);*/
+	/*Hand* getHand();*/
 
 	//Intelligent player
 	bool intelligent;

@@ -123,13 +123,13 @@ Deck::Deck() {
         if (i % 5 == 0) {
             cards.push_back(new Card(Card::BOMB));
         }
-        else if (i % 5 == 0) {
+        else if (i % 5 == 1) {
             cards.push_back(new Card(Card::REINFORCEMENT));
         }
-        else if (i % 5 == 0) {
+        else if (i % 5 == 2) {
             cards.push_back(new Card(Card::BLOCKADE));
         }
-        else if (i % 5 == 0) {
+        else if (i % 5 == 3) {
             cards.push_back(new Card(Card::AIRLIFT));
         }
         else {
@@ -187,9 +187,31 @@ Card Deck::draw() {
     return *drawnCard;
 }
 
+// Method to draw a card from the deck and add it to a player's hand
+Card* Deck::draw(Player* p) {
+
+    // Fisher-Yates shuffle algorithm
+    int size = cards.size();
+    for (int i = 0; i < (size - 1); i++) {
+        int j = i + rand() % (size - i);
+        std::swap(cards[i], cards[j]);
+    }
+
+    // add the pointer to the last card in the deck to the player's hand
+    p->getHand()->addCard(getCards().back());
+    // remove that pointer from the deck
+    cards.pop_back();
+    // return the card that was just added to the player's hand
+    return (p->getHand()->getCards().back());
+}
+
 // Add card to deck
 void Deck::addCard(Card& card) {
     this->cards.push_back(&card);
+}
+
+void Deck::addCard(Card* card) {
+    cards.push_back(card);
 }
 
 // Accessors
@@ -197,6 +219,9 @@ int Deck::getDeckSize() {
     return this->cards.size();
 }
 
+vector<Card*> Deck::getCards() {
+    return cards;
+}
 
 
 
@@ -208,30 +233,30 @@ int Deck::getDeckSize() {
 // Constructor
 Hand::Hand() {
     // Randomized seed invocation
-    srand(time(NULL));
+    //srand(time(NULL));
 
-    for (int i = 0; i < 5; i++) {
+    //for (int i = 0; i < 5; i++) {
 
-        // Generate random number
-        int random = rand() % 5;
+    //    // Generate random number
+    //    int random = rand() % 5;
 
-        // Compare random number output to card type
-        if (random == 0) {
-            this->cards.push_back(new Card(Card::BOMB));
-        }
-        else if (random == 1) {
-            this->cards.push_back(new Card(Card::REINFORCEMENT));
-        }
-        else if (random == 2) {
-            this->cards.push_back(new Card(Card::BLOCKADE));
-        }
-        else if (random == 3) {
-            this->cards.push_back(new Card(Card::AIRLIFT));
-        }
-        else {
-            this->cards.push_back(new Card(Card::DIPLOMACY));
-        }
-    }
+    //    // Compare random number output to card type
+    //    if (random == 0) {
+    //        this->cards.push_back(new Card(Card::BOMB));
+    //    }
+    //    else if (random == 1) {
+    //        this->cards.push_back(new Card(Card::REINFORCEMENT));
+    //    }
+    //    else if (random == 2) {
+    //        this->cards.push_back(new Card(Card::BLOCKADE));
+    //    }
+    //    else if (random == 3) {
+    //        this->cards.push_back(new Card(Card::AIRLIFT));
+    //    }
+    //    else {
+    //        this->cards.push_back(new Card(Card::DIPLOMACY));
+    //    }
+    //}
 }
 
 // Copy constructor
@@ -270,6 +295,10 @@ void Hand::addCard(Card& card) {
     this->cards.push_back(&card);
 }
 
+void Hand::addCard(Card* card) {
+    cards.push_back(card);
+}
+
 // Accessor: get cards from hand
 vector<Card*> Hand::getCards() {
     return this->cards;
@@ -280,7 +309,15 @@ int Hand::getNumberCards() {
     return this->cards.size();
 }
 
+// Accessor: get pointer of deck 
+Deck* Hand::getDeck(){
+    return deck;
+}
 
+// Mutator: set pointer of deck 
+void Hand::setDeck(Deck* d){
+    deck = d;
+}
 
 
 // EOF

@@ -16,7 +16,7 @@ int Player::createdPlayers = 0;
 
 //constructors:
 Player::Player() {
-	cout << "Player with ID :" << createdPlayers << "was created." << endl;
+	cout << "Player with ID-" << createdPlayers << " was created." << endl;
 	createdPlayers++;
 	name = "default";
 	armiesAmount = 0;
@@ -27,7 +27,7 @@ Player::Player() {
 }
 
 Player::Player(const Player& p) {
-	cout << "Player with ID :" << createdPlayers << "was created." << endl;
+	cout << "Player with ID-:" << createdPlayers << " was created." << endl;
 	createdPlayers++;
 	this->name = p.name;
 	this->armiesAmount = p.armiesAmount;
@@ -44,7 +44,7 @@ Player::Player(const Player& p) {
 
 //Assignment operators:
 Player& Player::operator=(const Player& p) {
-	cout << "Player with ID :" << createdPlayers << "was created." << endl;
+	cout << "Player with ID-:" << createdPlayers << " was created." << endl;
 	name = p.name;
 	playerID = p.playerID;
 	for (Territory* p : p.territory) {
@@ -141,6 +141,10 @@ Hand* Player::getHand() {
 	return hand;
 }
 
+//vector<Card*> Player::getCards(void) {
+//	return cards;
+//}
+
 OrdersList* Player::getOrders(void) {
 	return ordersList;
 }
@@ -149,6 +153,10 @@ void Player::addTerritory(Territory* ter) {
 	ter->setOwner(this);
 	territory.push_back(ter);
 }
+
+//void Player::addCard(Card* card) {
+//	hand->addCard(card);
+//}
 
 void Player::removeTerritory(Territory* toRemove) {
 	territory.erase(std::remove(territory.begin(), territory.end(), toRemove), territory.end());
@@ -163,9 +171,6 @@ bool Player::getConquered() {
 }
 
 //Method:
-
-
-
 
 void Player::printOrderList(void) {
 	cout << "----------------------------------" << endl;
@@ -202,7 +207,9 @@ vector<Territory*> Player::toAttack()
 	for (auto t: territory) {
 		for (auto d : t->getAdjTerritories()) {
 			if (!(find(attackList.begin(), attackList.end(), d) != attackList.end())) {
-				if(d->get)
+				if (d->getOwner() != this) {
+					attackList.push_back(d);
+				}
 			}
 		}
 	}
