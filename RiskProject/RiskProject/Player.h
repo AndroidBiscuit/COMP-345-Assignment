@@ -10,66 +10,38 @@
 using std::string;
 using std::ostream;
 using std::vector;
+
 class Map;
 class Territory;
+class Hand;
+class Order;
+class OrdersList;
+class Deploy;
+class Cards;
 
-/*
-class OrderT {
-private:
-	string orderName;
-
-
-public:
-	OrderT();
-	OrderT(string);
-	~OrderT();
-	string getName();
-	void setName(string);
-	friend ostream& operator<<(ostream& out, const OrderT& p); 
-	 
-};
-
-class OrdersListT {
-public:
-	vector<OrderT*> listOfOrders; 
-	int count;
-	void addOrder(OrderT* other);
-	friend ostream& operator << (ostream& out, const OrdersListT& p);
-	OrdersListT();
-	~OrdersListT();
-};
-*/
-
-//class CardT {
-//private:
-//	string cardName;
-//
-//
-//public:
-//	CardT();
-//	CardT(string);
-//	~CardT();
-//	string getName();
-//	friend ostream& operator<<(ostream& out, const CardT& p);
-//};
 
 class Player{
-	static int createdPlayers;
+
 private:
+	//Data members:
 	int playerID;
+	int armiesAmount;
 	string name;
 	vector<Territory*> territory;
-	Hand* hand;
-	//OrdersListT* ordersT; //here
-	OrdersList* ordersList;
+	vector<Player*> cannotAttack; // records the players that can't be attacked as using with the negotiate
+	static int createdPlayers;
+	bool conquered;
 
-	friend class Card;
-	friend class GameEngine;
-	friend class Map;
+	//From Cards
+	Hand* hand;
+	//From Orders
+	OrdersList* ordersList;
+	
 
 public:
 	//stream Insertion
 	friend ostream& operator<< (ostream& out, const Player& p);
+	friend istream& operator >> (istream& in, Player& p);
 	
 	//Constructors
 	Player();
@@ -80,30 +52,53 @@ public:
 
 	//Assignment Operators
 	Player& operator = (const Player&);
+
+	//Mutators:
 	void setPlayerID(int playerID);
+	void setArmiesAmount(int armies);
 	void setName(string name);
 	void setTerritory(vector<Territory*> const& other);
-	//void setCards(vector<Card*>& cards);
-	//void setOrdersList(OrdersListT* orders); //here
-	void setOrdersList(OrdersList* ordersList);
+	void setOrdersList(OrdersList* orders); 
+	void setConquered(bool result);
+
 
 	//Accessor methods
 	string getName();
 	int getPlayerID();
+	int getArmiesAmount();
 	vector<Territory*> getTerritory();
-	Hand* getPlayerHand();
-	//vector<Card*> getCards();
-	//OrdersListT* getOrders(); //here
-	OrdersList* getOrders();
+	void removeTerritory(Territory* toRemove);
+	Hand* getHand();
+	/*vector<Card*> getCards();*/
+	OrdersList* getOrders(); 
+	vector<Player*> getCanNotAttack();
+	bool getConquered();
 
 	//method
 	void printOrderList(void);
-	void discoverOrderType(string x, Order* issued); //here?? maybe this isnt needed
+	//int deployArmies();
+	void discoverOrderType(string x, Order* issued);
 	vector<Territory*> toDefend();
-	vector<Territory*> toAttack(vector<Territory*>);
+	vector<Territory*> toAttack();
 	void issueOrder(); //here
 	void addTerritory(Territory*);
-	//void addCard(Card*);
+
+	//From Cards
+ /*   void addCard(Card* card);*/
+	/*void addOrder(Order* order);*/
+	/*Hand* getHand();*/
+
+	//Intelligent player
+	bool intelligent;
+
+	Player* neutral;
+	Map* map;
+
+	//Friend classes:
+	friend class Card;
+	friend class Hand;
+	friend class OrdersList;
+	friend class Deck;
 
 };
 

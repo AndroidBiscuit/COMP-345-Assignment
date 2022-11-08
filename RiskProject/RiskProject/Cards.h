@@ -14,6 +14,7 @@
 #include <vector>
 #include <string>
 #include "Orders.h"
+#include "Player.h"
 
 
 using namespace std;
@@ -24,7 +25,7 @@ class Hand;
 
 // Use it as is for now. Intergation with other parts will be done in Assignment 2
 class Order;
-
+class Player;
 
 
 
@@ -41,6 +42,7 @@ public:
 
     // Constructor
     Card(CardType type);
+    
 
     // Copy constructor
     Card(const Card& card);
@@ -94,12 +96,15 @@ public:
 
     // Draw a card at random from the remaining cards in the deck and place it in the hand
     Card draw();
+    Card* draw(Player* p);
 
     // Add card to deck
     void addCard(Card& card);
+    void addCard(Card* card);
 
     // Accessors
     int getDeckSize();
+    vector<Card*> getCards();
 
 private:
     vector<Card*> cards;
@@ -131,6 +136,7 @@ public:
 
     // Add cards in hand
     void addCard(Card& card);
+    void addCard(Card* card);
 
     // Accessor: get cards from hand
     vector<Card*> getCards();
@@ -138,9 +144,16 @@ public:
     // Accessor: get number of cards in hand
     int getNumberCards();
 
+    //Accessor: get the pointer of deck
+    Deck* getDeck();
+
+    //Mutator : set the pointer of deck
+    void setDeck(Deck* d);
+
 private:
     vector<Card*> cards;
     int cardsInHard;
+    Deck* deck;
 };
 
 #endif

@@ -17,7 +17,6 @@ private:
     vector<Territory*> adjTerritories;
     int armyAmount;    
     int continentID;
-  /*  Continent* cont;*/
   
     
 public: 
@@ -40,12 +39,14 @@ public:
     int getTID();
     int getCID();
     int getArmyAmount();
+    Player* getOwner(void);
     vector<Territory*> getAdjTerritories();
     vector<Territory*> getAdjTerritoriesInSameContinent();
 
     //methods
     void addAdj(Territory* t);
     void setOwner(Player* p);
+    
    
 };
 
@@ -125,12 +126,12 @@ public:
 class MapLoader {
 private:
     string inputFileName;
+    Map loadedMap;
     
 
 public:
     // stream insertion operator
     friend ostream& operator<< (ostream& out, const MapLoader& m);
-    vector <Map*> loadedMap;
     //constuctors
     MapLoader();
     MapLoader(const MapLoader& other);
@@ -143,6 +144,7 @@ public:
     ~MapLoader();
     //accessor
     string getInputFileName();
+    Map* getMap();
     //mutator
     void setInputFileName(const string&);
 
@@ -150,8 +152,7 @@ public:
     int getCID(Map*, string cName); //gets the continent ID by given continent name
     int getTID(Map*, string tName);//gets the territory ID by given territory name
 
-    vector<Map*> getMaps();
-    void loadMap(string mapFile);
+    Map* loadMap(string mapFile);
 
 };
 
