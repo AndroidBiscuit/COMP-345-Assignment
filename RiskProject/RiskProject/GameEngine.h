@@ -40,4 +40,7 @@ public:
 	void addPlayer(string name);
 	void removePlayer(Player* toRemove);
 	bool gameStartSetting();
+
+	void reinforcementPhase();
+	void issueOrderPhase();
 };

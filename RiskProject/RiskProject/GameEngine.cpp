@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+#include <cmath>
 #include "GameEngine.h"
 
 using std::default_random_engine;
@@ -339,5 +340,31 @@ bool GameEngine::gameStartSetting() {
 	return true;
 
 
+
+}
+
+//adding army units to player's reinforcement pool
+//[NEED TO DEBUG TO MAKE SURE IT WORKS PROPERLY]
+void GameEngine::reinforcementPhase() {
+	int numOfTerritoriesOwned = 0;
+	int numOfReinforcementArmyUnits = 3; //min of 3
+	for (Player* p : players) {
+		numOfTerritoriesOwned = (p->getTerritory()).size(); //to debug to make sure it works
+		numOfReinforcementArmyUnits += floor(numOfTerritoriesOwned / 3);
+
+		//if player owns entire continent- they receive the bonus army reinforcement
+		if (/*condition to check if players owns continent*/)
+			numOfReinforcementArmyUnits += ;/*continent's bonus army units*/
+
+		p->setArmiesAmount(numOfReinforcementArmyUnits);
+	}
+}
+
+//loop will be called elsewhere on top so this method is made for 
+//one iteration while looking at flag whether the player is done or not
+void GameEngine::issueOrderPhase() {
+	for (Player* p : players) {
+		
+	}
 
 }
