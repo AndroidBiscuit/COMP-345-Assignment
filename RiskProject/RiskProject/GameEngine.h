@@ -26,6 +26,8 @@ public:
 													
 	void setState(string newState);					/*Getter and setter*/
 	string getState();
+	Map* getMap();
+	vector<Player*> getPlayers();
 
 	GameEngine& operator =(const GameEngine& other);	/*assignment operator*/
 

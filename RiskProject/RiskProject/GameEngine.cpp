@@ -24,6 +24,14 @@ string GameEngine::getState(){
 	return state;
 }
 
+Map* GameEngine::getMap() {
+	return map;
+};
+
+vector<Player*> GameEngine::getPlayers() {
+	return players;
+};
+
 //Assignment operator
 GameEngine& GameEngine::operator =(const GameEngine& other){
 	state = other.state;
@@ -45,10 +53,6 @@ GameEngine::~GameEngine() {
 		neutral = NULL;
 	}
 
-	for (auto t : map->getAllTerritory()) {
-		delete t;
-	}
-
 	if (map != NULL) {
 		delete map;
 		map = NULL;
@@ -64,23 +68,6 @@ GameEngine::~GameEngine() {
 	}
 }
 
-
-// This free function split a string to several components according to the delimiter
-//source: https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
-vector<string> split(string s, string delimiter) {
-	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
-	string token;
-	vector<string> res;
-
-	while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
-		token = s.substr(pos_start, pos_end - pos_start);
-		pos_start = pos_end + delim_len;
-		res.push_back(token);
-	}
-
-	res.push_back(s.substr(pos_start));
-	return res;
-}
 
 // sets GameEngine object's state
 void GameEngine::transition(string newState) {
@@ -102,97 +89,17 @@ void GameEngine::startupPhase() {
 		
 		cout << "Enter your command: " << endl;
 		Command* cmd = processor->processCommand();
-		string cmd_string = cmd->getCommand();
-		
-		vector<string> seperate_cmd = split(cmd_string, " ");
-		string input = seperate_cmd[0];
-		string parameter = "";
-		if (seperate_cmd.size() == 2) {
-			parameter = seperate_cmd[1];
-		}
 
-		isValid = processor->validate(input, currentState);
+		isValid = processor->validate(cmd, this);
 
 		if (!isValid) {
+			cmd->saveEffect("error");
 			continue;
 		}
-
-		else {
-		    //Start state: the loadmap command results in sucessfully loading a readable map, trasitioning to the maploaded state
-			if (input == "loadmap") {
-				bool rest = loadMap(parameter);
-				if (rest) {
-					cmd->saveEffect(input);
-					transition("maploaded");
-				}
-			}
-
-			////Maploaded state: the validatemap command is used to validate the map. 
-			//If successful, the game transitions to the mapValidated state
-			else if (input == "validatemap") {
-				map->validate();
-
-				if (map->getValid()) {
-					cmd->saveEffect(input);
-					transition("mapvalidated");
-				}
-				else
-					transition("start");
-			}
-			//MapValidated state: the addplayer command is used to create players and insert them in the game (2-6 players). 
-			else if (input == "addplayer") {
-				if (parameter == "") {
-					cout << "Please add the player's name:" << endl;
-					continue;
-				}
-
-				//checks number of players, only 2-6 are allowed
-				if (players.size() == 0) {
-					addPlayer(parameter);
-					cmd->saveEffect(input);
-					transition("playersadded");
-				}
-
-				else if (players.size() < 6) {
-					addPlayer(parameter);
-					cmd->saveEffect(input);
-				}
-
-				else {
-					cout << "Players has been added. Please enter \"gamestart\"" << endl;
-				}
-			}
-			
-
-			else if (input == "gamestart") {
-				if (players.size() > 1) {
-					//fulfills the game start settings
-					gameStartSetting();
-					cmd->saveEffect(input);
-					transition("assignreinforcement");
-                    //gamestart command results transiting to the play phase
-					/*mainGameloop();*/  // part 3
-				}
-				else {
-					cout << "There are not enough players in the game to start yet." << endl;
-				}
-			
-			}
-		
-			else if (input == "replay") {
-				players.clear();
-				delete map;
-				cmd->saveEffect(input);
-				transition("start");
-			}
-
-			else if (input == "quit") {
-				cmd->saveEffect(input);
-				transition("exitprogram");
-			}
-		
+		if (currentState == "assignreinforcement") {
+			/*playPhase();*/
+			cout << "switch the game to the play phase" << endl;
 		}
-			
 	
 	}
 	delete processor;
