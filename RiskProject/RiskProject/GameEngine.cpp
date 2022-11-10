@@ -389,7 +389,7 @@ void GameEngine::reinforcementPhase() {
 //loop will be called elsewhere on top so this method is made for 
 //one iteration while looking at flag whether the player is done or not
 void GameEngine::issueOrderPhase() {
-	char x;
+	char playerAnswer;
 	for (Player* p : players) {
 		if (p->getOrdersToIssueFlag()) { //if true, then player still wants to issue orders
 			cout << p->getName() <<"'s turn to issue an order: " << endl;
@@ -397,10 +397,10 @@ void GameEngine::issueOrderPhase() {
 			
 			//at end of order issue, ask if player still wants to issue order - if yes then true, if no then set flag to false
 			cout << "Do you still want to issue orders? (y/n)" << endl;
-			cin >> x;
-			if (x == 'n')
+			cin >> playerAnswer;
+			if (playerAnswer == 'n')
 				p->setOrdersToIssueFlag(false);
-			if (x == 'y')
+			if (playerAnswer == 'y')
 				this->orderIssueRecursion = true;
 			//need to find way to set orderIssueRecursion to false once everyone is done and player's ordersToIssueFlag to true
 			cout << "End of " << p->getName() << "'s turn to issue orders. \n";
