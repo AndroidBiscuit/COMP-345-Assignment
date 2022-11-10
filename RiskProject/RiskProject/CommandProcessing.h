@@ -3,10 +3,17 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "GameEngine.h"
+#include "Player.h"
+#include "Cards.h"
+#include "Map.h"
+#include "Orders.h"
 
 using std::string;
 using std::ostream;
 using std::vector;
+
+class GameEngine;
 
 class Command{
 
@@ -65,7 +72,7 @@ public:
 
 	//Method
 	Command* processCommand();
-	bool validate(string input, string currentState);
+	bool validate(Command* cmd, GameEngine* ge);
 
 
 };
