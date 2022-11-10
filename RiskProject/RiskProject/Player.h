@@ -31,6 +31,7 @@ private:
 	vector<Player*> cannotAttack; // records the players that can't be attacked as using with the negotiate
 	static int createdPlayers;
 	bool conquered;
+	bool ordersToIssueFlag; 
 
 	//From Cards
 	Hand* hand;
@@ -60,6 +61,7 @@ public:
 	void setTerritory(vector<Territory*> const& other);
 	void setOrdersList(OrdersList* orders); 
 	void setConquered(bool result);
+	void setOrdersToIssueFlag(bool ordersLeftToIssue);
 
 
 	//Accessor methods
@@ -73,6 +75,7 @@ public:
 	OrdersList* getOrders(); 
 	vector<Player*> getCanNotAttack();
 	bool getConquered();
+	bool getOrdersToIssueFlag();
 
 	//method
 	void printOrderList(void);

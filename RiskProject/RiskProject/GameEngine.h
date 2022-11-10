@@ -15,6 +15,8 @@ private:
 	vector<Player*> players;
 	Map* map;
 	Deck* deck;
+	bool orderIssueRecursion;
+	bool executeOrderRecursion;
 
 public:
 	//Neutral Player:
@@ -40,6 +42,7 @@ public:
 	void addPlayer(string name);
 	void removePlayer(Player* toRemove);
 	bool gameStartSetting();
+	void playPhase();
 
 	void reinforcementPhase();
 	void issueOrderPhase();

@@ -9,11 +9,15 @@ using std::default_random_engine;
 
 //Constructor
 GameEngine::GameEngine(){
-	state = "start";									/*set first state as start*/
+	state = "start";/*set first state as start*/
+	orderIssueRecursion = false;
+	executeOrderRecursion = false;
 }
 
 GameEngine::GameEngine(const GameEngine& other){
 	state = other.state;
+	orderIssueRecursion = other.orderIssueRecursion;
+	executeOrderRecursion = other.executeOrderRecursion;
 }
 
 //mutator and accessor
@@ -28,6 +32,8 @@ string GameEngine::getState(){
 //Assignment operator
 GameEngine& GameEngine::operator =(const GameEngine& other){
 	state = other.state;
+	orderIssueRecursion = other.orderIssueRecursion;
+	executeOrderRecursion = other.executeOrderRecursion;
 	return *this;
 }
 
@@ -173,6 +179,7 @@ void GameEngine::startupPhase() {
 					transition("assignreinforcement");
                     //gamestart command results transiting to the play phase
 					/*mainGameloop();*/  // part 3
+					playPhase(); 
 				}
 				else {
 					cout << "There are not enough players in the game to start yet." << endl;
@@ -343,12 +350,31 @@ bool GameEngine::gameStartSetting() {
 
 }
 
+//play phase
+void GameEngine::playPhase() {
+	
+	while (/*one player doesn't own all territories, continue the loop*/) {
+
+		//Reinforcement phase
+		reinforcementPhase();
+
+		//Order issueing phase
+		do {
+			issueOrderPhase();
+		} while (orderIssueRecursion); //need to test this
+
+		//Execute order phase
+	}
+
+}
+
 //adding army units to player's reinforcement pool
 //[NEED TO DEBUG TO MAKE SURE IT WORKS PROPERLY]
 void GameEngine::reinforcementPhase() {
 	int numOfTerritoriesOwned = 0;
-	int numOfReinforcementArmyUnits = 3; //min of 3
+	int numOfReinforcementArmyUnits;
 	for (Player* p : players) {
+		numOfReinforcementArmyUnits = 3; //min of 3
 		numOfTerritoriesOwned = (p->getTerritory()).size(); //to debug to make sure it works
 		numOfReinforcementArmyUnits += floor(numOfTerritoriesOwned / 3);
 
@@ -363,8 +389,22 @@ void GameEngine::reinforcementPhase() {
 //loop will be called elsewhere on top so this method is made for 
 //one iteration while looking at flag whether the player is done or not
 void GameEngine::issueOrderPhase() {
+	char x;
 	for (Player* p : players) {
-		
-	}
+		if (p->getOrdersToIssueFlag()) { //if true, then player still wants to issue orders
+			cout << p->getName() <<"'s turn to issue an order: " << endl;
+			p->issueOrder(); //to modify issueOrder a little to simplify during gameplay	
+			
+			//at end of order issue, ask if player still wants to issue order - if yes then true, if no then set flag to false
+			cout << "Do you still want to issue orders? (y/n)" << endl;
+			cin >> x;
+			if (x == 'n')
+				p->setOrdersToIssueFlag(false);
+			if (x == 'y')
+				this->orderIssueRecursion = true;
+			//need to find way to set orderIssueRecursion to false once everyone is done and player's ordersToIssueFlag to true
+			cout << "End of " << p->getName() << "'s turn to issue orders. \n";
 
+		}
+	}
 }

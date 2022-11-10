@@ -24,6 +24,7 @@ Player::Player() {
 	ordersList = new OrdersList();
 	hand = new Hand();
 	intelligent = false;
+	ordersToIssueFlag = true;
 }
 
 Player::Player(const Player& p) {
@@ -32,6 +33,7 @@ Player::Player(const Player& p) {
 	this->name = p.name;
 	this->armiesAmount = p.armiesAmount;
 	this->playerID = p.playerID;
+	this->ordersToIssueFlag = p.ordersToIssueFlag;
 	for (auto p : p.territory) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
@@ -47,6 +49,7 @@ Player& Player::operator=(const Player& p) {
 	cout << "Player with ID-:" << createdPlayers << " was created." << endl;
 	name = p.name;
 	playerID = p.playerID;
+	ordersToIssueFlag = p.ordersToIssueFlag;
 	for (Territory* p : p.territory) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
@@ -120,6 +123,10 @@ void Player::setConquered(bool result) {
 	this->conquered = result;
 }
 
+void Player::setOrdersToIssueFlag(bool ordersLeftToIssue) {
+	this->ordersToIssueFlag = ordersLeftToIssue;
+}
+
 //Acessors:
 string Player::getName() {
 	return this->name;
@@ -139,6 +146,10 @@ vector<Territory*> Player::getTerritory() {
 
 Hand* Player::getHand() {
 	return hand;
+}
+
+bool Player::getOrdersToIssueFlag() {
+	return ordersToIssueFlag;
 }
 
 //vector<Card*> Player::getCards(void) {
