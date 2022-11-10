@@ -28,6 +28,8 @@ private:
 	int armiesAmount;
 	string name;
 	vector<Territory*> territory;
+	vector<Territory*> toAttack;
+	vector<Territory*> toDefend;
 	vector<Player*> cannotAttack; // records the players that can't be attacked as using with the negotiate
 	static int createdPlayers;
 	bool conquered;
@@ -81,8 +83,8 @@ public:
 	void printOrderList(void);
 	//int deployArmies();
 	void discoverOrderType(string x, Order* issued);
-	vector<Territory*> toDefend();
-	vector<Territory*> toAttack();
+	vector<Territory*> availableTerritoriesToDefend();
+	vector<Territory*> availableTerritoriesToAttack();
 	void issueOrder(); //here
 	void addTerritory(Territory*);
 

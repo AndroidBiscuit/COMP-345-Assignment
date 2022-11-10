@@ -40,6 +40,14 @@ Player::Player(const Player& p) {
 		addTerritory(temp);
 
 	}
+	for (auto p : p.toAttack) {
+		Territory* temp = new Territory(*p);
+		addTerritory(temp);
+	}
+	for (auto p : p.toDefend) {
+		Territory* temp = new Territory(*p);
+		addTerritory(temp);
+	}
 	hand = new Hand(*p.hand);
 
 	ordersList = new OrdersList(*p.ordersList);	
@@ -52,6 +60,14 @@ Player& Player::operator=(const Player& p) {
 	playerID = p.playerID;
 	ordersToIssueFlag = p.ordersToIssueFlag;
 	for (Territory* p : p.territory) {
+		Territory* temp = new Territory(*p);
+		addTerritory(temp);
+	}
+	for (auto p : p.toAttack) {
+		Territory* temp = new Territory(*p);
+		addTerritory(temp);
+	}
+	for (auto p : p.toDefend) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
 	}
@@ -212,7 +228,7 @@ void Player::discoverOrderType(string x, Order* issued) {
 }
 
 //Returns territories not owned by the player
-vector<Territory*> Player::toAttack()
+vector<Territory*> Player::availableTerritoriesToAttack()
 {
 	//Returns enemy territories player has access to through adjacent territories
 	vector<Territory*> attackList;
@@ -230,7 +246,7 @@ vector<Territory*> Player::toAttack()
 }
 
 //Returns territories owned by the player
-vector<Territory*> Player::toDefend()
+vector<Territory*> Player::availableTerritoriesToDefend()
 {
 	vector<Territory*> defendList;
 	for (auto t : territory) {
@@ -243,10 +259,11 @@ vector<Territory*> Player::toDefend()
 
 void Player::issueOrder()
 {
-	vector<Territory*> attackList = toAttack();
-	vector<Territory*> defendList = toDefend();
+	vector<Territory*> attackList = availableTerritoriesToAttack();
+	vector<Territory*> defendList = availableTerritoriesToDefend();
 	string orderAnswer;
 	string territoryAnswer;
+	bool repeatAttackOrDefendLoop;
 	int armyAmountAnswer;
 	int newArmyAmount;
 	//while player still has army units, order must be deploying them
@@ -260,6 +277,8 @@ void Player::issueOrder()
 				cout << territory->getTName() << endl;
 			}
 			cin >> territoryAnswer;
+			
+			toAttack.push_back();
 		}
 		else if (orderAnswer.compare("defend") == 0)
 		{
@@ -268,6 +287,7 @@ void Player::issueOrder()
 				cout << territory->getTName() << endl;
 			}
 			cin >> territoryAnswer;
+			toDefend.push_back();
 		}
 		else {
 			cout << "You entered an invalid command \n";
@@ -275,8 +295,8 @@ void Player::issueOrder()
 
 		cout << "How many army units would you like to deploy to " << territoryAnswer << " ?\n";
 		cout << "You have " << getArmiesAmount() << " army units left. \n";
-		cin >> armyAmountAnswer;
-		newArmyAmount = getArmiesAmount() - armyAmountAnswer;
+		cin >> armyAmountAnswer; //where to store the armyAmountAnswer? in the armyAmount in Territory's object?
+		newArmyAmount = getArmiesAmount() - armyAmountAnswer; 
 		setArmiesAmount(newArmyAmount);
 
 		cout << armyAmountAnswer << " units of army has been deployed to " << territoryAnswer << endl;
