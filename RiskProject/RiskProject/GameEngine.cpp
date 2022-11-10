@@ -407,4 +407,22 @@ void GameEngine::issueOrderPhase() {
 
 		}
 	}
+
+	vector<bool> playerOrderFlagVector;
+	for (Player* p : players)
+	{
+		playerOrderFlagVector.push_back(p->getOrdersToIssueFlag());
+	}
+
+	//checking if all players are done issuing orders
+	//if they are done, then set recursion flag to false and set player's issueOrders flags to true 
+	if (all_of(playerOrderFlagVector.begin(), playerOrderFlagVector.end(), [](bool x) {return x==false; })) { //[TO DEBUG TO MAKE SUR EIT WORK SPROPERLY]
+		//set state recursion flag to false to end the while loop
+		this->orderIssueRecursion = false;
+		//set all of player's flag to true again so they can issue orders when the issue order state comes back again
+		for (Player* p : players) {
+			p->setOrdersToIssueFlag(true);
+		}
+	}
+
 }

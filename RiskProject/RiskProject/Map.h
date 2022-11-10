@@ -46,6 +46,7 @@ public:
     //methods
     void addAdj(Territory* t);
     void setOwner(Player* p);
+    void setArmyAmount(int a);
     
    
 };

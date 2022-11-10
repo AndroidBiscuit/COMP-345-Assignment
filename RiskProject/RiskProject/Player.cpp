@@ -3,6 +3,7 @@
 using std::string;
 using std::endl;
 using std::cout;
+using std::cin;
 using std::remove;
 
 
@@ -242,11 +243,55 @@ vector<Territory*> Player::toDefend()
 
 void Player::issueOrder()
 {
+	vector<Territory*> attackList = toAttack();
+	vector<Territory*> defendList = toDefend();
+	string orderAnswer;
+	string territoryAnswer;
+	int armyAmountAnswer;
+	int newArmyAmount;
+	//while player still has army units, order must be deploying them
+	while (getArmiesAmount() != 0) {
+		cout << "You have armies left in your reinforcement pool, what would you like to do? (attack/defend)\n";
+		cin >> orderAnswer;
+		if (orderAnswer.compare("attack") == 0)
+		{
+			cout << "Here are the available territories to attack: \n";
+			for (Territory* territory : attackList) {
+				cout << territory->getTName() << endl;
+			}
+			cin >> territoryAnswer;
+		}
+		else if (orderAnswer.compare("defend") == 0)
+		{
+			cout << "Here are the available territories to defend: \n";
+			for (Territory* territory : defendList) {
+				cout << territory->getTName() << endl;
+			}
+			cin >> territoryAnswer;
+		}
+		else {
+			cout << "You entered an invalid command \n";
+		}
+
+		cout << "How many army units would you like to deploy to " << territoryAnswer << " ?\n";
+		cout << "You have " << getArmiesAmount() << " army units left. \n";
+		cin >> armyAmountAnswer;
+		newArmyAmount = getArmiesAmount() - armyAmountAnswer;
+		setArmiesAmount(newArmyAmount);
+
+		cout << armyAmountAnswer << " units of army has been deployed to " << territoryAnswer << endl;
+
+	}
+
+
+
+
+	/*-------------------OLD CODE--------------------*/
 	//Order* issued = new Order();
 	string x;
 
 	printOrderList();
-	cout << "Please type out the order you would like to issue: " << endl;
+	cout << "Please type out the order you would like to issue: \nDeploy \nAdvance \nAirlift \nBomb \nBlockade \nNegotiate" << endl;
 	cin >> x;
 	//discoverOrderType(x, issued);
 	Order* issued = new Order(x);
