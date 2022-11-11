@@ -128,7 +128,7 @@ void GameEngine::reinforcementPhase() {
 			}
 			//if fullfill the requirments, give the bonus of the armyValue of the continent
 			if (territoryCounter == playerOwnedTCounter) {
-				cout << "Player " << p->getName() << " owns the entire of " << c->name << "and gains a " << c->armyValue << "bonus!" << endl;
+				cout << "Player " << p->getName() << " owns the entire of " << c->name << "and gains a " << c->armyValue << " bonus!" << endl;
 				numOfReinforcementArmyUnits += c->armyValue;
 			}
 		}
