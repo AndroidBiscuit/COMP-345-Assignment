@@ -306,7 +306,7 @@ void Player::issueOrder()
 			cin >> territoryAnswer;
 
 
-			//add territory to attackList
+			//add territory to defendList
 			for (Territory* territory : defendList)
 			{
 				if (territory->getTName().compare(territoryAnswer) == 0)
@@ -340,7 +340,7 @@ void Player::issueOrder()
 		cout << "How many army units would you like to deploy to " << territoryAnswer << " ?\n";
 		cout << "You have " << getArmiesAmount() << " army units left. \n";
 		cin >> armyAmountAnswer; //where to store the armyAmountAnswer? in the armyAmount in Territory's object?
-		newArmyAmount = getArmiesAmount() - armyAmountAnswer;
+		newArmyAmount = getArmiesAmount() - armyAmountAnswer; //[MAKE SURE ARMY AMOUNT ANSWER ISNT BIGGER THAN ORIGINAL AMOUNT]
 		setArmiesAmount(newArmyAmount);
 		
 		//storing the army units in territory's army amount attribute
@@ -404,15 +404,38 @@ void Player::issueOrder()
 
 	}
 
+	//Look at cards available  in hand
+	cout << "Here are your cards from which you can create orders from: \n";
+	vector<Card*> cardsAvailable = hand->getCards();
+	for (Card* card : cardsAvailable) {
+		cout << card->getCardType() << endl;
+	}
 
+	string cardToUse;
+	cout << "Which card would you like to use? \n";
+	cin >> cardToUse;
 
+	if (cardToUse.compare("bomb") == 0)
+		Order* issued = new Order("bomb");
+	else if (cardToUse.compare("blockade") == 0)
+		Order* issued = new Order("blockade");
+	else if (cardToUse.compare("airlift") == 0)
+		Order* issued = new Order("airlift");
+	else if (cardToUse.compare("diplomacy") == 0)
+		Order* issued = new Order("negotiate");
+	else if (cardToUse.compare("reinforcement"))
+	{
+		setArmiesAmount(getArmiesAmount() + 5);
+	}
+	 //take away the card that was used
+	//add order to ordersList?
 
 	/*-------------------OLD CODE--------------------*/
 	//Order* issued = new Order();
 	string x;
 
 	printOrderList();
-	cout << "Please type out the order you would like to issue: \nDeploy \nAdvance \nAirlift \nBomb \nBlockade \nNegotiate" << endl;
+	cout << "Please type out the order you would like to issue: \nAirlift \nBomb \nBlockade \nNegotiate" << endl;
 	cin >> x;
 	//discoverOrderType(x, issued);
 	Order* issued = new Order(x);
