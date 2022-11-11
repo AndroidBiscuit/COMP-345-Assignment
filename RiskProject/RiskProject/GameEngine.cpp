@@ -371,20 +371,50 @@ void GameEngine::playPhase() {
 //adding army units to player's reinforcement pool
 //[NEED TO DEBUG TO MAKE SURE IT WORKS PROPERLY]
 void GameEngine::reinforcementPhase() {
-	int numOfTerritoriesOwned = 0;
-	int numOfReinforcementArmyUnits;
+	//int numOfTerritoriesOwned = 0;(it's a loop should not assign them to zero at beginning)
 	for (Player* p : players) {
-		numOfReinforcementArmyUnits = 3; //min of 3
-		numOfTerritoriesOwned = (p->getTerritory()).size(); //to debug to make sure it works
-		numOfReinforcementArmyUnits += floor(numOfTerritoriesOwned / 3);
+		int originalArmies = p->getArmiesAmount();
+		//numOfReinforcementArmyUnits = 3; //min of 3 (after this phase, if it is less than 3, let it be 3)
+		int numOfTerritoriesOwned = (p->getTerritory()).size(); //to debug to make sure it works
+		int numOfReinforcementArmyUnits = floor(numOfTerritoriesOwned / 3);
 
 		//if player owns entire continent- they receive the bonus army reinforcement
-		if (/*condition to check if players owns continent*/)
-			numOfReinforcementArmyUnits += ;/*continent's bonus army units*/
+		//check for player owning all the territories of an entire continent
+		for (auto c : map->getAllContinent()) {
+			int playerOwnedTCounter = 0;
+			int territoryCounter = 0;
 
-		p->setArmiesAmount(numOfReinforcementArmyUnits);
+			for (auto t : c->getSubGraph()) {
+				territoryCounter++;
+				if (t->getOwner()->getPlayerID() == p->getPlayerID()) {
+					playerOwnedTCounter++;
+				}
+			}
+			//if fullfill the requirments, give the bonus of the armyValue of the continent
+			if (territoryCounter == playerOwnedTCounter) {
+				cout << "Player " << p->getName() << "owns the entire of " << c->name << "and gains a " << c->armyValue << "bonus!" << endl;
+				numOfReinforcementArmyUnits += c->armyValue;
+			}
+		}
+		//Default minimum to 3
+		if (numOfReinforcementArmyUnits < 3) {
+			numOfReinforcementArmyUnits = 3;
+		}
+
+		p->setArmiesAmount(numOfReinforcementArmyUnits + originalArmies);
+		cout << "Player " << p->getPlayerID() << " - " << p->getName() << " has received " << numOfReinforcementArmyUnits << " armies." << endl;
+		cout << "Current army count is: " << p->getArmiesAmount() << endl;
+
+		
+		//if (/*condition to check if players owns continent*/)
+		//	numOfReinforcementArmyUnits += ;/*continent's bonus army units*/
+
+		/*p->setArmiesAmount(numOfReinforcementArmyUnits);*/
 	}
 }
+
+
+
 
 //loop will be called elsewhere on top so this method is made for 
 //one iteration while looking at flag whether the player is done or not
