@@ -36,6 +36,7 @@ public:
 
 	//Methods
 	void startupPhase();
+	void reinforcementPhase();
 	void transition(string newState);
 	bool loadMap(string fileName);
 	void addPlayer();
