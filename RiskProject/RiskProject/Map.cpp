@@ -109,6 +109,10 @@ string Territory::getTName(){
 
 int Territory::getArmyAmount() { return armyAmount; }
 
+void Territory::setArmyAmount(int army) {
+    armyAmount = army;
+}
+
 //for the Continent struct
 // constructor
 Continent::Continent(int cID, string name) {
