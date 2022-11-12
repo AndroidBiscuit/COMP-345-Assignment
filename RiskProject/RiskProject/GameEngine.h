@@ -38,7 +38,6 @@ public:
 
 	//Methods
 	void startupPhase();
-	void reinforcementPhase();
 	void transition(string newState);
 	bool loadMap(string fileName);
 	void addPlayer();
@@ -49,4 +48,5 @@ public:
 
 	void reinforcementPhase();
 	void issueOrderPhase();
+	bool playerOwnsContinent(Map* m, Player* p);
 };

@@ -60,9 +60,9 @@ GameEngine::~GameEngine() {
 		neutral = NULL;
 	}
 
-	for (auto t : map->getAllTerritory()) {
-		delete t;
-	}
+	//for (auto t : map->getAllTerritory()) {
+	//	delete t;
+	//}
 
 	if (map != NULL) {
 		delete map;
@@ -83,7 +83,7 @@ GameEngine::~GameEngine() {
 // sets GameEngine object's state
 void GameEngine::transition(string newState) {
 	this->setState(newState);
-	cout << "You are transited to state: " << this->getState() << endl;
+	cout << "You are transitioned to state: " << this->getState() << endl;
 }
 
 
@@ -99,9 +99,10 @@ void GameEngine::startupPhase() {
 		cout << *this << endl;
 		
 		if (currentState == "assignreinforcement") {
-			/*reinforcementPhase();*/
-			/*playPhase();*/
-			cout << "switch the game to the play phase" << endl;
+			//reinforcementPhase();
+			
+			cout << "switching the game to the play phase" << endl;
+			playPhase();
 		}
 		cout << "Enter your command: " << endl;
 		Command* cmd = processor->processCommand();
@@ -119,41 +120,6 @@ void GameEngine::startupPhase() {
 	processor = nullptr;
 }
 
-void GameEngine::reinforcementPhase() {
-	for (Player* p : players) {
-		int originalArmies = p->getArmiesAmount();
-		int numOfTerritoriesOwned = (p->getTerritory()).size(); 
-		int numOfReinforcementArmyUnits = floor(numOfTerritoriesOwned / 3);
-
-		//if player owns entire continent- they receive the bonus army reinforcement
-		//check for player owning all the territories of an entire continent
-		for (auto c : map->getAllContinent()) {
-			int playerOwnedTCounter = 0;
-			int territoryCounter = 0;
-
-			for (auto t : c->getSubGraph()) {
-				territoryCounter++;
-				if (t->getOwner()->getPlayerID() == p->getPlayerID()) {
-					playerOwnedTCounter++;
-				}
-			}
-			//if fullfill the requirments, give the bonus of the armyValue of the continent
-			if (territoryCounter == playerOwnedTCounter) {
-				cout << "Player " << p->getName() << " owns the entire of " << c->name << "and gains a " << c->armyValue << " bonus!" << endl;
-				numOfReinforcementArmyUnits += c->armyValue;
-			}
-		}
-		//Default minimum to 3
-		if (numOfReinforcementArmyUnits < 3) {
-			numOfReinforcementArmyUnits = 3;
-		}
-
-		p->setArmiesAmount(numOfReinforcementArmyUnits + originalArmies);
-		cout << "Player " << p->getPlayerID() << " - " << p->getName() << " has received " << numOfReinforcementArmyUnits << " armies." << endl;
-		cout << "Current army count is: " << p->getArmiesAmount() << endl;
-
-	}
-}
 
 //takes a map's file name to create a Map object 
 bool GameEngine::loadMap(string fileName) {
@@ -300,19 +266,22 @@ bool GameEngine::gameStartSetting() {
 
 //play phase
 void GameEngine::playPhase() {
+	//check number of players and map is valid
 	
-	while (/*one player doesn't own all territories, continue the loop*/) {
+	cout << "This is the play phase";
 
-		//Reinforcement phase
-		reinforcementPhase();
+	//while (/*one player doesn't own all territories, continue the loop*/) {
 
-		//Order issueing phase
-		do {
-			issueOrderPhase();
-		} while (orderIssueRecursion); //need to test this
+	//	//Reinforcement phase
+	//	reinforcementPhase(); //show which state the game engine is in
 
-		//Execute order phase
-	}
+	//	//Order issueing phase
+	//	do {
+	//		issueOrderPhase();
+	//	} while (orderIssueRecursion); //need to test this
+
+	//	//Execute order phase
+	//}
 
 }
 
@@ -353,11 +322,6 @@ void GameEngine::reinforcementPhase() {
 		cout << "Player " << p->getPlayerID() << " - " << p->getName() << " has received " << numOfReinforcementArmyUnits << " armies." << endl;
 		cout << "Current army count is: " << p->getArmiesAmount() << endl;
 
-		
-		//if (/*condition to check if players owns continent*/)
-		//	numOfReinforcementArmyUnits += ;/*continent's bonus army units*/
-
-		/*p->setArmiesAmount(numOfReinforcementArmyUnits);*/
 	}
 }
 
