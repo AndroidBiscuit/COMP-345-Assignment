@@ -1,5 +1,4 @@
 #include "CommandProcessing.h"
-
 using std::cout;
 using std::endl;
 using std::cin;
@@ -68,6 +67,9 @@ void Command::saveEffect(string input) {
 	}
 	else if (input == "quit") {
 		theEffect = "Program exits";
+	}
+	else {
+		theEffect = input;
 	}
 
 	this->effect = theEffect;
@@ -143,12 +145,37 @@ Command* CommandProcessor::processCommand()
 	return temp;
 }
 
+// This free function split a string to several components according to the delimiter
+//source: https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+vector<string> split(string s, string delimiter) {
+	size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+	string token;
+	vector<string> res;
+
+	while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
+		token = s.substr(pos_start, pos_end - pos_start);
+		pos_start = pos_end + delim_len;
+		res.push_back(token);
+	}
+
+	res.push_back(s.substr(pos_start));
+	return res;
+}
 //validates a given command in the current game engine
-bool CommandProcessor::validate(string input, string currentState) {
+bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
+
+	string currentState = ge->getState();
 
 	const string valid_commands[6] = { "loadmap", "validatemap", "addplayer", "gamestart", "replay", "quit" };
 
 	bool isValid = false;
+
+	vector<string> seperate_cmd = split(cmd->getCommand(), " ");
+	string input = seperate_cmd[0];
+	string parameter = "";
+	if (seperate_cmd.size() == 2) {
+		parameter = seperate_cmd[1];
+	}
 
 	for (string cmd : valid_commands) {
 		if (input == cmd)
@@ -160,38 +187,91 @@ bool CommandProcessor::validate(string input, string currentState) {
 		return false;
 	}
 	else {
+		//Start state: the loadmap command results in sucessfully loading a readable map, trasitioning to the maploaded state
 		if (input == "loadmap") {
 			if (currentState == "start" || currentState == "maploaded") {
+				bool rest = ge->loadMap(parameter);
+				if (rest) {
+					cmd->saveEffect(input);
+					ge->transition("maploaded");
+				}
+				else { cmd->saveEffect("loadmap error"); }
 				return true;
 			}
 		}
+		//Maploaded state: the validatemap command is used to validate the map. 
+        //If successful, the game transitions to the mapValidated state
 		else if (input == "validatemap") {
 			if (currentState == "maploaded") {
+				ge->getMap()->validate();
+				if (ge->getMap()->getValid()) {
+					cmd->saveEffect(input);
+					ge->transition("mapvalidated");
+				}
+				else {
+					cmd->saveEffect("validatemap error");
+					ge->transition("start");
+				}
+					
 				return true;
 			}
 		}
+		//MapValidated state: the addplayer command is used to create players and insert them in the game (2-6 players). 
 		else if (input == "addplayer") {
 			if (currentState == "mapvalidated" || currentState == "playersadded") {
+				if (ge->getPlayers().size() == 0) {
+					ge->addPlayer(parameter);
+					cmd->saveEffect(input);
+					ge->transition("playersadded");
+				}
+				//checks number of players, only 2-6 are allowed
+				else if (ge->getPlayers().size() < 6) {
+					ge->addPlayer(parameter);
+					cmd->saveEffect(input);
+				}
+
+				else {
+					cout << "Players has been added. Please enter \"gamestart\"" << endl;
+				}
 				return true;
 			}
 		}
+
 		else if (input == "gamestart") {
 			if (currentState == "playersadded") {
+				if (ge->getPlayers().size() > 1) {
+					//fulfills the game start settings
+					ge->gameStartSetting();
+					cmd->saveEffect(input);
+					ge->transition("assignreinforcement");
+				}
+				else {
+					cmd->saveEffect("There are not enough players in the game to start yet.");
+					cout << "There are not enough players in the game to start yet." << endl;
+				}
 				return true;
 			}
 		}
 		else if (input == "replay") {
 			if (currentState == "win") {
+				ge->getPlayers().clear();
+				delete ge->getMap();
+				cmd->saveEffect(input);
+				ge->transition("start");
 				return true;
 			}
 		}
 		else if (input == "quit") {
 			if (currentState == "win") {
+				cmd->saveEffect(input);
+				ge->transition("exitprogram");
 				return true;
 			}
 		}
 	}
 
+	cmd->saveEffect("It is a game command, but not valid in the current state");
 	cout << "It is a game command, but not valid in the current state" << endl;
+
 	return false;
 }

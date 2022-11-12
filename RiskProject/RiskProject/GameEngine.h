@@ -28,6 +28,8 @@ public:
 													
 	void setState(string newState);					/*Getter and setter*/
 	string getState();
+	Map* getMap();
+	vector<Player*> getPlayers();
 
 	GameEngine& operator =(const GameEngine& other);	/*assignment operator*/
 
@@ -36,6 +38,7 @@ public:
 
 	//Methods
 	void startupPhase();
+	void reinforcementPhase();
 	void transition(string newState);
 	bool loadMap(string fileName);
 	void addPlayer();

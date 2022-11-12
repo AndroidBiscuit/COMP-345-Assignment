@@ -69,6 +69,10 @@ Territory& Territory::operator=(const Territory& t)
 //destructor
 Territory::~Territory() {
     cout << "The territory " << name << " was deleted." << endl;
+ /*   for (auto adjTerri : adjTerritories) {
+        delete adjTerri;
+
+    }*/
     adjTerritories.clear();
 }
 
@@ -125,6 +129,7 @@ Continent::Continent(int cID, string name) {
 Continent::Continent(int cID, string name, int armyValue) {
     this->cID = cID;
     this->name = name;
+    this->armyValue = armyValue;
     vector<Territory*> subGraph;
 
 }
@@ -400,18 +405,18 @@ Map* MapLoader::loadMap(string mapFile) {
                 cout << *createdMap->getAllContinent()[0] << endl;
 
 
-                // validate() method here
-                cout << "\nValidating Map " << endl;
-                cout << "\n---------------------------------------------------" << endl;
-                bool result = createdMap->validate();
-                if (result) {
-                    createdMap->setValid(true);
-                    return createdMap;
-                }
-                else {
-                    createdMap->setValid(false);
-                    return createdMap;
-                }
+                //// validate() method here
+                //cout << "\nValidating Map " << endl;
+                //cout << "\n---------------------------------------------------" << endl;
+                //bool result = createdMap->validate();
+                //if (result) {
+                //    createdMap->setValid(true);
+                //    return createdMap;
+                //}
+                //else {
+                //    createdMap->setValid(false);
+                //    return createdMap;
+                //}
 
             }
             else {

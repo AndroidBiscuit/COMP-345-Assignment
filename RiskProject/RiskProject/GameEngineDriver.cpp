@@ -1,7 +1,7 @@
 #include "GameEngine.h"
+#include "GameEngineDriver.h"
 
-
-int main(void) {
+void testStartupPhase() {
 
 	cout << "Welcome to Warzone! " << endl;
 	GameEngine* currentGame = new GameEngine();
@@ -10,5 +10,5 @@ int main(void) {
 
 	delete currentGame;
 	currentGame = nullptr;
-	return 0;
+
 }
