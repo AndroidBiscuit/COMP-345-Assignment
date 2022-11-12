@@ -158,6 +158,9 @@
     <None Include="Invalid2.map" />
     <None Include="Japan.map" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="command.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

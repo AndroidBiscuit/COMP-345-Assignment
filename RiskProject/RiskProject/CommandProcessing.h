@@ -74,5 +74,53 @@ public:
 	Command* processCommand();
 	bool validate(Command* cmd, GameEngine* ge);
 
+};
 
+class FileLineReader {
+	string fileName;
+
+public:
+	//constructor
+	FileLineReader();
+	FileLineReader(string fileName);
+	FileLineReader(const FileLineReader& other);
+
+	//Destructor
+	~FileLineReader();
+
+	//Assignment operator
+	FileLineReader& operator =(const FileLineReader& other);
+
+	//Stream insertion
+	friend ostream& operator << (ostream& out, const FileLineReader& f);
+
+	//Method
+	virtual string readLineFromFile(void);
+
+};
+
+// The target is CommandProcessor which reads commands from the console
+// The adaptee is FileCommandProcessor that reads commands from a file
+// FileCommandProcessorAdapter is the adapter
+class FileCommandProcessorAdapter : public CommandProcessor {
+
+	// addptee class object
+	FileLineReader* fprocessor;
+
+public:
+	//Constructor
+	FileCommandProcessorAdapter();
+	FileCommandProcessorAdapter(FileLineReader* processor);
+	FileCommandProcessorAdapter(const FileCommandProcessorAdapter& other);
+
+	//Destructor
+	~FileCommandProcessorAdapter();
+
+	Command* processCommand(void);
+
+	//Assignment operator
+	FileCommandProcessorAdapter& operator =(const FileCommandProcessorAdapter& other);
+
+	//Stream insertion:
+	friend ostream& operator << (ostream& out, const FileCommandProcessorAdapter& fp);
 };

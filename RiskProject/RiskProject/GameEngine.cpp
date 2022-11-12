@@ -78,34 +78,84 @@ void GameEngine::transition(string newState) {
 
 //implements a command-based user interaction mechanism to start the game.
 void GameEngine::startupPhase() {
+	string source;
 	string currentState;
 	bool isValid{};
 
-	CommandProcessor* processor = new CommandProcessor();
+	Command* cmd{};
+	CommandProcessor* cprocessor{};
+	FileLineReader* fprocessor{};
+	FileCommandProcessorAdapter* adapter{};
+
+	do {
+	    //Upon starting the application, a command line option is set to either read commands from the console
+		cout << "Please enter -console or -file <filename> to choose the input source." << endl;
+		cin >> source;
+	
+		//Commands can be read from the console
+		if (source == "console") {
+			cprocessor = new CommandProcessor();
+		}
+		
+		else if(source == "file") {
+			string fileName;
+			cin >> fileName;
+			// copy the source file so that we can delete the top line after reading it
+			ifstream inFile(fileName);
+			ofstream outFile("copy.txt");
+			outFile << inFile.rdbuf();
+			inFile.close();
+			outFile.close();
+			fprocessor = new FileLineReader("copy.txt"); // adaptee
+			adapter = new FileCommandProcessorAdapter(fprocessor);// adapter (inherited from target)
+		
+		}
+	} while (source != "console" && source != "file");
+
+	// remove the "enter" from the cin buffer
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
 	
 	while (state != "exitprogram") {
 		currentState = this->getState();
 		cout << *this << endl;
 		
 		if (currentState == "assignreinforcement") {
-			/*reinforcementPhase();*/
-			/*playPhase();*/
 			cout << "switch the game to the play phase" << endl;
+			/*playPhase();*/
+			break;
 		}
-		cout << "Enter your command: " << endl;
-		Command* cmd = processor->processCommand();
 
-		isValid = processor->validate(cmd, this);
+		if (source == "console") {
+			cout << "Enter your command: " << endl;
+			cmd = cprocessor->processCommand();
+			isValid = cprocessor->validate(cmd, this);
 
-		if (!isValid) {
-			cmd->saveEffect("error");
-			continue;
+			if (!isValid) {
+				cmd->saveEffect("error");
+				continue;
+			}
 		}
-		
+		else if (source == "file") {
+			cmd = adapter->processCommand();
+			isValid = cprocessor->validate(cmd, this);
+
+			if (!isValid) {
+				cmd->saveEffect("error");
+				break;
+			}
+		}
 	
 	}
-	delete processor;
-	processor = nullptr;
+
+	if (source == "console") {
+		delete cprocessor;
+		cprocessor = nullptr;
+	}
+	else if (source == "file") {
+		delete adapter;
+		adapter = nullptr;
+	}
 }
 
 void GameEngine::reinforcementPhase() {

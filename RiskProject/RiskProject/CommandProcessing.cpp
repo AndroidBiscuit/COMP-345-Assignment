@@ -275,3 +275,116 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 
 	return false;
 }
+
+// FileLineReader class
+//Constructor
+FileLineReader::FileLineReader() {
+	fileName = "Default";
+}
+
+FileLineReader::FileLineReader(string fileName) {
+	this->fileName = fileName;
+}
+
+FileLineReader::FileLineReader(const FileLineReader& other) {
+	fileName = other.fileName;
+}
+
+//Destructor
+FileLineReader::~FileLineReader(void) {
+	cout << "Destroying FileLineReader." << endl;
+}
+
+//Assignment operator
+FileLineReader& FileLineReader::operator =(const FileLineReader& other) {
+	fileName = other.fileName;
+	return *this;
+}
+
+//Stream insertion
+ostream& operator << (ostream& out, const FileLineReader& f) {
+	out << f.fileName << endl;
+	return out;
+}
+
+// This method reads a file line by line
+string FileLineReader::readLineFromFile(void) {
+
+	ifstream input{};
+	input.open(fileName);
+
+	// check if the file is empty
+	if (input.peek() == std::ifstream::traits_type::eof()) {
+		cout << "The command file is empty!" << endl;
+		exit(0);
+	}
+	string current;
+
+	// get the first line of the file
+	getline(input, current);
+	input.close();
+
+	// remove the first line from the file
+	int count = 0;
+	string line;
+	ifstream inFile(fileName);
+	ofstream outFile("removedfirstline.txt");
+	while (getline(inFile, line)) {
+		count++;
+		if (count != 1) {
+			outFile << line << "\n";
+		}
+	}
+	inFile.close();
+	outFile.close();
+
+	// delete the original file
+	remove("copy.txt");
+	// change the file name of removeline.txt to copy.txt
+	rename("removedfirstline.txt", "copy.txt");
+
+	return(current);
+}
+
+// FileCommandProcessorAdapter class 
+
+// Constructor
+FileCommandProcessorAdapter::FileCommandProcessorAdapter() {
+	fprocessor = new FileLineReader();
+}
+
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(FileLineReader* processor) {
+	fprocessor = processor;
+}
+
+FileCommandProcessorAdapter::FileCommandProcessorAdapter(const FileCommandProcessorAdapter& other) : CommandProcessor(other) {
+	this->fprocessor = new FileLineReader(*other.fprocessor);
+}
+
+//Destructor
+FileCommandProcessorAdapter::~FileCommandProcessorAdapter() {
+	cout << "Destroying FileCommandProcessorAdapter." << endl;
+	delete fprocessor;
+	fprocessor = nullptr;
+}
+
+//Assignment operator
+FileCommandProcessorAdapter& FileCommandProcessorAdapter::operator =(const FileCommandProcessorAdapter& other) {
+	CommandProcessor::operator = (other);
+	this->fprocessor = new FileLineReader(*other.fprocessor);
+	return *this;
+}
+
+//Stream insertion:
+ostream& operator << (ostream& out, const FileCommandProcessorAdapter& fp) {
+	out << fp.fprocessor << endl;
+	return out;
+}
+
+// this class is inherited from CommandProcessor, so it can overwrite the processCommand() and change the input source from console to file
+Command* FileCommandProcessorAdapter::processCommand() {
+	// use adaptee object to read commands from a file
+	string input = fprocessor->readLineFromFile();
+	Command* temp = CommandProcessor::saveCommand(input);
+	return temp;
+}
