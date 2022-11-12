@@ -8,7 +8,7 @@
 #include "CommandProcessing.h"
 
 using namespace std;
-
+class player;
 class GameEngine {
 private:
     string state;

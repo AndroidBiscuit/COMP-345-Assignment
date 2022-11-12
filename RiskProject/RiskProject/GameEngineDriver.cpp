@@ -8,6 +8,8 @@ void testStartupPhase() {
 
 	currentGame->startupPhase();
 
+	system("pause");
+
 	delete currentGame;
 	currentGame = nullptr;
 	
@@ -17,6 +19,8 @@ void testStartupPhase() {
 	GameEngine* currentGame2 = new GameEngine();
 
 	currentGame2->startupPhase();
+
+	system("pause");
 
 	delete currentGame2;
 	currentGame2 = nullptr;

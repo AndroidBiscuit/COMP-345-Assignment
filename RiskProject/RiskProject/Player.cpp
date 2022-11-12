@@ -93,7 +93,7 @@ Player::~Player() {
 	}
 	//release memory
 	territory.clear();
-	
+	createdPlayers--;
 }
 
 //Mutators:

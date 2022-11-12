@@ -39,7 +39,6 @@ void testCommandProcessor() {
 	currentGame = nullptr;
 
 	system("pause");
-
 	GameEngine* currentGame2 = new GameEngine();
 	CommandProcessor* processor2 = new CommandProcessor();
 	cout << "Read commands from file, please input <filename>." << endl;

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <random>
 #include "GameEngine.h"
+#include "Player.h"
 
 using std::default_random_engine;
 
