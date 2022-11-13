@@ -1,6 +1,8 @@
 #pragma once
 #include <list>
 #include <string>
+#include"Map.h"
+#include"Player.h"
 using namespace std;
 
 class Order
@@ -74,13 +76,17 @@ public:
 class Deploy: public Order
 {
 private:
+	int armyUnits;
+	Territory* territory;
+	Player* player;
 public:
 	Deploy();
 	Deploy(const Deploy& d); 
 	Deploy& operator= (const Deploy& d);  
 	~Deploy();  
 	Deploy(string name);
-	bool validate(string order);
+	Deploy(int armyUnits, Territory* t, Player* p);
+	bool validate(Territory* t, Player* p);
 	void execute();
 
 };

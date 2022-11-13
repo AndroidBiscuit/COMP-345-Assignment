@@ -330,12 +330,15 @@ void Player::issueOrder()
 					Deploy* deployOrderName = new Deploy(armyAmountAnswer, territory, this); //make sure name fits
 					ordersList->addOrder(deployOrderName);
 					cout << "New deployment order added to " << this->getName() << "'s orderList \n";
-					//deployOrderName->execute(); this goes in the execute phase
+					deployOrderName->execute();
 				}
 			}
 			
 
-		
+			
+			//maybe delete this?
+			//cout << armyAmountAnswer << " units of army has been deployed to " << territoryAnswer << endl;
+
 		//}
 		//else
 		//	cout << territoryAnswer << " is not a valid territory. Please choose again. \n";

@@ -6,16 +6,12 @@
 // Assignment 1: Faizan Ahmad 
 // Due date: October 9th 2022
 /*******************************************/
-
-#ifndef CARD_H
-#define CARD_H
+#pragma once
 
 #include <iostream>
-#include <vector>
+#include <vector>             
 #include <string>
-#include "Orders.h"
-#include "Player.h"
-
+#include"Orders.h"
 
 using namespace std;
 
@@ -62,7 +58,8 @@ public:
     string getCardName(CardType card);
 
     // Play method to use the card in hand and return it to the deck
-    void play(OrdersList* ordersList, Deck& deck);
+    //void play(OrdersList* ordersList, Deck& deck);
+    void play(Deck& deck);
 
 private:
     CardType cardType;
@@ -158,6 +155,6 @@ private:
     Deck* deck;
 };
 
-#endif
+
 
 // EOF
