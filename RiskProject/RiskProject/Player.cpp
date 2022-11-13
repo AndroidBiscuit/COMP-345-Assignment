@@ -264,12 +264,14 @@ void Player::issueOrder()
 	string orderAnswer;
 	char orderAnswer2 = 'x';
 	string territoryAnswer;
+	string territorySource;
+	string territoryDestination;
 	bool repeatAttackOrDefendLoop = false;
 	bool repeatMoveArmyUnitsAroundLoop = false;
 	int armyAmountAnswer;
 	int newArmyAmount;
 
-	int orderNumber = 0;
+	static int orderNumber = 0;
 	string deployOrderName = "deploy";
 	string advanceOrderName = "advance";
 	string bombOrdername = "bomb";
@@ -282,7 +284,7 @@ void Player::issueOrder()
 		orderNumber++;
 		cout << "You have armies left in your reinforcement pool, to which territory would you like to deploy them to? \n";
 		cout << "Here are the territories you can deploy them to: \n";
-		for (Territory* territory : defendList) //perform this in the validation in orders?
+		for (Territory* territory : defendList)
 		{
 			cout << territory->getTName() << endl;
 		}
@@ -330,6 +332,7 @@ void Player::issueOrder()
 					Deploy* deployOrderName = new Deploy(armyAmountAnswer, territory, this); //make sure name fits
 					ordersList->addOrder(deployOrderName);
 					cout << "New deployment order added to " << this->getName() << "'s orderList \n";
+					toDefend.push_back(territory); //need to clear this somehow at the end of turn? or make sure that its army units arent empty
 					//deployOrderName->execute(); this goes in the execute phase
 				}
 			}
@@ -340,6 +343,150 @@ void Player::issueOrder()
 		//else
 		//	cout << territoryAnswer << " is not a valid territory. Please choose again. \n";
 	};
+
+	cout << "Would you like to move army units around on the map? \n";
+	while (orderAnswer2 != 'y' && orderAnswer2 != 'n')
+	{
+		cout << "Would you like to attack/defend territories? (y/n) \n";
+		cin >> orderAnswer2;
+
+		if (orderAnswer2 == 'y')
+			repeatAttackOrDefendLoop = true;
+		else if (orderAnswer2 == 'n')
+			repeatAttackOrDefendLoop = false;
+		else
+			cout << "That is not a valid command. \n";
+	}
+
+	
+	while (repeatAttackOrDefendLoop) {
+		orderNumber++;
+
+		/*while (orderAnswer != "attack" && orderAnswer != "defend")
+		{
+			cout << "Would you like to defend or attack? \n";
+			cin >> orderAnswer;
+
+			if (orderAnswer != "attack" && orderAnswer != "defend")
+				cout << "That is not a valid command. \n";
+		}*/
+
+		cout << "Here are where your army units are stationed at: \n";
+		for (Territory* territory : toDefend)
+		{
+			cout << territory->getTName() << " with " << territory->getArmyAmount() << endl;
+		}
+		
+		cout << "From where would you like to move your army units? \n";
+		cin >> territorySource;
+
+		cout << "To where would you like to move your army units? \n";
+		cout << "Here are the available territories adjacent to your chosen territory: \n";
+		for (Territory* territory : defendList)
+		{
+			if (territory->getTName() == territorySource) {
+				for(Territory* territoryAdj : territory->getAdjTerritories())
+					cout<<territoryAdj->getTName();
+			}
+		}
+		cin >> territoryDestination;
+
+		cout << "How many army units would you like to deploy to this destination territory? \n";
+		cin >> armyAmountAnswer; //might need to do some checking here
+
+		
+		//create advance order
+		advanceOrderName = advanceOrderName.append(to_string(orderNumber)); //setting up the order obj name
+		
+		for (Territory* fromTerritory : defendList)
+		{
+			if (fromTerritory->getTName().compare(territorySource) == 0)
+			{
+				for (Territory* toTerritory : fromTerritory->getAdjTerritories())
+				{
+					if (toTerritory->getTName().compare(territoryDestination) == 0)
+					{
+						Advance* advanceOrderName = new Advance(this, fromTerritory, toTerritory, armyAmountAnswer); //make sure name fits
+						ordersList->addOrder(advanceOrderName);
+						//cout << "New deployment order added to " << this->getName() << "'s orderList \n";
+						//toDefend.push_back(territory); //need to clear this somehow at the end of turn? or make sure that its army units arent empty
+						//deployOrderName->execute(); this goes in the execute phase
+
+					}
+				}
+				
+			}
+		}
+
+		
+
+		
+
+
+		if (orderAnswer.compare("attack") == 0)
+		{
+			cout << "Here are the available territories to attack: \n";
+			for (Territory* territory : attackList) {
+				cout << territory->getTName() << endl;
+			}
+			cin >> territoryAnswer;
+
+			if (makeSureTerritoryAnswerExists(attackList, territoryAnswer)) {
+				//add territory to attackList
+				for (Territory* territory : attackList)
+				{
+					if (territory->getTName().compare(territoryAnswer) == 0)
+						toAttack.push_back(territory);
+				}
+			}
+			else
+				cout << territoryAnswer << " is not a valid territory. Please choose again. \n";
+
+
+
+		}
+		else if (orderAnswer.compare("defend") == 0)
+		{
+			cout << "Here are the available territories to defend: \n";
+			for (Territory* territory : defendList) {
+				cout << territory->getTName() << endl;
+			}
+			cin >> territoryAnswer;
+
+			if (makeSureTerritoryAnswerExists(defendList, territoryAnswer)) {
+				//add territory to defendList
+				for (Territory* territory : defendList)
+				{
+					if (territory->getTName().compare(territoryAnswer) == 0)
+						toDefend.push_back(territory);
+				}
+			}
+			else
+				cout << territoryAnswer << " is not a valid territory. Please choose again. \n";
+
+		}
+		else {
+			cout << "You entered an invalid command \n";
+		}
+
+		//resetting answer
+		orderAnswer = "";
+		orderAnswer2 = 'x';
+		while (orderAnswer2 != 'y' && orderAnswer2 != 'n')
+		{
+			cout << "Would you like to attack/defend more territories? (y/n) \n";
+			cin >> orderAnswer2;
+
+			if (orderAnswer2 == 'y')
+				repeatAttackOrDefendLoop = true;
+			else if (orderAnswer2 == 'n')
+				repeatAttackOrDefendLoop = false;
+			else
+				cout << "That is not a valid command. \n";
+		}
+
+	};
+
 
 
 

@@ -140,9 +140,9 @@ void Deploy::execute() {
 
 		//get territory's original army size	
 		int territoryOriginalArmySize = this->territory->getArmyAmount();
-		this->territory->setArmyAmount(this->armyUnits + territoryOriginalArmySize);
-		int x = this->territory->getArmyAmount();
 		
+		//set territory's army units 
+		this->territory->setArmyAmount(this->armyUnits + territoryOriginalArmySize);
 	}
 		
 }
@@ -168,6 +168,7 @@ Advance::Advance(const Advance& a): Order(a) {
 	this->orderExecutionFlag = a.orderExecutionFlag;
 
 }
+
 
 Advance& Advance:: operator= (const Advance& a) {
 	//cout << "Advance assignment operator called. \n";
