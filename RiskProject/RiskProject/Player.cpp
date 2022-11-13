@@ -93,7 +93,7 @@ Player::~Player() {
 	}
 	//release memory
 	territory.clear();
-	
+	createdPlayers--;
 }
 
 //Mutators:
@@ -246,4 +246,3 @@ void Player::issueOrder()
 		cout << *o;
 	}
 }
-

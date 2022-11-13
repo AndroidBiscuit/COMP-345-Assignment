@@ -8,7 +8,10 @@ void testStartupPhase() {
 
 	currentGame->startupPhase();
 
+	system("pause");
+
 	delete currentGame;
 	currentGame = nullptr;
+	
 
 }

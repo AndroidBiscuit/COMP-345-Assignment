@@ -133,6 +133,8 @@
     <ClCompile Include="CommandProcessingDriver.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="GameEngineDriver.cpp" />
+    <ClCompile Include="LoggingObserver.cpp" />
+    <ClCompile Include="LoggingObserverDriver.cpp" />
     <ClCompile Include="MainDriver.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Orders.cpp" />
@@ -146,6 +148,8 @@
     <ClInclude Include="CommandProcessingDriver.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="GameEngineDriver.h" />
+    <ClInclude Include="LoggingObserverDriver.h" />
+    <ClInclude Include="LoggingObserver.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapLoader.h" />
     <ClInclude Include="Orders.h" />
@@ -157,6 +161,10 @@
     <None Include="Invalid1.map" />
     <None Include="Invalid2.map" />
     <None Include="Japan.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="command.txt" />
+    <Text Include="gamelog.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

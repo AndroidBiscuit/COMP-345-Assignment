@@ -125,6 +125,7 @@ Continent::Continent(int cID, string name) {
 Continent::Continent(int cID, string name, int armyValue) {
     this->cID = cID;
     this->name = name;
+    this->armyValue = armyValue;
     vector<Territory*> subGraph;
 
 }
