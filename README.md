@@ -26,9 +26,9 @@
   - Part 4: Faizan Ahmad
   - Part 5: Wuyang Peng
 - Assignment 2: 
-  - Part 1: Ziad
+  - Part 1: Lin
   - Part 2: Lin
   - Part 3: Monica and Faizan
   - Part 4: Monica and Faizan
-  - Part 5: Ziad
+  - Part 5: Ziad and Lin
   - Game engine: everyone
