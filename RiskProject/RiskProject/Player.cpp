@@ -246,4 +246,3 @@ void Player::issueOrder()
 		cout << *o;
 	}
 }
-
