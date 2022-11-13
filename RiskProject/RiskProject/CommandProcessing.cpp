@@ -73,6 +73,12 @@ void Command::saveEffect(string input) {
 	}
 
 	this->effect = theEffect;
+	Notify(this);
+}
+
+// redefine the virtual method inherited from Subject class
+string Command::stringToLog() {
+	return "Current effect: " + effect;
 }
 
 //CommandProcessor class
@@ -134,6 +140,7 @@ string CommandProcessor::readCommand(void) {
 Command* CommandProcessor::saveCommand(string command) {
 	Command* temp = new Command(command);
 	commands.push_back(temp);
+	Notify(this);// When a command is read, it is written in the log file. When a command is executed, its effect is written in the log file.
 	return temp;
 }
 
@@ -274,6 +281,11 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 	cout << "It is a game command, but not valid in the current state" << endl;
 
 	return false;
+}
+
+// redefine the virtual method inherited from Subject class
+string CommandProcessor::stringToLog() {
+	return "Input command: " + commands.back()->getCommand();
 }
 
 // FileLineReader class

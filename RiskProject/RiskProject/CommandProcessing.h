@@ -8,6 +8,7 @@
 #include "Cards.h"
 #include "Map.h"
 #include "Orders.h"
+#include "LoggingObserver.h"
 
 using std::string;
 using std::ostream;
@@ -15,7 +16,7 @@ using std::vector;
 
 class GameEngine;
 
-class Command{
+class Command : public Subject{
 
 	string command;
 	string effect;
@@ -42,9 +43,12 @@ public:
 	//Method
 	void saveEffect(string input);
 
+	//Method
+	virtual string stringToLog();
+
 };
 
-class CommandProcessor {
+class CommandProcessor : public Subject {
 private:
 	vector<Command*> commands;
 
@@ -73,6 +77,7 @@ public:
 	//Method
 	Command* processCommand();
 	bool validate(Command* cmd, GameEngine* ge);
+	virtual string stringToLog();
 
 };
 

@@ -74,14 +74,21 @@ GameEngine::~GameEngine() {
 void GameEngine::transition(string newState) {
 	this->setState(newState);
 	cout << "You are transited to state: " << this->getState() << endl;
+	Notify(this);
 }
 
+// redefine the virtual method inherited from Subject class
+string GameEngine::stringToLog() {
+	return "Transitioned to state: " + state;
+}
 
 //implements a command-based user interaction mechanism to start the game.
 void GameEngine::startupPhase() {
 	string source;
 	string currentState;
 	bool isValid{};
+	LogObserver* processorObserver{};
+	LogObserver* commandObserver{};
 
 	Command* cmd{};
 	CommandProcessor* cprocessor{};
@@ -96,6 +103,7 @@ void GameEngine::startupPhase() {
 		//Commands can be read from the console
 		if (source == "console") {
 			cprocessor = new CommandProcessor();
+			processorObserver = new LogObserver(cprocessor);
 		}
 		
 		else if(source == "file") {
@@ -109,7 +117,7 @@ void GameEngine::startupPhase() {
 			outFile.close();
 			fprocessor = new FileLineReader("copy.txt"); // adaptee
 			adapter = new FileCommandProcessorAdapter(fprocessor);// adapter (inherited from target)
-		
+			processorObserver = new LogObserver(adapter);
 		}
 	} while (source != "console" && source != "file");
 
@@ -124,12 +132,18 @@ void GameEngine::startupPhase() {
 		if (currentState == "assignreinforcement") {
 			cout << "switch the game to the play phase" << endl;
 			/*playPhase();*/
+			delete commandObserver;
+			commandObserver = nullptr;
+
+			delete processorObserver;
+			processorObserver = nullptr;
 			break;
 		}
 
 		if (source == "console") {
 			cout << "Enter your command: " << endl;
 			cmd = cprocessor->processCommand();
+			commandObserver = new LogObserver(cmd);
 			isValid = cprocessor->validate(cmd, this);
 
 			if (!isValid) {
@@ -139,6 +153,7 @@ void GameEngine::startupPhase() {
 		}
 		else if (source == "file") {
 			cmd = adapter->processCommand();
+			commandObserver = new LogObserver(cmd);
 			isValid = cprocessor->validate(cmd, this);
 
 			if (!isValid) {
@@ -157,6 +172,7 @@ void GameEngine::startupPhase() {
 		delete adapter;
 		adapter = nullptr;
 	}
+
 }
 
 void GameEngine::reinforcementPhase() {

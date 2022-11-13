@@ -1,0 +1,14 @@
+Input command: loadmap Japan.map
+Current effect: Map has been successfully loaded.
+Transitioned to state: maploaded
+Input command: validatemap
+Current effect: Map has been validated.
+Transitioned to state: mapvalidated
+Input command: addplayer Jane
+Current effect: The player has been added.
+Transitioned to state: playersadded
+Input command: addplayer Patrick
+Current effect: The player has been added.
+Input command: gamestart
+Current effect: Reinforcement has been assigned.
+Transitioned to state: assignreinforcement

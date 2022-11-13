@@ -6,10 +6,11 @@
 #include "Map.h"
 #include "Orders.h"
 #include "CommandProcessing.h"
+#include "LoggingObserver.h"
 
 using namespace std;
 class player;
-class GameEngine {
+class GameEngine : public Subject {
 private:
     string state;
 	vector<Player*> players;
@@ -35,6 +36,7 @@ public:
 	~GameEngine();
 
 	//Methods
+	virtual string stringToLog(void);
 	void startupPhase();
 	void reinforcementPhase();
 	void transition(string newState);
