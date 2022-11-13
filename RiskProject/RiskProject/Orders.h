@@ -113,13 +113,16 @@ public:
 class Bomb : public Order
 {
 private:
+	Player* player;
+	Territory* territory;
 public:
 	Bomb();
 	Bomb(string name);
 	Bomb(const Bomb& b);
+	Bomb(Player* p, Territory* t);
 	Bomb& operator= (const Bomb& b);
 	~Bomb();
-	bool validate(string order);
+	bool validate(Player *p, Territory* t);
 	void execute();
 };
 

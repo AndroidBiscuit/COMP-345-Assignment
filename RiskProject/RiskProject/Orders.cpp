@@ -263,6 +263,14 @@ Bomb::Bomb(const Bomb& b):Order(b) {
 	this->orderExecutionFlag = b.orderExecutionFlag;
 
 }
+
+Bomb::Bomb(Player* p, Territory* t)
+{
+	orderName = "bomb";
+	orderEffect = "Destroy half of the army units located on an opponent’s territory that is adjacent to one of the current player’s territories.";
+	player = p;
+	territory = t;
+}
 Bomb& Bomb::operator= (const Bomb& b) {
 	//cout << "Bomb assignment operator called. \n";
 	orderName = b.orderName;
@@ -275,18 +283,35 @@ Bomb::~Bomb() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Bomb::validate(string order) {
+bool Bomb::validate(Player* p, Territory* territoryToBeBombed) {
 	//for now: if string matches with the name of order, then its validated
-	string deploy = "bomb";
+	/*string deploy = "bomb";
 	if (deploy.compare(order) == 0)
-		return true;
+		return true;*/
+
+	//check if territory's owner isn't the one that issued it
+	if (territoryToBeBombed->getOwner() != p) {
+		for (Territory* territoryOfPlayer : p->getTerritory())
+		{
+			for (Territory* territoryAdj : territoryOfPlayer->getAdjTerritories())
+			{
+				if (territoryToBeBombed = territoryAdj)
+					return true;
+			}
+		}
+	}
 
 	return false;
 }
 
 void Bomb::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->player, this->territory))
+	{
 		this->setOrderExecutionFlag(true);
+		int armyAmount = territory->getArmyAmount();
+		territory->setArmyAmount(armyAmount / 2);
+
+	}
 }
 
 //-----------------------BlOCKADE FUNCTION IMPLEMENTATION----------------------//

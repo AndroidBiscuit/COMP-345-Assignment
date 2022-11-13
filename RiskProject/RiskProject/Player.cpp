@@ -668,7 +668,7 @@ void Player::issueOrder()
 
 	//----------------------------------------------------------------------------------//
 
-	//Look at cards available  in hand
+	//Look at cards available  in hand and allow user to input answer
 	cout << "Here are your cards from which you can create orders from: \n";
 	vector<Card*> cardsAvailable = hand->getCards();
 	for (Card* card : cardsAvailable) {
@@ -676,11 +676,52 @@ void Player::issueOrder()
 	}
 
 	string cardToUse;
+	bool cardValid = false;
 	cout << "Which card would you like to use? \n";
 	cin >> cardToUse;
 
+	//while(!cardValid)
+	//{
+	//	cout << "Which card would you like to use? \n";
+	//	cin >> cardToUse;
+
+	//	//check to make sure the card exists in player's hand
+	//	for (Card* card : cardsAvailable)
+	//	{
+	//		if (card->getCardName(card->getCardType()) == cardToUse)
+	//			cardValid = true;
+
+	//	}
+	//	if (!cardValid)
+	//		cout << "Invalid card, choose again. \n";
+	//}
+	//
+
 	if (cardToUse.compare("bomb") == 0)
-		Order* issued = new Order("bomb");
+	{
+		orderNumber++;
+		cout << "To which enemy territory would you like to throw a bomb onto? \n";
+		cout << "These are the enemy territories available to throw it on: \n";
+		for (Territory* enemyTerritory : attackList)
+		{
+			cout << enemyTerritory->getTName() << endl;
+		}
+		cin >> territoryAnswer;
+
+		//create bomb order
+		bombOrderName = bombOrderName.append(to_string(orderNumber)); //setting up the order obj name
+		for (Territory* territory : attackList)
+		{
+			if (territory->getTName().compare(territoryAnswer) == 0)
+			{
+				Bomb* bombOrderName = new Bomb(this, territory); //make sure name fits
+				ordersList->addOrder(bombOrderName);				
+				bombOrderName->execute();
+			}
+		}
+
+		//Order* issued = new Order("bomb");
+	}
 	else if (cardToUse.compare("blockade") == 0)
 		Order* issued = new Order("blockade");
 	else if (cardToUse.compare("airlift") == 0)
@@ -711,18 +752,13 @@ void Player::issueOrder()
 					{
 						Airlift* airliftOrderName = new Airlift(this, fromTerritory, toTerritory, armyAmountAnswer); //make sure name fits
 						ordersList->addOrder(airliftOrderName);
-						airliftOrderName->execute();
+						
 							//toDefend.push_back(territory); //need to clear this somehow at the end of turn? or make sure that its army units arent empty
-						//deployOrderName->execute(); this goes in the execute phase
-
 					}
 				}
 
 			}
 		}
-
-
-		//Order* issued = new Order("airlift");
 	}
 		
 	else if (cardToUse.compare("diplomacy") == 0)
