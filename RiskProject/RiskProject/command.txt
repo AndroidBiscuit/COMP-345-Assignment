@@ -1,11 +1,11 @@
 loadmap Canada.map
 validatemap
-addplayer yupei
-addplayer steve
-addplayer sarah
-addplayer tomas
-addplayer luiza
-addplayer arie
+addplayer sai
+addplayer cal
+addplayer zaid
+addplayer faizan
+addplayer jane
+addplayer patrick
 gamestart
 quit
 
