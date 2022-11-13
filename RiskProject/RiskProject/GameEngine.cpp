@@ -259,15 +259,10 @@ bool GameEngine::gameStartSetting() {
 
 	//Enter play phase.
 	return true;
-
-
-
 }
 
 //Main Game loop
-void GameEngine::mainGameLoop() {
-	//check number of players and map is valid
-	
+void GameEngine::mainGameLoop() {	
 	cout << "This is the play phase" <<endl;
 	while (!playerOwnsAllContinent()) {
 
@@ -327,36 +322,16 @@ bool GameEngine::playerOwnsAllContinent() {
 }
 
 //adding army units to player's reinforcement pool
-//[NEED TO DEBUG TO MAKE SURE IT WORKS PROPERLY]
 void GameEngine::reinforcementPhase() {
-	//int numOfTerritoriesOwned = 0;(it's a loop should not assign them to zero at beginning)
 	cout << "The game state is in the reinforcement state \n";
 	for (Player* p : players) {
 		int originalArmies = p->getArmiesAmount();
-		//numOfReinforcementArmyUnits = 3; //min of 3 (after this phase, if it is less than 3, let it be 3)
-		int numOfTerritoriesOwned = (p->getTerritory()).size(); //to debug to make sure it works
+		int numOfTerritoriesOwned = (p->getTerritory()).size(); 
 		int numOfReinforcementArmyUnits = floor(numOfTerritoriesOwned / 3);
 
 		numOfReinforcementArmyUnits =  playerOwnsEntireContinent(p, numOfReinforcementArmyUnits);
-		////if player owns entire continent- they receive the bonus army reinforcement
-		////check for player owning all the territories of an entire continent
-		//for (auto c : map->getAllContinent()) {
-		//	int playerOwnedTCounter = 0;
-		//	int territoryCounter = 0;
-
-		//	for (auto t : c->getSubGraph()) {
-		//		territoryCounter++;
-		//		if (t->getOwner()->getPlayerID() == p->getPlayerID()) {
-		//			playerOwnedTCounter++;
-		//		}
-		//	}
-		//	//if fullfill the requirments, give the bonus of the armyValue of the continent
-		//	if (territoryCounter == playerOwnedTCounter) {
-		//		cout << "Player " << p->getName() << "owns the entire of " << c->name << "and gains a " << c->armyValue << "bonus!" << endl;
-		//		numOfReinforcementArmyUnits += c->armyValue;
-		//	}
-		//}
-		//Default minimum to 3
+		
+		//if after checking territories and player has less than 3, assign 3 army units to player
 		if (numOfReinforcementArmyUnits < 3) {
 			numOfReinforcementArmyUnits = 3;
 		}
@@ -369,17 +344,13 @@ void GameEngine::reinforcementPhase() {
 }
 
 
-
-
-//loop will be called elsewhere on top so this method is made for 
-//one iteration while looking at flag whether the player is done or not
 void GameEngine::issueOrderPhase() {
 	cout << "You are in issue order phase state \n";
 	char playerAnswer;
 	for (Player* p : players) {
 		if (p->getOrdersToIssueFlag()) { //if true, then player still wants to issue orders
 			cout << p->getName() <<"'s turn to issue an order: " << endl;
-			p->issueOrder(); //to modify issueOrder a little to simplify during gameplay	
+			p->issueOrder(); 
 			
 			//at end of order issue, ask if player still wants to issue order - if yes then true, if no then set flag to false
 			cout << "Do you still want to issue orders? (y/n)" << endl;
@@ -388,12 +359,13 @@ void GameEngine::issueOrderPhase() {
 				p->setOrdersToIssueFlag(false);
 			if (playerAnswer == 'y')
 				this->orderIssueRecursion = true;
-			//need to find way to set orderIssueRecursion to false once everyone is done and player's ordersToIssueFlag to true
+			
 			cout << "End of " << p->getName() << "'s turn to issue orders. \n";
 
 		}
 	}
 
+	//checking every player's order flag to determine whether round robin turn should happen again or not
 	vector<bool> playerOrderFlagVector;
 	for (Player* p : players)
 	{
@@ -402,7 +374,7 @@ void GameEngine::issueOrderPhase() {
 
 	//checking if all players are done issuing orders
 	//if they are done, then set recursion flag to false and set player's issueOrders flags to true 
-	if (all_of(playerOrderFlagVector.begin(), playerOrderFlagVector.end(), [](bool x) {return x==false; })) { //[TO DEBUG TO MAKE SUR EIT WORK SPROPERLY]
+	if (all_of(playerOrderFlagVector.begin(), playerOrderFlagVector.end(), [](bool x) {return x==false; })) {
 		//set state recursion flag to false to end the while loop
 		this->orderIssueRecursion = false;
 		//set all of player's flag to true again so they can issue orders when the issue order state comes back again
