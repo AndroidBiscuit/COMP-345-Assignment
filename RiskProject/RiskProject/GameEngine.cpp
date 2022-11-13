@@ -13,12 +13,14 @@ GameEngine::GameEngine(){
 	state = "start";/*set first state as start*/
 	orderIssueRecursion = false;
 	executeOrderRecursion = false;
+	deployOrdersFlag = true;
 }
 
 GameEngine::GameEngine(const GameEngine& other){
 	state = other.state;
 	orderIssueRecursion = other.orderIssueRecursion;
 	executeOrderRecursion = other.executeOrderRecursion;
+	deployOrdersFlag = other.deployOrdersFlag;
 }
 
 //mutator and accessor
@@ -43,6 +45,7 @@ GameEngine& GameEngine::operator =(const GameEngine& other){
 	state = other.state;
 	orderIssueRecursion = other.orderIssueRecursion;
 	executeOrderRecursion = other.executeOrderRecursion;
+	deployOrdersFlag = other.deployOrdersFlag;
 	return *this;
 }
 
@@ -392,34 +395,58 @@ void GameEngine::issueOrderPhase() {
 
 void GameEngine::executeOrderPhase() {
 	//round robin fashion
+	//a flag to show that deploy is done
 	OrdersList* ordersList;
-
+	bool noDeployOrdersLeft = true;
+	bool noOrdersLeft = true;
+	executeOrderRecursion = true;
 	//deploy orders first
-	for (Player* player : players)
+	if (deployOrdersFlag)
 	{
-		ordersList = player->getOrders();
-		list<Order*> aList = ordersList->getOrdersList();
-		//execute only if its deploy
-		if (aList.front()->getOrderName() == "deploy")
+		for (Player* player : players)
 		{
-			cout << "Executing first order (only if its deploy)\n";
-			cout << "executing " << player->getName() << "'s deploy order\n";
-			aList.front()->execute();
-			aList.pop_front(); //remove order after its been executed
+			ordersList = player->getOrders();
+			list<Order*> aList = ordersList->getOrdersList();
+			//execute only if its deploy
+			if (aList.front()->getOrderName() == "deploy")
+			{
+				noOrdersLeft = false;
+				noDeployOrdersLeft = false; //if flag is false then deploy has been spotted
+				cout << "Executing first order (only if its deploy)\n";
+				cout << "executing " << player->getName() << "'s deploy order\n";
+				aList.front()->execute();
+				aList.pop_front(); //remove order after its been executed
 
+			}
 		}
+
 	}
 
+	//if no more deploy 
+	if (noDeployOrdersLeft)
+		deployOrdersFlag = false;
+
+	
+	executeOrderRecursion = true;
 	//all other orders in round robin fashion
-	for (Player* player : players)
+	if (!deployOrdersFlag)
 	{
-		ordersList = player->getOrders();
-		list<Order*> aList = ordersList->getOrdersList();
-		if (!aList.empty())
+		for (Player* player : players)
 		{
-			cout << "executing " <<player->getName() << "'s order";
-			aList.front()->execute();
-			aList.pop_front();
+			ordersList = player->getOrders();
+			list<Order*> aList = ordersList->getOrdersList();
+			if (!aList.empty())
+			{
+				noOrdersLeft = false;
+				cout << "executing " << player->getName() << "'s order";
+				aList.front()->execute();
+				aList.pop_front();
+			}
 		}
 	}
+	
+	if (noOrdersLeft)
+		executeOrderRecursion = false; //exit execution loop state when no orders are left
+
+	
 }

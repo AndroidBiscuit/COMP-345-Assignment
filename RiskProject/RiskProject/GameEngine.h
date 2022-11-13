@@ -17,6 +17,7 @@ private:
 	Deck* deck;
 	bool orderIssueRecursion;
 	bool executeOrderRecursion;
+	bool deployOrdersFlag;
 
 public:
 	//Neutral Player:
