@@ -257,9 +257,10 @@ vector<Territory*> Player::availableTerritoriesToDefend()
 }
 
 
-void Player::issueOrder(Player* np)
+void Player::issueOrder(Player* np, vector<Player*> pAvailable)
 {
 	Player* neutralPlayer = np;
+	vector<Player*> playersAvailable = pAvailable;
 	vector<Territory*> attackList = availableTerritoriesToAttack();
 	vector<Territory*> defendList = availableTerritoriesToDefend();
 	char orderAnswer2 = 'x';
@@ -758,7 +759,29 @@ void Player::issueOrder(Player* np)
 	}
 		
 	else if (cardToUse.compare("diplomacy") == 0)
-		Order* issued = new Order("negotiate");
+	{
+		string playerAnswer;
+		orderNumber++;
+		cout << "which player would you like to target? \n";
+		for (Player* p : playersAvailable)
+		{
+			cout << p->getName() << endl;
+		}
+		cin >> playerAnswer;
+
+		//create diplomacy order
+		negotiateOrderName = negotiateOrderName.append(to_string(orderNumber)); //setting up the order obj name
+		for (Player* targetplayer : playersAvailable)
+		{
+			if (targetplayer->getName() == playerAnswer)
+			{
+				Negotiate* negotiateOrderName = new Negotiate(this, targetplayer);
+				ordersList->addOrder(negotiateOrderName);
+			}
+				
+		}
+		
+	}
 	else if (cardToUse.compare("reinforcement"))
 	{
 		setArmiesAmount(getArmiesAmount() + 5);

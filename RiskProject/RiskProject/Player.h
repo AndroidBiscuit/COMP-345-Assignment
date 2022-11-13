@@ -85,7 +85,7 @@ public:
 	void discoverOrderType(string x, Order* issued);
 	vector<Territory*> availableTerritoriesToDefend();
 	vector<Territory*> availableTerritoriesToAttack();
-	void issueOrder(Player* p); //here
+	void issueOrder(Player* p, vector<Player*> playersVector); //here
 	void addTerritory(Territory*);
 	bool makeSureTerritoryAnswerExists(vector<Territory*>, string name);
 

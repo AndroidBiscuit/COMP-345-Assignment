@@ -166,13 +166,16 @@ public:
 class Negotiate : public Order
 {
 private:
+	Player* enemyPlayer;
+	Player* player;
 public:
 	Negotiate();
 	Negotiate(string name);
 	Negotiate(const Negotiate& a);
+	Negotiate(Player* p1, Player* p2);
 	Negotiate& operator= (const Negotiate& a);
 	~Negotiate();
-	bool validate(string order);
+	bool validate(Player* p1, Player* p2);
 	void execute();
 
 };

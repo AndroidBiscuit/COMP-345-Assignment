@@ -481,6 +481,16 @@ Negotiate::Negotiate(const Negotiate& n):Order(n) {
 	this->orderExecutionFlag = n.orderExecutionFlag;
 
 }
+
+Negotiate::Negotiate(Player* p1, Player* enemy)
+{
+	orderName = "negotiate";
+	orderEffect = "Prevent attacks between the current player and the player targeted by the negotiate order until the end of the turn";
+	player = p1;
+	enemyPlayer = enemy;
+
+}
+
 Negotiate& Negotiate::operator= (const Negotiate& n) {
 	//cout << "Negotiate assignment operator called. \n";
 	orderName = n.orderName;
@@ -493,18 +503,24 @@ Negotiate::~Negotiate() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Negotiate::validate(string order) {
+bool Negotiate::validate(Player* p1, Player* enemy) {
 	//for now: if string matches with the name of order, then its validated
-	string deploy = "negotiate";
+	/*string deploy = "negotiate";
 	if (deploy.compare(order) == 0)
-		return true;
+		return true;*/
 
+	//check the chosen player is an adversary
+	if (p1 != enemy)
+		return true;
 	return false;
 }
 
 void Negotiate::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->player, this->enemyPlayer))
+
+	{
 		this->setOrderExecutionFlag(true);
+	}
 }
 
 
