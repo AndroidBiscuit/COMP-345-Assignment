@@ -654,6 +654,10 @@ void OrdersList::showOrdersList() {
 	}
 }
 
+void OrdersList::clearList() {
+	ordersList.clear();
+}
+
 //destructor
 OrdersList::~OrdersList() {
 	//cout << "OrdersList will now be destroyed \n";

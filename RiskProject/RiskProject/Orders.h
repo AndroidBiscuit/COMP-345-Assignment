@@ -66,6 +66,7 @@ public:
 	void move(int sourceIndex, int destinationIndex);
 	void remove(int indexOfOrder); 
 	void showOrdersList();
+	void clearList();
 
 	//stream insertion
 	friend ostream& operator << (ostream& in, OrdersList ordersList);

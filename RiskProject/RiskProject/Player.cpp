@@ -657,7 +657,7 @@ void Player::issueOrder(Player* np, vector<Player*> pAvailable)
 	bool cardValid = false;
 	cout << "Which card would you like to use? \n";
 	cin >> cardToUse;
-
+	//[TO DO- TO UNCOMMENT WHEN FINISHING UP]
 	//while(!cardValid)
 	//{
 	//	cout << "Which card would you like to use? \n";
