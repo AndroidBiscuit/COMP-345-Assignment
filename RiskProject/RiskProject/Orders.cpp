@@ -91,8 +91,8 @@ Deploy::Deploy(string name) {
 }
 
 Deploy::Deploy(int au, Territory* t, Player* p) {
-	//orderName = "Deploy";
-	//orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
+	orderName = "Deploy";
+	orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
 	armyUnits = au;
 	territory = t;
 	player = p;
@@ -169,6 +169,14 @@ Advance::Advance(const Advance& a): Order(a) {
 
 }
 
+Advance::Advance(Player* p, Territory* src, Territory* dest, int armyNum) {
+	orderName = "advance";
+	orderEffect = "Move a certain number of army units from one territory (source territory) to another territory (target territory)";
+	player = p;
+	srcTerritory = src;
+	dstnTerritory = dest;
+	armyUnits = armyNum;
+}
 
 Advance& Advance:: operator= (const Advance& a) {
 	//cout << "Advance assignment operator called. \n";
@@ -184,18 +192,58 @@ Advance::~Advance() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Advance::validate(string order) {
+bool Advance::validate(Player* p, Territory* src, Territory* dest, int armyNum) {
 	//for now: if string matches with the name of order, then its validated
-	string deploy = "advance";
+	/*string deploy = "advance";
 	if (deploy.compare(order) == 0)
-		return true;
+		return true;*/
+
+	for (Territory* playerTerritories : p->getTerritory()) {
+		//check if source territory belongs to player
+		if (playerTerritories->getTName() != src->getTName()) {
+
+			//check if dstn territory is adj to src territory
+			for(Territory* adjTerritories: src->getAdjTerritories())
+				if (adjTerritories->getTName() == dest->getTName())
+				{
+					//if (dest->getOwner() == p) //put in execute code
+					//check that army amount isn't more than whats available
+					if(armyNum < src->getArmyAmount())
+						return true;
+						
+				}
+		}
+	}
 
 	return false;
 }
 
 void Advance::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->player, this->srcTerritory, this->dstnTerritory, armyUnits))
+	{
+		int originalsrcTerritoryArmyNum = srcTerritory->getArmyAmount();
+		int originalDestTerritoryArmyNum = dstnTerritory->getArmyAmount();
+		int finalSrcTerritoryArmyNum = 0;
+		int finalDestTerritoryArmyNum = 0;
+
 		this->setOrderExecutionFlag(true);
+
+		//if src and destination territory both belong to player, then just move the army units
+		if (dstnTerritory->getOwner() == player)
+		{
+			finalSrcTerritoryArmyNum = originalsrcTerritoryArmyNum - armyUnits;
+			finalDestTerritoryArmyNum = originalDestTerritoryArmyNum + armyUnits;
+			srcTerritory->setArmyAmount(finalSrcTerritoryArmyNum);
+			dstnTerritory->setArmyAmount(finalDestTerritoryArmyNum);
+		}
+		else //src and destination territory belong to different players
+		{
+			//simulate an attack
+			Player* enemyPlayer = dstnTerritory->getOwner();
+			//ASK FOR HELP HERE
+		}
+
+	}
 }
 
 //-----------------------BOMB FUNCTION IMPLEMENTATION----------------------//

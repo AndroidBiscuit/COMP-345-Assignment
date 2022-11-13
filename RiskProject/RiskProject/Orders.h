@@ -95,8 +95,8 @@ class Advance : public Order
 {
 private:
 	int armyUnits;
-	Territory* territorySource;
-	Territory* territorydestination;
+	Territory* srcTerritory;
+	Territory* dstnTerritory;
 	Player* player;
 public:
 	Advance();
@@ -105,7 +105,7 @@ public:
 	Advance(Player* p, Territory* a, Territory* b, int armyUnits);
 	Advance& operator= (const Advance& a);
 	~Advance();
-	bool validate(string order);
+	bool validate(Player* p, Territory* a, Territory* b, int x);
 	void execute();
 
 };
