@@ -114,7 +114,12 @@ Deploy& Deploy:: operator= (const Deploy& d) {
 	return *this;
 }
 
-bool Deploy::validate(Territory* territoryBeingValidated, Player* p){	
+bool Deploy::validate(Territory* territoryBeingValidated, Player* p){
+	////for now: if string matches with the name of order, then its validated
+	//string deploy = "deploy";
+	//if (deploy.compare(order) == 0)
+	//	return true;
+	
 	//looping through player's list of defendable territories
 	//if territory exists in their defend list, then return true
 	vector<Territory*> defendList = p->availableTerritoriesToDefend();
@@ -188,7 +193,11 @@ Advance::~Advance() {
 }
 
 bool Advance::validate(Player* p, Territory* src, Territory* dest, int armyNum) {
-	
+	//for now: if string matches with the name of order, then its validated
+	/*string deploy = "advance";
+	if (deploy.compare(order) == 0)
+		return true;*/
+
 	for (Territory* playerTerritories : p->getTerritory()) {
 		//check if source territory belongs to player
 		if (playerTerritories->getTName() == src->getTName()) {
@@ -275,7 +284,11 @@ Bomb::~Bomb() {
 }
 
 bool Bomb::validate(Player* p, Territory* territoryToBeBombed) {
-	
+	//for now: if string matches with the name of order, then its validated
+	/*string deploy = "bomb";
+	if (deploy.compare(order) == 0)
+		return true;*/
+
 	//check if territory's owner isn't the one that issued it
 	if (territoryToBeBombed->getOwner() != p) {
 		for (Territory* territoryOfPlayer : p->getTerritory())
@@ -342,7 +355,11 @@ Blockade::~Blockade() {
 }
 
 bool Blockade::validate(Territory* t, Player* p) {
-
+	//for now: if string matches with the name of order, then its validated
+	//string deploy = "blockade";
+	/*if (deploy.compare(order) == 0)
+		return true;*/
+	
 	//if territory's owner belongs to the one that issued the blockade order
 	if (t->getOwner() == p)
 		return true;
@@ -487,6 +504,11 @@ Negotiate::~Negotiate() {
 }
 
 bool Negotiate::validate(Player* p1, Player* enemy) {
+	//for now: if string matches with the name of order, then its validated
+	/*string deploy = "negotiate";
+	if (deploy.compare(order) == 0)
+		return true;*/
+
 	//check the chosen player is an adversary
 	if (p1 != enemy)
 		return true;

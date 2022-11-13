@@ -48,6 +48,7 @@ public:
 
 	void reinforcementPhase();
 	void issueOrderPhase();
+	void executeOrderPhase();
 	int playerOwnsEntireContinent(Player* p, int x);
-	bool playerOwnsAllContinent();
+	bool playerOwnsAllContinents();
 };

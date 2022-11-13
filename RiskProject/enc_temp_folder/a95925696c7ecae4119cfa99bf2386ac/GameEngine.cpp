@@ -400,7 +400,7 @@ void GameEngine::executeOrderPhase() {
 		ordersList = player->getOrders();
 		list<Order*> aList = ordersList->getOrdersList();
 		//execute only if its deploy
-		if (aList.front()->getOrderName() == "deploy")
+		if (aList.front()->getOrderName() == "Deploy")
 		{
 			cout << "Executing first order (only if its deploy)\n";
 			cout << "executing " << player->getName() << "'s deploy order\n";
