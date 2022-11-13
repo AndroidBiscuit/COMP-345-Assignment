@@ -140,13 +140,18 @@ public:
 class Airlift : public Order
 {
 private:
+	int armyUnits;
+	Territory* srcTerritory;
+	Territory* dstnTerritory;
+	Player* player;
 public:
 	Airlift();
 	Airlift(string name);
 	Airlift(const Airlift& a);
+	Airlift(Player* p, Territory* a, Territory* b, int armyUnits);
 	Airlift& operator= (const Airlift& a);
 	~Airlift();
-	bool validate(string order);
+	bool validate(Player* p, Territory* src, Territory* dstn, int armyNum);
 	void execute();
 
 };

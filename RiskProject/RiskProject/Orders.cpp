@@ -200,7 +200,7 @@ bool Advance::validate(Player* p, Territory* src, Territory* dest, int armyNum) 
 
 	for (Territory* playerTerritories : p->getTerritory()) {
 		//check if source territory belongs to player
-		if (playerTerritories->getTName() != src->getTName()) {
+		if (playerTerritories->getTName() == src->getTName()) {
 
 			//check if dstn territory is adj to src territory
 			for(Territory* adjTerritories: src->getAdjTerritories())
@@ -349,6 +349,17 @@ Airlift::Airlift(const Airlift& a) :Order(a) {
 	this->orderExecutionFlag = a.orderExecutionFlag;
 
 }
+
+Airlift::Airlift(Player* p, Territory* src, Territory* dstn, int armyNum)
+{
+	orderName = "airlift";
+	orderEffect = "Advance a certain number of army units from one of the current player’s territories to any another yerritory ";
+	player = p;
+	srcTerritory = src;
+	dstnTerritory = dstn;
+	armyUnits = armyNum;
+}
+
 Airlift& Airlift:: operator= (const Airlift& a) {
 	//cout << "Airlift assignment operator called. \n";
 	orderName = a.orderName;
@@ -360,10 +371,26 @@ Airlift::~Airlift() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Airlift::validate(string order) {
+bool Airlift::validate(Player* p, Territory* src, Territory* dstn, int armyNum) {
 	//for now: if string matches with the name of order, then its validated
-	string deploy = "airlift";
+	/*string deploy = "airlift";
 	if (deploy.compare(order) == 0)
+		return true;*/
+	//bool srcBelongsToPlayer = false;
+	//bool dstnBelongsToPlayer = false;
+	//for (Territory* playerTerritories : p->getTerritory()) {
+	//	//check if source and destination territory belongs to player
+	//	if (playerTerritories->getTName() == src->getTName()) 
+	//		srcBelongsToPlayer = true;
+
+	//	if (playerTerritories->getTName() == dstn->getTName())
+	//		dstnBelongsToPlayer = true;
+	//}
+
+	//if (srcBelongsToPlayer && dstnBelongsToPlayer)
+	//	return true;
+
+	if (src->getOwner() == p && dstn->getOwner() == p) //to debug to make sure it works
 		return true;
 
 	return false;
@@ -371,8 +398,22 @@ bool Airlift::validate(string order) {
 
 
 void Airlift::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->player, this->srcTerritory, this->dstnTerritory, armyUnits))
+	{
+
 		this->setOrderExecutionFlag(true);
+
+		int originalsrcTerritoryArmyNum = srcTerritory->getArmyAmount();
+		int originalDestTerritoryArmyNum = dstnTerritory->getArmyAmount();
+		int finalSrcTerritoryArmyNum = 0;
+		int finalDestTerritoryArmyNum = 0;
+
+		finalSrcTerritoryArmyNum = originalsrcTerritoryArmyNum - armyUnits;
+		finalDestTerritoryArmyNum = originalDestTerritoryArmyNum + armyUnits;
+		srcTerritory->setArmyAmount(finalSrcTerritoryArmyNum);
+		dstnTerritory->setArmyAmount(finalDestTerritoryArmyNum);
+		
+	}
 }
 
 //-----------------------NEGOTIATE FUNCTION IMPLEMENTATION----------------------//
