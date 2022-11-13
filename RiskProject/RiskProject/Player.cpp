@@ -257,20 +257,20 @@ vector<Territory*> Player::availableTerritoriesToDefend()
 }
 
 
-void Player::issueOrder()
+void Player::issueOrder(Player* np)
 {
+	Player* neutralPlayer = np;
 	vector<Territory*> attackList = availableTerritoriesToAttack();
 	vector<Territory*> defendList = availableTerritoriesToDefend();
-	string orderAnswer;
 	char orderAnswer2 = 'x';
+	string orderAnswer;
 	string territoryAnswer;
 	string territorySource;
 	string territoryDestination;
 	bool repeatAttackOrDefendLoop = false;
 	bool repeatMoveArmyUnitsAroundLoop = false;
-	
-	int armyAmountAnswer;
-	int newArmyAmount;
+
+	int armyUnitsToBeMoved, originalArmyAmount, finalArmyAmount, armyAmountAnswer, newArmyAmount;
 
 	static int orderNumber = 0;
 	string deployOrderName = "deploy";
@@ -307,22 +307,6 @@ void Player::issueOrder()
 			newArmyAmount = getArmiesAmount() - armyAmountAnswer;
 			setArmiesAmount(newArmyAmount); //sets player's remaining army unit
 
-			////getting territory original army size
-			//int territoryOriginalArmySize;
-			//for (Territory* territory : toDefend) {
-			//	if (territory->getTName().compare(territoryAnswer) == 0)
-			//		territoryOriginalArmySize = territory->getArmyAmount();
-			//} this goes in the execution phase
-
-			//THIS NEEDS CHANGING
-			
-			//storing the newly assigned army units in territory's army amount attribute
-			//for (Territory* territory : defendList)
-			//{
-			//	if (territory->getTName().compare(territoryAnswer) == 0)
-			//		territory->setArmyAmount(armyAmountAnswer + territoryOriginalArmySize); //this happens in execution in orders?
-			//} goe sin the execution phase
-
 			deployOrderName = deployOrderName.append(to_string(orderNumber));
 
 			//create deploy order
@@ -334,7 +318,6 @@ void Player::issueOrder()
 					ordersList->addOrder(deployOrderName);
 					cout << "New deployment order added to " << this->getName() << "'s orderList \n";
 					toDefend.push_back(territory); //need to clear this somehow at the end of turn? or make sure that its army units arent empty
-					//deployOrderName->execute(); this goes in the execute phase
 				}
 			}
 			
@@ -394,11 +377,6 @@ void Player::issueOrder()
 					{
 						Advance* advanceOrderName = new Advance(this, fromTerritory, toTerritory, armyAmountAnswer); //make sure name fits
 						ordersList->addOrder(advanceOrderName);
-						//advanceOrderName->execute();
-						//cout << "New deployment order added to " << this->getName() << "'s orderList \n";
-						//toDefend.push_back(territory); //need to clear this somehow at the end of turn? or make sure that its army units arent empty
-						//deployOrderName->execute(); this goes in the execute phase
-
 					}
 				}
 				
@@ -571,7 +549,6 @@ void Player::issueOrder()
 
 	//while player still wants to move army units around territories, stay in loop
 	//string territorySource, territoryDestination;
-	int armyUnitsToBeMoved, originalArmyAmount, finalArmyAmount;
 
 	//reset answer
 	/*
@@ -716,14 +693,33 @@ void Player::issueOrder()
 			{
 				Bomb* bombOrderName = new Bomb(this, territory); //make sure name fits
 				ordersList->addOrder(bombOrderName);				
-				bombOrderName->execute();
+				
 			}
 		}
-
-		//Order* issued = new Order("bomb");
 	}
 	else if (cardToUse.compare("blockade") == 0)
-		Order* issued = new Order("blockade");
+	{
+		orderNumber++;
+		cout << "To which territory would you like to use blockade on? \n";
+		cout << "Here are the available territories you can use it on: \n";
+		for (Territory* territory : defendList)
+		{
+			cout << territory->getTName() << endl;
+		}
+		cin >> territoryAnswer;
+
+		//create blockade order
+		blockadeOrderName = blockadeOrderName.append(to_string(orderNumber)); //setting up the order obj name
+
+		for (Territory* territory : defendList)
+		{
+			if (territory->getTName() == territoryAnswer)
+			{
+				Blockade* blockadeOrderName = new Blockade(territory, this, neutralPlayer);
+				ordersList->addOrder(blockadeOrderName);
+			}
+		}
+	}
 	else if (cardToUse.compare("airlift") == 0)
 	{
 		orderNumber++;
@@ -768,23 +764,7 @@ void Player::issueOrder()
 		setArmiesAmount(getArmiesAmount() + 5);
 	}
 	 //take away the card that was used
-	//add order to ordersList?
 
-	/*-------------------OLD CODE--------------------*/
-	//Order* issued = new Order();
-	//string x;
-
-	//printOrderList();
-	//cout << "Please type out the order you would like to issue: \nAirlift \nBomb \nBlockade \nNegotiate" << endl;
-	//cin >> x;
-	////discoverOrderType(x, issued);
-	//Order* issued = new Order(x);
-	//ordersList->addOrder(issued);
-	//cout << "Order was issued: " << issued->getOrderName() << endl;
-	//cout << "Current Player orders: " << endl;
-	//for (auto o : ordersList->getOrdersList()) {
-	//	cout << *o;
-	//}
 }
 
 //making sure territory enetered from command line is a proper territory

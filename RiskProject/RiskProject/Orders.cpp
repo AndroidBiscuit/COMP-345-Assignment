@@ -331,6 +331,17 @@ Blockade::Blockade(const Blockade& b): Order(b) {
 	this->orderExecutionFlag = b.orderExecutionFlag;
 
 }
+
+Blockade::Blockade(Territory* t, Player* p, Player* np)
+{
+	orderName = "blockade";
+	orderEffect = "Triple the number of army units on one of the current player’s territories and make it a neutral	territory";
+	territory = t;
+	player = p;	
+	neutralPlayer = np;
+
+}
+
 Blockade& Blockade:: operator= (const Blockade& b) {
 	//cout << "Blockade assignment operator called. \n";
 	orderName = b.orderName;
@@ -343,18 +354,30 @@ Blockade::~Blockade() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Blockade::validate(string order) {
+bool Blockade::validate(Territory* t, Player* p) {
 	//for now: if string matches with the name of order, then its validated
-	string deploy = "blockade";
-	if (deploy.compare(order) == 0)
+	//string deploy = "blockade";
+	/*if (deploy.compare(order) == 0)
+		return true;*/
+	
+	//if territory's owner belongs to the one that issued the blockade order
+	if (t->getOwner() == p)
 		return true;
 
 	return false;
 }
 
 void Blockade::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->territory, this->player))
+	{
 		this->setOrderExecutionFlag(true);
+		int originalArmyAmount = territory->getArmyAmount();
+		int finalArmyAmount = originalArmyAmount * 2;
+		territory->setOwner(neutralPlayer);
+		territory->setArmyAmount(finalArmyAmount);
+	
+	}
+		
 }
 
 //-----------------------AIRLIFT FUNCTION IMPLEMENTATION----------------------//

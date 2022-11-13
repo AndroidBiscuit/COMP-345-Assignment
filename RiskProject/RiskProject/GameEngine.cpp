@@ -350,7 +350,7 @@ void GameEngine::issueOrderPhase() {
 	for (Player* p : players) {
 		if (p->getOrdersToIssueFlag()) { //if true, then player still wants to issue orders
 			cout << p->getName() <<"'s turn to issue an order: " << endl;
-			p->issueOrder(); 
+			p->issueOrder(neutral);  //passing down neutral player so orders can make use of it
 			
 			//at end of order issue, ask if player still wants to issue order - if yes then true, if no then set flag to false
 			cout << "Do you still want to issue orders? (y/n)" << endl;

@@ -129,13 +129,17 @@ public:
 class Blockade : public Order
 {
 private:
+	Player* player;
+	Player* neutralPlayer;
+	Territory* territory;
 public:
 	Blockade();
 	Blockade(string name);
 	Blockade(const Blockade& b);
+	Blockade(Territory* territory, Player* player, Player* np);
 	Blockade& operator= (const Blockade& b);
 	~Blockade();
-	bool validate(string order);
+	bool validate(Territory* territory, Player* player);
 	void execute();
 
 };
