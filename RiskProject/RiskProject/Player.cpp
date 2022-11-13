@@ -262,24 +262,40 @@ void Player::issueOrder()
 	vector<Territory*> attackList = availableTerritoriesToAttack();
 	vector<Territory*> defendList = availableTerritoriesToDefend();
 	string orderAnswer;
-	char orderAnswer2;
+	char orderAnswer2 = 'x';
 	string territoryAnswer;
 	bool repeatAttackOrDefendLoop = false;
 	bool repeatMoveArmyUnitsAroundLoop = false;
 	int armyAmountAnswer;
 	int newArmyAmount;
 
-	//while player still wants to add territories to attack or defend, stay in loop
-	cout << "Would you like to attack/defend territories? (y/n) \n";
-	cin >> orderAnswer2;
-	if (orderAnswer2 == 'y')
-		repeatAttackOrDefendLoop = true;
-	else
-		repeatAttackOrDefendLoop = false;
+	//while player still wants to add territories to attack or defend, stay in loop	
+	while (orderAnswer2 != 'y' && orderAnswer2 != 'n')
+	{
+		cout << "Would you like to attack/defend territories? (y/n) \n";
+		cin >> orderAnswer2;
+
+		if (orderAnswer2 == 'y')
+			repeatAttackOrDefendLoop = true;
+		else if (orderAnswer2 == 'n')
+			repeatAttackOrDefendLoop = false;
+		else
+			cout << "That is not a valid command. \n";
+	}
+	
 
 	while(repeatAttackOrDefendLoop) {
-		cout << "Would you like to defend or attack? \n";
-		cin >> orderAnswer;
+
+
+		while (orderAnswer != "attack" && orderAnswer != "defend")
+		{
+			cout << "Would you like to defend or attack? \n";
+			cin >> orderAnswer;
+
+			if (orderAnswer != "attack" && orderAnswer != "defend")
+				cout << "That is not a valid command. \n";
+		}
+		
 
 		if (orderAnswer.compare("attack") == 0)
 		{
@@ -289,12 +305,18 @@ void Player::issueOrder()
 			}
 			cin >> territoryAnswer;
 
-			//add territory to attackList
-			for (Territory* territory : attackList)
-			{
-				if(territory->getTName().compare(territoryAnswer) == 0)
-					toAttack.push_back(territory);
+			if (makeSureTerritoryAnswerExists(attackList, territoryAnswer)) {
+				//add territory to attackList
+				for (Territory* territory : attackList)
+				{
+					if (territory->getTName().compare(territoryAnswer) == 0)
+						toAttack.push_back(territory);
+				}
 			}
+			else
+				cout << territoryAnswer << " is not a valid territory. Please choose again. \n";
+
+			
 			
 		}
 		else if (orderAnswer.compare("defend") == 0)
@@ -305,24 +327,37 @@ void Player::issueOrder()
 			}
 			cin >> territoryAnswer;
 
-
-			//add territory to defendList
-			for (Territory* territory : defendList)
-			{
-				if (territory->getTName().compare(territoryAnswer) == 0)
-					toDefend.push_back(territory);
+			if (makeSureTerritoryAnswerExists(defendList, territoryAnswer)) {
+				//add territory to defendList
+				for (Territory* territory : defendList)
+				{
+					if (territory->getTName().compare(territoryAnswer) == 0)
+						toDefend.push_back(territory);
+				}
 			}
+			else
+				cout << territoryAnswer << " is not a valid territory. Please choose again. \n";
+
 		}
 		else {
 			cout << "You entered an invalid command \n";
 		}
 
-		cout << "Would you like to attack/defend more territories? (y/n) \n";
-		cin >> orderAnswer2;
-		if (orderAnswer2 == 'y')
-			repeatAttackOrDefendLoop = true;
-		else
-			repeatAttackOrDefendLoop = false;
+		//resetting answer
+		orderAnswer = "";
+		orderAnswer2 = 'x';
+		while (orderAnswer2 != 'y' && orderAnswer2 != 'n') 
+		{
+			cout << "Would you like to attack/defend more territories? (y/n) \n";
+			cin >> orderAnswer2;
+
+			if (orderAnswer2 == 'y')
+				repeatAttackOrDefendLoop = true;
+			else if (orderAnswer2 == 'n')
+				repeatAttackOrDefendLoop = false;
+			else
+				cout << "That is not a valid command. \n";
+		}
 
 	};
 
@@ -332,37 +367,65 @@ void Player::issueOrder()
 		cout << "Here are the territories you can deploy them to: \n";
 		for (Territory* territory : toDefend)
 		{
-			cout << territory->getTName();
+			cout << territory->getTName() <<endl;
 		}
 		cin >> territoryAnswer;
 
+		//making sure territory entered is a territory that exists in the player's defend list
+		if (makeSureTerritoryAnswerExists(toDefend, territoryAnswer)) {
 
-		cout << "How many army units would you like to deploy to " << territoryAnswer << " ?\n";
-		cout << "You have " << getArmiesAmount() << " army units left. \n";
-		cin >> armyAmountAnswer; //where to store the armyAmountAnswer? in the armyAmount in Territory's object?
-		newArmyAmount = getArmiesAmount() - armyAmountAnswer; //[MAKE SURE ARMY AMOUNT ANSWER ISNT BIGGER THAN ORIGINAL AMOUNT]
-		setArmiesAmount(newArmyAmount);
-		
-		//storing the army units in territory's army amount attribute
-		for (Territory* territory : defendList)
-		{
-			if (territory->getTName().compare(territoryAnswer) == 0)
-				territory->setArmyAmount(armyAmountAnswer);
+			
+			cout << "How many army units would you like to deploy to " << territoryAnswer << " ?\n";
+			cout << "You have " << getArmiesAmount() << " army units left. \n";
+			cin >> armyAmountAnswer; 
+			while (armyAmountAnswer > getArmiesAmount())
+			{
+				cout << "Army amount entered is more than available army amount. Please enter amount again. \n";
+				cin >> armyAmountAnswer;
+			}
+			
+			newArmyAmount = getArmiesAmount() - armyAmountAnswer; 
+			setArmiesAmount(newArmyAmount); //sets player's remaining army unit
+
+			//getting territory original army size
+			int territoryOriginalArmySize;
+			for (Territory* territory : toDefend) {
+				if (territory->getTName().compare(territoryAnswer) == 0)
+					territoryOriginalArmySize = territory->getArmyAmount();
+			}
+
+			//storing the newly assigned army units in territory's army amount attribute
+			for (Territory* territory : defendList)
+			{
+				if (territory->getTName().compare(territoryAnswer) == 0)
+					territory->setArmyAmount(armyAmountAnswer + territoryOriginalArmySize);
+			}
+
+			cout << armyAmountAnswer << " units of army has been deployed to " << territoryAnswer << endl;
+
 		}
-
-		cout << armyAmountAnswer << " units of army has been deployed to " << territoryAnswer << endl;
-
+		else
+			cout << territoryAnswer << " is not a valid territory. Please choose again. \n";
 	};
 
 	//while player still wants to move army units around territories, stay in loop
 	string territorySource, territoryDestination;
 	int armyUnitsToBeMoved, originalArmyAmount, finalArmyAmount;
-	cout << "Would you like to move army units around? (y/n) \n";
-	cin >> orderAnswer2;
-	if (orderAnswer2 == 'y')
-		repeatMoveArmyUnitsAroundLoop = true;
-	else
-		repeatMoveArmyUnitsAroundLoop = false;
+
+	//reset answer
+	orderAnswer2 = 'x';
+	while (orderAnswer2 != 'y' && orderAnswer2 != 'n') {
+		cout << "Would you like to move army units around? (y/n) \n";
+		cin >> orderAnswer2;
+		if (orderAnswer2 == 'y')
+			repeatMoveArmyUnitsAroundLoop = true;
+		else if (orderAnswer2 == 'n')
+			repeatMoveArmyUnitsAroundLoop = false;
+		else
+			cout << "That is not a valid command. \n";
+	}
+	
+	int armyAmountOnTerritorySource;
 	while (repeatMoveArmyUnitsAroundLoop) {
 		cout << "Here are the territories you chose to defend and the number of army units on them: \n";
 		for (Territory* territory : toDefend)
@@ -372,35 +435,72 @@ void Player::issueOrder()
 
 		cout << "From which territory would you like to move army units from? \n";
 		cin >> territorySource;
-		cout << "To which territory would you like to move army units to? \n";
-		cin >> territoryDestination;
-		cout << "Number of units to move? \n";
-		cin >> armyUnitsToBeMoved; //prevent it from moving more than it can later
 
-		for (Territory* territory : toDefend)
+		if (makeSureTerritoryAnswerExists(toDefend, territorySource))
 		{
-			if (territory->getTName().compare(territorySource) == 0) 
+			for (Territory* territory : toDefend)
 			{
-				originalArmyAmount = territory->getArmyAmount();
-				finalArmyAmount = originalArmyAmount - armyUnitsToBeMoved;
-				territory->setArmyAmount(finalArmyAmount);
+				if (territory->getTName() == territorySource)
+					armyAmountOnTerritorySource = territory->getArmyAmount();
 			}
 
-			if (territory->getTName().compare(territoryDestination) == 0)
+			cout << "To which territory would you like to move army units to? \n";
+			cout << "These are the territories available in your attack list: \n";
+			for (Territory* territory : toAttack)
 			{
-				originalArmyAmount = territory->getArmyAmount();
-				finalArmyAmount = originalArmyAmount + armyUnitsToBeMoved;
-				territory->setArmyAmount(finalArmyAmount);
-
+				cout << territory->getTName() << endl;
 			}
+			cin >> territoryDestination;
+
+			if (makeSureTerritoryAnswerExists(toAttack, territoryDestination))
+			{
+				cout << "Number of units to move? \n";
+				cin >> armyUnitsToBeMoved; 
+
+				while (armyUnitsToBeMoved > armyAmountOnTerritorySource)
+				{
+					cout << "Army amount entered is more than available army amount. Please enter again. \n";
+					cin >> armyUnitsToBeMoved;
+				}
+
+				for (Territory* territory : toDefend)
+				{
+					if (territory->getTName().compare(territorySource) == 0)
+					{
+						originalArmyAmount = territory->getArmyAmount();
+						finalArmyAmount = originalArmyAmount - armyUnitsToBeMoved;
+						territory->setArmyAmount(finalArmyAmount);
+					}
+
+					if (territory->getTName().compare(territoryDestination) == 0)
+					{
+						originalArmyAmount = territory->getArmyAmount();
+						finalArmyAmount = originalArmyAmount + armyUnitsToBeMoved;
+						territory->setArmyAmount(finalArmyAmount);
+
+					}
+				}
+
+				//reset answer
+				orderAnswer2 = 'x';
+				while (orderAnswer2 != 'y' && orderAnswer2 != 'n')
+				{
+					cout << "Would you like to move more army units around? (y/n) \n";
+					cin >> orderAnswer2;
+					if (orderAnswer2 == 'y')
+						repeatMoveArmyUnitsAroundLoop = true;
+					else if (orderAnswer2 == 'n')
+						repeatMoveArmyUnitsAroundLoop = false;
+					else
+						cout << "Invalide command. Please input answer again. \n";
+
+				}
+				
+			}
+
 		}
-
-		cout << "Would you like to move more army units around? (y/n) \n";
-		cin >> orderAnswer2;
-		if (orderAnswer2 == 'y')
-			repeatMoveArmyUnitsAroundLoop = true;
 		else
-			repeatMoveArmyUnitsAroundLoop = false;
+			cout << "Entered territory is not a valid territory.Choose again. \n";
 
 	}
 
@@ -408,7 +508,7 @@ void Player::issueOrder()
 	cout << "Here are your cards from which you can create orders from: \n";
 	vector<Card*> cardsAvailable = hand->getCards();
 	for (Card* card : cardsAvailable) {
-		cout << card->getCardType() << endl;
+		cout << card->getCardName(card->getCardType()) << endl;
 	}
 
 	string cardToUse;
@@ -432,18 +532,27 @@ void Player::issueOrder()
 
 	/*-------------------OLD CODE--------------------*/
 	//Order* issued = new Order();
-	string x;
+	//string x;
 
-	printOrderList();
-	cout << "Please type out the order you would like to issue: \nAirlift \nBomb \nBlockade \nNegotiate" << endl;
-	cin >> x;
-	//discoverOrderType(x, issued);
-	Order* issued = new Order(x);
-	ordersList->addOrder(issued);
-	cout << "Order was issued: " << issued->getOrderName() << endl;
-	cout << "Current Player orders: " << endl;
-	for (auto o : ordersList->getOrdersList()) {
-		cout << *o;
+	//printOrderList();
+	//cout << "Please type out the order you would like to issue: \nAirlift \nBomb \nBlockade \nNegotiate" << endl;
+	//cin >> x;
+	////discoverOrderType(x, issued);
+	//Order* issued = new Order(x);
+	//ordersList->addOrder(issued);
+	//cout << "Order was issued: " << issued->getOrderName() << endl;
+	//cout << "Current Player orders: " << endl;
+	//for (auto o : ordersList->getOrdersList()) {
+	//	cout << *o;
+	//}
+}
+
+//making sure territory enetered from command line is a proper territory
+bool Player::makeSureTerritoryAnswerExists(vector<Territory*> territoryList, string territoryName) {
+	for (Territory* t : territoryList) {
+		if (t->getTName() == territoryName)
+			return true;
 	}
+	return false;
 }
 

@@ -59,6 +59,8 @@ public:
     // Getter for card type
     CardType getCardType();
 
+    string getCardName(CardType card);
+
     // Play method to use the card in hand and return it to the deck
     void play(OrdersList* ordersList, Deck& deck);
 

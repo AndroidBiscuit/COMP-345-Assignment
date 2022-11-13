@@ -44,9 +44,10 @@ public:
 	void addPlayer(string name);
 	void removePlayer(Player* toRemove);
 	bool gameStartSetting();
-	void playPhase();
+	void mainGameLoop();
 
 	void reinforcementPhase();
 	void issueOrderPhase();
-	bool playerOwnsContinent(Map* m, Player* p);
+	int playerOwnsEntireContinent(Player* p, int x);
+	bool playerOwnsAllContinent();
 };

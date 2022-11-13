@@ -87,6 +87,7 @@ public:
 	vector<Territory*> availableTerritoriesToAttack();
 	void issueOrder(); //here
 	void addTerritory(Territory*);
+	bool makeSureTerritoryAnswerExists(vector<Territory*>, string name);
 
 	//From Cards
  /*   void addCard(Card* card);*/
