@@ -3,6 +3,7 @@
 #include <random>
 #include <typeinfo>
 #include <cmath>
+#include <list>
 #include "GameEngine.h"
 #include "Player.h"
 
@@ -147,6 +148,7 @@ void GameEngine::startupPhase() {
 		if (currentState == "assignreinforcement") {
 			cout << "switch the game to the play phase" << endl;
 			/*playPhase();*/
+			mainGameLoop();
 			delete commandObserver;
 			commandObserver = nullptr;
 
@@ -481,8 +483,9 @@ void GameEngine::executeOrderPhase() {
 				cout << "Executing first order (only if its deploy)\n";
 				cout << "executing " << player->getName() << "'s deploy order\n";
 				aList.front()->execute();
-				//aList.pop_front(); //remove order after its been executed
-				player->getOrders()->getOrdersList().pop_front();
+				player->getOrders()->remove(1); //remove order once its been executed
+				int x = (player->getOrders()->getOrdersList()).size();
+				int z;
 			}
 		}
 
@@ -504,8 +507,8 @@ void GameEngine::executeOrderPhase() {
 				noOrdersLeft = false;
 				cout << "executing " << player->getName() << "'s order";
 				aList.front()->execute();
-				player->getOrders()->getOrdersList().pop_front();
-				//aList.pop_front();
+				player->getOrders()->remove(1); //remove order once its been executed
+				
 			}
 		}
 	}

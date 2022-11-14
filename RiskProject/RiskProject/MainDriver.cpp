@@ -27,7 +27,7 @@ int main(void) {
             continue;
         case 3:
            
-       
+            testMainGameLoop();
             continue;
         case 4:
            
