@@ -359,20 +359,20 @@ void GameEngine::mainGameLoop() {
 			executeOrderPhase();
 		} while (executeOrderRecursion);
 
-		//checks for winner if there is one
-		for (Player* p : players) {
-			int playerTerritoryAmount = p->getTerritory().size();
-			int mapTerritoryAmount = map->getAllTerritory().size();
-			if (playerTerritoryAmount == mapTerritoryAmount)
-			{
-				winner = p;
-				cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
-
-			}
-				
-		}
 	}
 
+	//checks for winner 
+	for (Player* p : players) {
+		int playerTerritoryAmount = p->getTerritory().size();
+		int mapTerritoryAmount = map->getAllTerritory().size();
+		if (playerTerritoryAmount == mapTerritoryAmount)
+		{
+			winner = p;
+			cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
+
+		}
+
+	}
 	
 
 }
