@@ -34,6 +34,7 @@ private:
 	static int createdPlayers;
 	bool conquered;
 	bool ordersToIssueFlag; 
+	vector<int> friendlyPlayers; // Cannot attack these during the turn
 
 	//From Cards
 	Hand* hand;
@@ -81,6 +82,9 @@ public:
 
 	//method
 	void printOrderList(void);
+	void addFriendlyPlayer(int);
+	void clearFriendlyPlayer();
+	bool attackablePlayer(int);
 	//int deployArmies();
 	void discoverOrderType(string x, Order* issued);
 	vector<Territory*> availableTerritoriesToDefend();

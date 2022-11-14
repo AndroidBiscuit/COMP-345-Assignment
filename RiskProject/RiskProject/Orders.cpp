@@ -243,10 +243,13 @@ void Advance::execute() {
 		}
 		else //src and destination territory belong to different players
 		{
-			//simulate an attack
-			//Player* enemyPlayer = dstnTerritory->getOwner();
+			// Check if the player can be attacked!
+			if (!player->attackablePlayer(dstnTerritory->getOwner()->getPlayerID())) {
+				cout << "You cannot attack this player's territory!";
+				return;
+			}
 
-			//ASK FOR HELP HERE
+			//simulate an attack
 			attack(srcTerritory, dstnTerritory, player, &armyUnits);
 		}
 
@@ -315,6 +318,12 @@ bool Bomb::validate(Player* p, Territory* territoryToBeBombed) {
 void Bomb::execute() {
 	if (validate(this->player, this->territory))
 	{
+		// Check if the player can be attacked!
+		if (!player->attackablePlayer(territory->getOwner()->getPlayerID())) {
+			cout << "You cannot attack this player's territory!";
+			return;
+		}
+		
 		this->setOrderExecutionFlag(true);
 		int armyAmount = territory->getArmyAmount();
 		territory->setArmyAmount(armyAmount / 2);
@@ -446,6 +455,11 @@ bool Airlift::validate(Player* p, Territory* src, Territory* dstn, int armyNum) 
 void Airlift::execute() {
 	if (validate(this->player, this->srcTerritory, this->dstnTerritory, armyUnits))
 	{
+		// Check if the player can be attacked!
+		if (!player->attackablePlayer(dstnTerritory->getOwner()->getPlayerID())) {
+			cout << "You cannot attack this player's territory!";
+			return;
+		}
 
 		this->setOrderExecutionFlag(true);
 
@@ -517,9 +531,17 @@ bool Negotiate::validate(Player* p1, Player* enemy) {
 
 void Negotiate::execute() {
 	if (validate(this->player, this->enemyPlayer))
-
 	{
-		this->setOrderExecutionFlag(true);
+		//this->setOrderExecutionFlag(true);
+
+		cout << "Execute negociate order";
+
+		// Add each player to the other's friend list
+		player->addFriendlyPlayer(enemyPlayer->getPlayerID());
+		enemyPlayer->addFriendlyPlayer(player->getPlayerID());
+
+		cout << "Finished executing negociate order";
+
 		Notify(this);
 	}
 }
@@ -708,7 +730,7 @@ void attack(Territory* sourceTerritory, Territory* targetTerritory, Player* curr
 		}
 	}
 
-	// Check for negative values
+	// Check for negative troop values
 	if ((*nbTroops - defendPhase) < 0) {
 		finalAttackTroops = 0;
 	}
@@ -733,9 +755,7 @@ void attack(Territory* sourceTerritory, Territory* targetTerritory, Player* curr
 		targetTerritory->setOwner(currentPlayer);
 
 		// Move remaining attack troops to new territory
-		targetTerritory->setArmyAmount(finalAttackTroops);
-
-		// TODO notify player
+		targetTerritory->setArmyAmount(finalAttackTroops);		
 	}
 	else {
 		// If the invasion failed (a draw is still a loss)

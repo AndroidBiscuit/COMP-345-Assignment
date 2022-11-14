@@ -212,6 +212,24 @@ void Player::printOrderList(void) {
 	cout << "----------------------------------" << endl;
 }
 
+void Player::addFriendlyPlayer(int dstnPlayerID) {
+	friendlyPlayers.push_back(dstnPlayerID);
+}
+
+void Player::clearFriendlyPlayer() {
+	friendlyPlayers.clear();
+}
+
+bool Player::attackablePlayer(int dstnPlayerID) {
+	for (int i = 0; i < friendlyPlayers.size(); i++) {
+		if (friendlyPlayers[i] == dstnPlayerID) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void Player::discoverOrderType(string x, Order* issued) {
 	string options[] = { "deploy", "advance", "bomb", "blockade", "airlift", "negotiate" };
 
