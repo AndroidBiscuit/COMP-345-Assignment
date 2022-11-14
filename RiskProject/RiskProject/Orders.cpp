@@ -433,24 +433,7 @@ Airlift::~Airlift() {
 }
 
 bool Airlift::validate(Player* p, Territory* src, Territory* dstn, int armyNum) {
-	//for now: if string matches with the name of order, then its validated
-	/*string deploy = "airlift";
-	if (deploy.compare(order) == 0)
-		return true;*/
-	//bool srcBelongsToPlayer = false;
-	//bool dstnBelongsToPlayer = false;
-	//for (Territory* playerTerritories : p->getTerritory()) {
-	//	//check if source and destination territory belongs to player
-	//	if (playerTerritories->getTName() == src->getTName()) 
-	//		srcBelongsToPlayer = true;
-
-	//	if (playerTerritories->getTName() == dstn->getTName())
-	//		dstnBelongsToPlayer = true;
-	//}
-
-	//if (srcBelongsToPlayer && dstnBelongsToPlayer)
-	//	return true;
-
+	
 	if (src->getOwner() == p && dstn->getOwner() == p) //to debug to make sure it works
 		return true;
 
