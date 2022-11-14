@@ -364,10 +364,14 @@ void GameEngine::mainGameLoop() {
 			int playerTerritoryAmount = p->getTerritory().size();
 			int mapTerritoryAmount = map->getAllTerritory().size();
 			if (playerTerritoryAmount == mapTerritoryAmount)
+			{
 				winner = p;
+				cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
+
+			}
+				
 		}
 	}
-	cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
 
 	
 
