@@ -4,7 +4,6 @@
 #include <typeinfo>
 #include <cmath>
 #include "GameEngine.h"
-#include "Player.h"
 
 using std::default_random_engine;
 
@@ -88,106 +87,41 @@ GameEngine::~GameEngine() {
 // sets GameEngine object's state
 void GameEngine::transition(string newState) {
 	this->setState(newState);
-	cout << "You are transited to state: " << this->getState() << endl;
-	Notify(this);
+	cout << "You are transitioned to state: " << this->getState() << endl;
 }
 
-// redefine the virtual method inherited from Subject class
-string GameEngine::stringToLog() {
-	return "Transitioned to state: " + state;
-}
 
 //implements a command-based user interaction mechanism to start the game.
 void GameEngine::startupPhase() {
-	string source;
 	string currentState;
 	bool isValid{};
-	LogObserver* processorObserver{};
-	LogObserver* commandObserver{};
 
-	Command* cmd{};
-	CommandProcessor* cprocessor{};
-	FileLineReader* fprocessor{};
-	FileCommandProcessorAdapter* adapter{};
-
-	do {
-	    //Upon starting the application, a command line option is set to either read commands from the console
-		cout << "Please enter -console or -file <filename> to choose the input source." << endl;
-		cin >> source;
-	
-		//Commands can be read from the console
-		if (source == "console") {
-			cprocessor = new CommandProcessor();
-			processorObserver = new LogObserver(cprocessor);
-		}
-		
-		else if(source == "file") {
-			string fileName;
-			cin >> fileName;
-			// copy the source file so that we can delete the top line after reading it
-			ifstream inFile(fileName);
-			ofstream outFile("copy.txt");
-			outFile << inFile.rdbuf();
-			inFile.close();
-			outFile.close();
-			fprocessor = new FileLineReader("copy.txt"); // adaptee
-			adapter = new FileCommandProcessorAdapter(fprocessor);// adapter (inherited from target)
-			processorObserver = new LogObserver(adapter);
-		}
-	} while (source != "console" && source != "file");
-
-	// remove the "enter" from the cin buffer
-	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
+	CommandProcessor* processor = new CommandProcessor();
 	
 	while (state != "exitprogram") {
 		currentState = this->getState();
 		cout << *this << endl;
 		
 		if (currentState == "assignreinforcement") {
-			cout << "switch the game to the play phase" << endl;
-			/*playPhase();*/
-			delete commandObserver;
-			commandObserver = nullptr;
-
-			delete processorObserver;
-			processorObserver = nullptr;
-			break;
+			//reinforcementPhase();
+			
+			cout << "switching the game to the play phase" << endl;
+			mainGameLoop();
 		}
+		cout << "Enter your command: " << endl;
+		Command* cmd = processor->processCommand();
 
-		if (source == "console") {
-			cout << "Enter your command: " << endl;
-			cmd = cprocessor->processCommand();
-			commandObserver = new LogObserver(cmd);
-			isValid = cprocessor->validate(cmd, this);
+		isValid = processor->validate(cmd, this);
 
-			if (!isValid) {
-				cmd->saveEffect("error");
-				continue;
-			}
+		if (!isValid) {
+			cmd->saveEffect("error");
+			continue;
 		}
-		else if (source == "file") {
-			cmd = adapter->processCommand();
-			commandObserver = new LogObserver(cmd);
-			isValid = cprocessor->validate(cmd, this);
-
-			if (!isValid) {
-				cmd->saveEffect("error");
-				break;
-			}
-		}
+		
 	
 	}
-
-	if (source == "console") {
-		delete cprocessor;
-		cprocessor = nullptr;
-	}
-	else if (source == "file") {
-		delete adapter;
-		adapter = nullptr;
-	}
-
+	delete processor;
+	processor = nullptr;
 }
 
 
@@ -481,8 +415,8 @@ void GameEngine::executeOrderPhase() {
 				cout << "Executing first order (only if its deploy)\n";
 				cout << "executing " << player->getName() << "'s deploy order\n";
 				aList.front()->execute();
-				//aList.pop_front(); //remove order after its been executed
-				player->getOrders()->getOrdersList().pop_front();
+				aList.pop_front(); //remove order after its been executed
+
 			}
 		}
 
@@ -504,8 +438,7 @@ void GameEngine::executeOrderPhase() {
 				noOrdersLeft = false;
 				cout << "executing " << player->getName() << "'s order";
 				aList.front()->execute();
-				player->getOrders()->getOrdersList().pop_front();
-				//aList.pop_front();
+				aList.pop_front();
 			}
 		}
 	}

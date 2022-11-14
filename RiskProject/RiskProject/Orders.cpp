@@ -90,6 +90,14 @@ Deploy::Deploy(string name) {
 	orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
 }
 
+Deploy::Deploy(int au, Territory* t, Player* p) {
+	orderName = "deploy";
+	orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
+	armyUnits = au;
+	territory = t;
+	player = p;
+}
+
 Deploy::Deploy(const Deploy& d): Order(d) {
 	//cout << "deploy copy constructor called. \n";
 	this->orderName = d.orderName;
@@ -106,18 +114,32 @@ Deploy& Deploy:: operator= (const Deploy& d) {
 	return *this;
 }
 
-bool Deploy::validate(string order){
-	//for now: if string matches with the name of order, then its validated
-	string deploy = "deploy";
-	if (deploy.compare(order) == 0)
-		return true;
+bool Deploy::validate(Territory* territoryBeingValidated, Player* p){	
+	//looping through player's list of defendable territories
+	//if territory exists in their defend list, then return true
+	vector<Territory*> defendList = p->availableTerritoriesToDefend();
+	for (Territory* territory : defendList) {
+		if (territory->getTName() == territoryBeingValidated->getTName())
+		{
+			return true;
+		}
+	}
 
 	return false;
 }
 
 void Deploy::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->territory, this->player)) {
 		this->setOrderExecutionFlag(true);
+		//add army units to territory selected
+
+		//get territory's original army size	
+		int territoryOriginalArmySize = this->territory->getArmyAmount();
+		
+		//set territory's army units 
+		this->territory->setArmyAmount(this->armyUnits + territoryOriginalArmySize);
+	}
+		
 }
 
 Deploy::~Deploy() {
@@ -142,6 +164,15 @@ Advance::Advance(const Advance& a): Order(a) {
 
 }
 
+Advance::Advance(Player* p, Territory* src, Territory* dest, int armyNum) {
+	orderName = "advance";
+	orderEffect = "Move a certain number of army units from one territory (source territory) to another territory (target territory)";
+	player = p;
+	srcTerritory = src;
+	dstnTerritory = dest;
+	armyUnits = armyNum;
+}
+
 Advance& Advance:: operator= (const Advance& a) {
 	//cout << "Advance assignment operator called. \n";
 	orderName = a.orderName;
@@ -156,18 +187,54 @@ Advance::~Advance() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Advance::validate(string order) {
-	//for now: if string matches with the name of order, then its validated
-	string deploy = "advance";
-	if (deploy.compare(order) == 0)
-		return true;
+bool Advance::validate(Player* p, Territory* src, Territory* dest, int armyNum) {
+	
+	for (Territory* playerTerritories : p->getTerritory()) {
+		//check if source territory belongs to player
+		if (playerTerritories->getTName() == src->getTName()) {
+
+			//check if dstn territory is adj to src territory
+			for(Territory* adjTerritories: src->getAdjTerritories())
+				if (adjTerritories->getTName() == dest->getTName())
+				{
+					//if (dest->getOwner() == p) //put in execute code
+					//check that army amount isn't more than whats available
+					if(armyNum < src->getArmyAmount())
+						return true;
+						
+				}
+		}
+	}
 
 	return false;
 }
 
 void Advance::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->player, this->srcTerritory, this->dstnTerritory, armyUnits))
+	{
+		int originalsrcTerritoryArmyNum = srcTerritory->getArmyAmount();
+		int originalDestTerritoryArmyNum = dstnTerritory->getArmyAmount();
+		int finalSrcTerritoryArmyNum = 0;
+		int finalDestTerritoryArmyNum = 0;
+
 		this->setOrderExecutionFlag(true);
+
+		//if src and destination territory both belong to player, then just move the army units
+		if (dstnTerritory->getOwner() == player)
+		{
+			finalSrcTerritoryArmyNum = originalsrcTerritoryArmyNum - armyUnits;
+			finalDestTerritoryArmyNum = originalDestTerritoryArmyNum + armyUnits;
+			srcTerritory->setArmyAmount(finalSrcTerritoryArmyNum);
+			dstnTerritory->setArmyAmount(finalDestTerritoryArmyNum);
+		}
+		else //src and destination territory belong to different players
+		{
+			//simulate an attack
+			Player* enemyPlayer = dstnTerritory->getOwner();
+			//ASK FOR HELP HERE
+		}
+
+	}
 }
 
 //-----------------------BOMB FUNCTION IMPLEMENTATION----------------------//
@@ -187,6 +254,14 @@ Bomb::Bomb(const Bomb& b):Order(b) {
 	this->orderExecutionFlag = b.orderExecutionFlag;
 
 }
+
+Bomb::Bomb(Player* p, Territory* t)
+{
+	orderName = "bomb";
+	orderEffect = "Destroy half of the army units located on an opponent’s territory that is adjacent to one of the current player’s territories.";
+	player = p;
+	territory = t;
+}
 Bomb& Bomb::operator= (const Bomb& b) {
 	//cout << "Bomb assignment operator called. \n";
 	orderName = b.orderName;
@@ -199,18 +274,31 @@ Bomb::~Bomb() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Bomb::validate(string order) {
-	//for now: if string matches with the name of order, then its validated
-	string deploy = "bomb";
-	if (deploy.compare(order) == 0)
-		return true;
+bool Bomb::validate(Player* p, Territory* territoryToBeBombed) {
+	
+	//check if territory's owner isn't the one that issued it
+	if (territoryToBeBombed->getOwner() != p) {
+		for (Territory* territoryOfPlayer : p->getTerritory())
+		{
+			for (Territory* territoryAdj : territoryOfPlayer->getAdjTerritories())
+			{
+				if (territoryToBeBombed = territoryAdj)
+					return true;
+			}
+		}
+	}
 
 	return false;
 }
 
 void Bomb::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->player, this->territory))
+	{
 		this->setOrderExecutionFlag(true);
+		int armyAmount = territory->getArmyAmount();
+		territory->setArmyAmount(armyAmount / 2);
+
+	}
 }
 
 //-----------------------BlOCKADE FUNCTION IMPLEMENTATION----------------------//
@@ -230,6 +318,17 @@ Blockade::Blockade(const Blockade& b): Order(b) {
 	this->orderExecutionFlag = b.orderExecutionFlag;
 
 }
+
+Blockade::Blockade(Territory* t, Player* p, Player* np)
+{
+	orderName = "blockade";
+	orderEffect = "Triple the number of army units on one of the current player’s territories and make it a neutral	territory";
+	territory = t;
+	player = p;	
+	neutralPlayer = np;
+
+}
+
 Blockade& Blockade:: operator= (const Blockade& b) {
 	//cout << "Blockade assignment operator called. \n";
 	orderName = b.orderName;
@@ -242,18 +341,26 @@ Blockade::~Blockade() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Blockade::validate(string order) {
-	//for now: if string matches with the name of order, then its validated
-	string deploy = "blockade";
-	if (deploy.compare(order) == 0)
+bool Blockade::validate(Territory* t, Player* p) {
+
+	//if territory's owner belongs to the one that issued the blockade order
+	if (t->getOwner() == p)
 		return true;
 
 	return false;
 }
 
 void Blockade::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->territory, this->player))
+	{
 		this->setOrderExecutionFlag(true);
+		int originalArmyAmount = territory->getArmyAmount();
+		int finalArmyAmount = originalArmyAmount * 2;
+		territory->setOwner(neutralPlayer);
+		territory->setArmyAmount(finalArmyAmount);
+	
+	}
+		
 }
 
 //-----------------------AIRLIFT FUNCTION IMPLEMENTATION----------------------//
@@ -273,6 +380,17 @@ Airlift::Airlift(const Airlift& a) :Order(a) {
 	this->orderExecutionFlag = a.orderExecutionFlag;
 
 }
+
+Airlift::Airlift(Player* p, Territory* src, Territory* dstn, int armyNum)
+{
+	orderName = "airlift";
+	orderEffect = "Advance a certain number of army units from one of the current player’s territories to any another yerritory ";
+	player = p;
+	srcTerritory = src;
+	dstnTerritory = dstn;
+	armyUnits = armyNum;
+}
+
 Airlift& Airlift:: operator= (const Airlift& a) {
 	//cout << "Airlift assignment operator called. \n";
 	orderName = a.orderName;
@@ -284,10 +402,26 @@ Airlift::~Airlift() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Airlift::validate(string order) {
+bool Airlift::validate(Player* p, Territory* src, Territory* dstn, int armyNum) {
 	//for now: if string matches with the name of order, then its validated
-	string deploy = "airlift";
+	/*string deploy = "airlift";
 	if (deploy.compare(order) == 0)
+		return true;*/
+	//bool srcBelongsToPlayer = false;
+	//bool dstnBelongsToPlayer = false;
+	//for (Territory* playerTerritories : p->getTerritory()) {
+	//	//check if source and destination territory belongs to player
+	//	if (playerTerritories->getTName() == src->getTName()) 
+	//		srcBelongsToPlayer = true;
+
+	//	if (playerTerritories->getTName() == dstn->getTName())
+	//		dstnBelongsToPlayer = true;
+	//}
+
+	//if (srcBelongsToPlayer && dstnBelongsToPlayer)
+	//	return true;
+
+	if (src->getOwner() == p && dstn->getOwner() == p) //to debug to make sure it works
 		return true;
 
 	return false;
@@ -295,8 +429,22 @@ bool Airlift::validate(string order) {
 
 
 void Airlift::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->player, this->srcTerritory, this->dstnTerritory, armyUnits))
+	{
+
 		this->setOrderExecutionFlag(true);
+
+		int originalsrcTerritoryArmyNum = srcTerritory->getArmyAmount();
+		int originalDestTerritoryArmyNum = dstnTerritory->getArmyAmount();
+		int finalSrcTerritoryArmyNum = 0;
+		int finalDestTerritoryArmyNum = 0;
+
+		finalSrcTerritoryArmyNum = originalsrcTerritoryArmyNum - armyUnits;
+		finalDestTerritoryArmyNum = originalDestTerritoryArmyNum + armyUnits;
+		srcTerritory->setArmyAmount(finalSrcTerritoryArmyNum);
+		dstnTerritory->setArmyAmount(finalDestTerritoryArmyNum);
+		
+	}
 }
 
 //-----------------------NEGOTIATE FUNCTION IMPLEMENTATION----------------------//
@@ -316,6 +464,16 @@ Negotiate::Negotiate(const Negotiate& n):Order(n) {
 	this->orderExecutionFlag = n.orderExecutionFlag;
 
 }
+
+Negotiate::Negotiate(Player* p1, Player* enemy)
+{
+	orderName = "negotiate";
+	orderEffect = "Prevent attacks between the current player and the player targeted by the negotiate order until the end of the turn";
+	player = p1;
+	enemyPlayer = enemy;
+
+}
+
 Negotiate& Negotiate::operator= (const Negotiate& n) {
 	//cout << "Negotiate assignment operator called. \n";
 	orderName = n.orderName;
@@ -328,18 +486,19 @@ Negotiate::~Negotiate() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
 
-bool Negotiate::validate(string order) {
-	//for now: if string matches with the name of order, then its validated
-	string deploy = "negotiate";
-	if (deploy.compare(order) == 0)
+bool Negotiate::validate(Player* p1, Player* enemy) {
+	//check the chosen player is an adversary
+	if (p1 != enemy)
 		return true;
-
 	return false;
 }
 
 void Negotiate::execute() {
-	if (validate(getOrderName()))
+	if (validate(this->player, this->enemyPlayer))
+
+	{
 		this->setOrderExecutionFlag(true);
+	}
 }
 
 
@@ -471,6 +630,10 @@ void OrdersList::showOrdersList() {
 		cout << index << ": " << x->getOrderName() << endl;
 		index++;
 	}
+}
+
+void OrdersList::clearList() {
+	ordersList.clear();
 }
 
 //destructor

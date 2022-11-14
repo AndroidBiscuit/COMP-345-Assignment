@@ -1,6 +1,8 @@
 #pragma once
 #include <list>
 #include <string>
+#include"Map.h"
+#include"Player.h"
 using namespace std;
 
 class Order
@@ -64,6 +66,7 @@ public:
 	void move(int sourceIndex, int destinationIndex);
 	void remove(int indexOfOrder); 
 	void showOrdersList();
+	void clearList();
 
 	//stream insertion
 	friend ostream& operator << (ostream& in, OrdersList ordersList);
@@ -74,13 +77,17 @@ public:
 class Deploy: public Order
 {
 private:
+	int armyUnits;
+	Territory* territory;
+	Player* player;
 public:
 	Deploy();
 	Deploy(const Deploy& d); 
 	Deploy& operator= (const Deploy& d);  
 	~Deploy();  
 	Deploy(string name);
-	bool validate(string order);
+	Deploy(int armyUnits, Territory* t, Player* p);
+	bool validate(Territory* t, Player* p);
 	void execute();
 
 };
@@ -88,13 +95,18 @@ public:
 class Advance : public Order
 {
 private:
+	int armyUnits;
+	Territory* srcTerritory;
+	Territory* dstnTerritory;
+	Player* player;
 public:
 	Advance();
 	Advance(string name);
 	Advance(const Advance& a);
+	Advance(Player* p, Territory* a, Territory* b, int armyUnits);
 	Advance& operator= (const Advance& a);
 	~Advance();
-	bool validate(string order);
+	bool validate(Player* p, Territory* a, Territory* b, int x);
 	void execute();
 
 };
@@ -102,26 +114,33 @@ public:
 class Bomb : public Order
 {
 private:
+	Player* player;
+	Territory* territory;
 public:
 	Bomb();
 	Bomb(string name);
 	Bomb(const Bomb& b);
+	Bomb(Player* p, Territory* t);
 	Bomb& operator= (const Bomb& b);
 	~Bomb();
-	bool validate(string order);
+	bool validate(Player *p, Territory* t);
 	void execute();
 };
 
 class Blockade : public Order
 {
 private:
+	Player* player;
+	Player* neutralPlayer;
+	Territory* territory;
 public:
 	Blockade();
 	Blockade(string name);
 	Blockade(const Blockade& b);
+	Blockade(Territory* territory, Player* player, Player* np);
 	Blockade& operator= (const Blockade& b);
 	~Blockade();
-	bool validate(string order);
+	bool validate(Territory* territory, Player* player);
 	void execute();
 
 };
@@ -129,13 +148,18 @@ public:
 class Airlift : public Order
 {
 private:
+	int armyUnits;
+	Territory* srcTerritory;
+	Territory* dstnTerritory;
+	Player* player;
 public:
 	Airlift();
 	Airlift(string name);
 	Airlift(const Airlift& a);
+	Airlift(Player* p, Territory* a, Territory* b, int armyUnits);
 	Airlift& operator= (const Airlift& a);
 	~Airlift();
-	bool validate(string order);
+	bool validate(Player* p, Territory* src, Territory* dstn, int armyNum);
 	void execute();
 
 };
@@ -143,13 +167,16 @@ public:
 class Negotiate : public Order
 {
 private:
+	Player* enemyPlayer;
+	Player* player;
 public:
 	Negotiate();
 	Negotiate(string name);
 	Negotiate(const Negotiate& a);
+	Negotiate(Player* p1, Player* p2);
 	Negotiate& operator= (const Negotiate& a);
 	~Negotiate();
-	bool validate(string order);
+	bool validate(Player* p1, Player* p2);
 	void execute();
 
 };

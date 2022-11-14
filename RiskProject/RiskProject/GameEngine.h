@@ -16,6 +16,9 @@ private:
 	vector<Player*> players;
 	Map* map;
 	Deck* deck;
+	bool orderIssueRecursion;
+	bool executeOrderRecursion;
+	bool deployOrdersFlag;
 
 public:
 	//Neutral Player:
@@ -38,11 +41,17 @@ public:
 	//Methods
 	virtual string stringToLog(void);
 	void startupPhase();
-	void reinforcementPhase();
 	void transition(string newState);
 	bool loadMap(string fileName);
 	void addPlayer();
 	void addPlayer(string name);
 	void removePlayer(Player* toRemove);
 	bool gameStartSetting();
+	void mainGameLoop();
+
+	void reinforcementPhase();
+	void issueOrderPhase();
+	void executeOrderPhase();
+	int playerOwnsEntireContinent(Player* p, int x);
+	bool playerOwnsAllContinents();
 };

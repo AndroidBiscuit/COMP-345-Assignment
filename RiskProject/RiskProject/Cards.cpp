@@ -58,10 +58,28 @@ Card::CardType Card::getCardType() {
     return this->cardType;
 }
 
+string Card::getCardName(CardType card) {
+    if (this->cardType == CardType::BOMB) {
+        return("bomb");
+    }
+    if (this->cardType == CardType::REINFORCEMENT) {
+        return("reinforcement");
+    }
+    if (this->cardType == CardType::BLOCKADE) {
+        return("blockade");
+    }
+    if (this->cardType == CardType::AIRLIFT) {
+        return("airlift");
+    }
+    if (this->cardType == CardType::DIPLOMACY) {
+        return("diplomacy");
+    }
+}
+
 // Play method to use the card in hand and return it to the deck
 //not sure if passing ptr here is the correct way- to recheck when integrating more
 //need to connect to player ? cuz rn cards and player are not connected in any way except for orders in between
-void Card::play(OrdersList* orderList, Deck& deck) {
+/*void Card::play(OrdersList* orderList, Deck& deck) {
 
     // Temp
     //Order* playOrder;
@@ -106,8 +124,12 @@ void Card::play(OrdersList* orderList, Deck& deck) {
         cout << "You used a DIPLOMACY card!" << endl;
         break;
     }
-}
+}*/
 
+void Card::play(Deck& deck)
+{
+
+}
 
 
 

@@ -28,9 +28,12 @@ private:
 	int armiesAmount;
 	string name;
 	vector<Territory*> territory;
+	vector<Territory*> toAttack;
+	vector<Territory*> toDefend;
 	vector<Player*> cannotAttack; // records the players that can't be attacked as using with the negotiate
 	static int createdPlayers;
 	bool conquered;
+	bool ordersToIssueFlag; 
 
 	//From Cards
 	Hand* hand;
@@ -60,6 +63,7 @@ public:
 	void setTerritory(vector<Territory*> const& other);
 	void setOrdersList(OrdersList* orders); 
 	void setConquered(bool result);
+	void setOrdersToIssueFlag(bool ordersLeftToIssue);
 
 
 	//Accessor methods
@@ -73,15 +77,17 @@ public:
 	OrdersList* getOrders(); 
 	vector<Player*> getCanNotAttack();
 	bool getConquered();
+	bool getOrdersToIssueFlag();
 
 	//method
 	void printOrderList(void);
 	//int deployArmies();
 	void discoverOrderType(string x, Order* issued);
-	vector<Territory*> toDefend();
-	vector<Territory*> toAttack();
-	void issueOrder(); //here
+	vector<Territory*> availableTerritoriesToDefend();
+	vector<Territory*> availableTerritoriesToAttack();
+	void issueOrder(Player* p, vector<Player*> playersVector); //here
 	void addTerritory(Territory*);
+	bool makeSureTerritoryAnswerExists(vector<Territory*>, string name);
 
 	//From Cards
  /*   void addCard(Card* card);*/
