@@ -74,6 +74,10 @@ ostream& operator <<(ostream& input, Order order) {
 
 }
 
+string Order::stringToLog() {
+	return "unspecified order";
+}
+
 //destructor
 Order::~Order() {
 	//cout <<"Order will now be destroyed. \n";
@@ -138,13 +142,23 @@ void Deploy::execute() {
 		
 		//set territory's army units 
 		this->territory->setArmyAmount(this->armyUnits + territoryOriginalArmySize);
+
+		Notify(this);
 	}
 		
+}
+
+
+//DeployOrder logging function.
+string Deploy::stringToLog() {
+	return "Order Executed: Deploy\nDeploy: " + getOrderEffect();
 }
 
 Deploy::~Deploy() {
 	//cout << this->getOrderName() << " in derived class will now be destroyed. \n";
 }
+
+
 
 
 //-----------------------ADVANCE FUNCTION IMPLEMENTATION----------------------//
@@ -234,7 +248,12 @@ void Advance::execute() {
 			//ASK FOR HELP HERE
 		}
 
+		Notify(this);
 	}
+}
+
+string Advance::stringToLog() {
+	return "Order Advance: Advance\nAdvance: " + getOrderEffect();
 }
 
 //-----------------------BOMB FUNCTION IMPLEMENTATION----------------------//
@@ -297,8 +316,13 @@ void Bomb::execute() {
 		this->setOrderExecutionFlag(true);
 		int armyAmount = territory->getArmyAmount();
 		territory->setArmyAmount(armyAmount / 2);
-
+		Notify(this);
 	}
+}
+
+//BombOrder logging function.
+string Bomb::stringToLog() {
+	return "Order Executed: Bomb\nBomb: " + getOrderEffect();
 }
 
 //-----------------------BlOCKADE FUNCTION IMPLEMENTATION----------------------//
@@ -358,10 +382,16 @@ void Blockade::execute() {
 		int finalArmyAmount = originalArmyAmount * 2;
 		territory->setOwner(neutralPlayer);
 		territory->setArmyAmount(finalArmyAmount);
-	
+		Notify(this);
 	}
 		
 }
+
+//BlockadeOrder logging function.
+string Blockade::stringToLog() {
+	return "Order Executed: Blockade\nBlockade: " + getOrderEffect();
+}
+
 
 //-----------------------AIRLIFT FUNCTION IMPLEMENTATION----------------------//
 
@@ -444,7 +474,14 @@ void Airlift::execute() {
 		srcTerritory->setArmyAmount(finalSrcTerritoryArmyNum);
 		dstnTerritory->setArmyAmount(finalDestTerritoryArmyNum);
 		
+		Notify(this);
 	}
+}
+
+
+//AirliftOrder logging function.
+string Airlift::stringToLog() {
+	return "Order Executed: Airlift\nAirlift: " + getOrderEffect();
 }
 
 //-----------------------NEGOTIATE FUNCTION IMPLEMENTATION----------------------//
@@ -498,10 +535,15 @@ void Negotiate::execute() {
 
 	{
 		this->setOrderExecutionFlag(true);
+		Notify(this);
 	}
 }
 
 
+//NegotiateOrder logging function.
+string Negotiate::stringToLog() {
+	return "Order Executed: Negotiate\nNegotiate: " + getOrderEffect();
+}
 
 //----------------------ORDERSLIST FUNCTION IMPLEMENTATION----------------------//
 
@@ -592,6 +634,14 @@ list<Order*> OrdersList::getOrdersList()
 void OrdersList::addOrder(Order* orderToBeAdded)
 {
 	ordersList.push_back(orderToBeAdded);
+	stringToBeLogged = "Order Added: " + orderToBeAdded->getOrderName();
+	Notify(this);
+}
+
+
+//OrdersList logging function.
+string OrdersList::stringToLog() {
+	return stringToBeLogged;
 }
 
 void OrdersList::move(int sourceIndex, int destinationIndex) {

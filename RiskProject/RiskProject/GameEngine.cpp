@@ -146,7 +146,8 @@ void GameEngine::startupPhase() {
 		
 		if (currentState == "assignreinforcement") {
 			cout << "switch the game to the play phase" << endl;
-			/*playPhase();*/
+			mainGameLoop();
+		/*	playPhase();*/
 			delete commandObserver;
 			commandObserver = nullptr;
 
@@ -466,9 +467,11 @@ void GameEngine::executeOrderPhase() {
 	bool noDeployOrdersLeft = true;
 	bool noOrdersLeft = true;
 	executeOrderRecursion = true;
+	LogObserver* orderObserver{};
 	//deploy orders first
 	if (deployOrdersFlag)
 	{
+		
 		for (Player* player : players)
 		{
 			ordersList = player->getOrders();
@@ -476,6 +479,7 @@ void GameEngine::executeOrderPhase() {
 			//execute only if its deploy
 			if (aList.front()->getOrderName() == "deploy")
 			{
+				orderObserver = new LogObserver(aList.front());
 				noOrdersLeft = false;
 				noDeployOrdersLeft = false; //if flag is false then deploy has been spotted
 				cout << "Executing first order (only if its deploy)\n";
@@ -501,6 +505,7 @@ void GameEngine::executeOrderPhase() {
 			list<Order*> aList = ordersList->getOrdersList();
 			if (!aList.empty())
 			{
+				orderObserver = new LogObserver(aList.front());
 				noOrdersLeft = false;
 				cout << "executing " << player->getName() << "'s order";
 				aList.front()->execute();
