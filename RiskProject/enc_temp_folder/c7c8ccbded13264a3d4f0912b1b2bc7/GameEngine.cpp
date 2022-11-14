@@ -415,8 +415,8 @@ void GameEngine::executeOrderPhase() {
 				cout << "Executing first order (only if its deploy)\n";
 				cout << "executing " << player->getName() << "'s deploy order\n";
 				aList.front()->execute();
-				//aList.pop_front(); //remove order after its been executed
-				player->getOrders()->getOrdersList().pop_front();
+				aList.pop_front(); //remove order after its been executed
+
 			}
 		}
 
@@ -438,8 +438,7 @@ void GameEngine::executeOrderPhase() {
 				noOrdersLeft = false;
 				cout << "executing " << player->getName() << "'s order";
 				aList.front()->execute();
-				player->getOrders()->getOrdersList().pop_front();
-				//aList.pop_front();
+				aList.pop_front();
 			}
 		}
 	}
