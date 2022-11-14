@@ -335,6 +335,7 @@ bool GameEngine::gameStartSetting() {
 
 //Main Game loop
 void GameEngine::mainGameLoop() {	
+	Player* winner;
 	cout << "This is the play phase" <<endl;
 	while (!playerOwnsAllContinents()) {
 
@@ -357,7 +358,18 @@ void GameEngine::mainGameLoop() {
 		do {
 			executeOrderPhase();
 		} while (executeOrderRecursion);
+
+		//checks for winner if there is one
+		for (Player* p : players) {
+			int playerTerritoryAmount = p->getTerritory().size();
+			int mapTerritoryAmount = map->getAllTerritory().size();
+			if (playerTerritoryAmount == mapTerritoryAmount)
+				winner = p;
+		}
 	}
+	cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
+
+	
 
 }
 
