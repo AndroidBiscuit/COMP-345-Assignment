@@ -3,9 +3,10 @@
 #include <string>
 #include"Map.h"
 #include"Player.h"
+#include "LoggingObserver.h"
 using namespace std;
 
-class Order
+class Order : public Subject
 {
 protected:
 	string orderName;
@@ -38,16 +39,19 @@ public:
 	//methods
 	virtual bool validate(string order);
 	virtual void execute();
+
+	virtual string stringToLog();
 	
 	//stream insertion
 	friend ostream& operator << (ostream& in, Order order);
 };
 
 
-class OrdersList
+class OrdersList : public Subject
 {
 private:
 	list<Order*> ordersList;
+	string stringToBeLogged;
 public:
 	//list<Order*> ordersList;
 	//constructors
@@ -67,6 +71,8 @@ public:
 	void remove(int indexOfOrder); 
 	void showOrdersList();
 	void clearList();
+
+	virtual string stringToLog();
 
 	//stream insertion
 	friend ostream& operator << (ostream& in, OrdersList ordersList);
@@ -90,6 +96,8 @@ public:
 	bool validate(Territory* t, Player* p);
 	void execute();
 
+	virtual string stringToLog();
+
 };
 
 class Advance : public Order
@@ -109,6 +117,8 @@ public:
 	bool validate(Player* p, Territory* a, Territory* b, int x);
 	void execute();
 
+	virtual string stringToLog();
+
 };
 
 class Bomb : public Order
@@ -125,6 +135,8 @@ public:
 	~Bomb();
 	bool validate(Player *p, Territory* t);
 	void execute();
+
+	virtual string stringToLog();
 };
 
 class Blockade : public Order
@@ -142,6 +154,8 @@ public:
 	~Blockade();
 	bool validate(Territory* territory, Player* player);
 	void execute();
+
+	virtual string stringToLog();
 
 };
 
@@ -162,6 +176,8 @@ public:
 	bool validate(Player* p, Territory* src, Territory* dstn, int armyNum);
 	void execute();
 
+	virtual string stringToLog();
+
 };
 
 class Negotiate : public Order
@@ -179,4 +195,5 @@ public:
 	bool validate(Player* p1, Player* p2);
 	void execute();
 
+	virtual string stringToLog();
 };
