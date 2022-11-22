@@ -1,3 +1,6 @@
+// To Monica: we probably need to add the toAttack and toDefend methods to the player class
+
+
 #include "PlayerStrategies.h"
 
 //_________________________________________________________________________________________________
@@ -20,6 +23,9 @@ vector<Territory*> HumanPlayerStrategy::toDefend(Player* player) {
 }
 
 
+
+
+
 //_________________________________________________________________________________________________
 // Aggressive player strategy
 //-------------------------------------------------------------------------------------------------
@@ -38,6 +44,9 @@ vector<Territory*> HumanPlayerStrategy::toAttack(Player* player) {
 vector<Territory*> HumanPlayerStrategy::toDefend(Player* player) {
 	//
 }
+
+
+
 
 
 //_________________________________________________________________________________________________
@@ -60,6 +69,9 @@ vector<Territory*> BenevolentPlayerStrategy::toDefend(Player* player) {
 }
 
 
+
+
+
 //_________________________________________________________________________________________________
 // Neutral player strategy
 //-------------------------------------------------------------------------------------------------
@@ -78,5 +90,9 @@ vector<Territory*> NeutralPlayerStrategy::toAttack(Player* player) {
 vector<Territory*> NeutralPlayerStrategy::toDefend(Player* player) {
 	//
 }
+
+
+
+
 
 //TODO cheater player?
