@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Cards.h"
 #include "Orders.h"
+#include "PlayerStrategies.h"
 
 using std::string;
 using std::ostream;
@@ -18,6 +19,7 @@ class Order;
 class OrdersList;
 class Deploy;
 class Cards;
+class PlayerStrategy;
 
 
 class Player{
@@ -40,6 +42,10 @@ private:
 	Hand* hand;
 	//From Orders
 	OrdersList* ordersList;
+	//From PlayerStrategies
+	PlayerStrategy* playerStrategy;
+	vector<Territory*> attackList;
+	vector<Territory*> defendList;
 	
 
 public:
@@ -110,5 +116,14 @@ public:
 	friend class OrdersList;
 	friend class Deck;
 
+	//Playter strategy
+	PlayerStrategy* getStrategy();
+	void setStrategy(PlayerStrategy* strategy);
+	vector<Territory*> toAttack();
+	vector<Territory*> toDefend();
+	void issueOrder(string order);
+	vector<Territory*> *getAttackList();
+	vector<Territory*> *getDefendList();
+	void setAttackList(vector<Territory*> attackList);
+	void setDefendList(vector<Territory*> defendList);
 };
-

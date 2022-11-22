@@ -577,3 +577,38 @@ bool Player::makeSureTerritoryAnswerExists(vector<Territory*> territoryList, str
 	return false;
 }
 
+PlayerStrategy *Player::getStrategy() {
+	return playerStrategy;
+}
+
+void Player::setStrategy(PlayerStrategy* strategy) {
+	playerStrategy = strategy;
+}
+
+vector<Territory*> Player::toAttack() {
+	return playerStrategy->toAttack(this);
+}
+
+vector<Territory*> Player::toDefend() {
+	return playerStrategy->toDefend(this);
+}
+
+void Player::issueOrder(string order) {
+	playerStrategy->issueOrder(this, order);
+}
+
+vector<Territory*>* Player::getAttackList() {
+	return &attackList;
+}
+
+vector<Territory*>* Player::getDefendList() {
+	return &defendList;
+}
+
+void Player::setAttackList(vector<Territory*> attackList) {
+	this->attackList = attackList;
+}
+
+void Player::setDefendList(vector<Territory*> defendList) {
+	this->attackList = defendList;
+}
