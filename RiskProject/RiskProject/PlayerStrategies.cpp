@@ -14,12 +14,12 @@ void HumanPlayerStrategy::issueOrder(Player* player, string order) {
 
 // Return the attack list of selected player
 vector<Territory*> HumanPlayerStrategy::toAttack(Player* player) {
-	return *(player->);
+	return *(player->getAttackList());
 }
 
 // Return the defend list of selected player
 vector<Territory*> HumanPlayerStrategy::toDefend(Player* player) {
-	return *(player->);
+	return *(player->getDefendList());
 }
 
 
@@ -37,12 +37,12 @@ void HumanPlayerStrategy::issueOrder(Player* player, string order) {
 
 // Return the attack list of selected player
 vector<Territory*> HumanPlayerStrategy::toAttack(Player* player) {
-	return *(player->);
+	return *(player->getAttackList());
 }
 
 // Return the defend list of selected player
 vector<Territory*> HumanPlayerStrategy::toDefend(Player* player) {
-	return *(player->);
+	return *(player->getDefendList());
 }
 
 
@@ -60,12 +60,12 @@ void BenevolentPlayerStrategy::issueOrder(Player* player, string order) {
 
 // Return the attack list of selected player
 vector<Territory*> BenevolentPlayerStrategy::toAttack(Player* player) {
-	return *(player->);
+	return *(player->getAttackList());
 }
 
 // Return the defend list of selected player
 vector<Territory*> BenevolentPlayerStrategy::toDefend(Player* player) {
-	return *(player->);
+	return *(player->getDefendList());
 }
 
 
@@ -83,12 +83,12 @@ void HumanPlayerStrategy::issueOrder(Player* player, string order) {
 
 // Return the attack list of selected player
 vector<Territory*> NeutralPlayerStrategy::toAttack(Player* player) {
-	return *(player->);
+	return *(player->getAttackList());
 }
 
 // Return the defend list of selected player
 vector<Territory*> NeutralPlayerStrategy::toDefend(Player* player) {
-	return *(player->);
+	return *(player->getDefendList());
 }
 
 
