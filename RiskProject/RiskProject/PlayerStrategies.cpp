@@ -6,7 +6,26 @@
 
 // Issue order
 void HumanPlayerStrategy::issueOrder(Player* player, string order) {
-	//
+	//TODO: do we need to check the input?
+
+	if (order == "deploy") {
+		//
+	}
+	if (order == "advance") {
+		//
+	}
+	else if (order == "blockade") {
+		//
+	}
+	else if (order == "airlift") {
+		//
+	}
+	else if (order == "negociate") {
+		//
+	}
+	else if (order == "bomb") {
+		//
+	}
 }
 
 // Return the attack list of selected player
@@ -28,17 +47,17 @@ vector<Territory*> HumanPlayerStrategy::toDefend(Player* player) {
 //-------------------------------------------------------------------------------------------------
 
 // Issue order
-void HumanPlayerStrategy::issueOrder(Player* player, string order) {
+void AggressivePlayerStrategy::issueOrder(Player* player, string order) {
 	//
 }
 
 // Return the attack list of selected player
-vector<Territory*> HumanPlayerStrategy::toAttack(Player* player) {
+vector<Territory*> AggressivePlayerStrategy::toAttack(Player* player) {
 	return *(player->getAttackList());
 }
 
 // Return the defend list of selected player
-vector<Territory*> HumanPlayerStrategy::toDefend(Player* player) {
+vector<Territory*> AggressivePlayerStrategy::toDefend(Player* player) {
 	return *(player->getDefendList());
 }
 
