@@ -1,6 +1,3 @@
-// To Monica: we probably need to add the toAttack and toDefend methods to the player class
-
-
 #include "PlayerStrategies.h"
 
 //_________________________________________________________________________________________________
