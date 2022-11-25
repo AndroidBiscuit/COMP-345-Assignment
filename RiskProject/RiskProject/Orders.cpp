@@ -244,8 +244,10 @@ void Advance::execute() {
 		else //src and destination territory belong to different players
 		{
 			//simulate an attack
-			Player* enemyPlayer = dstnTerritory->getOwner();
+			//Player* enemyPlayer = dstnTerritory->getOwner();
+
 			//ASK FOR HELP HERE
+			attack(srcTerritory, dstnTerritory, player, &armyUnits);
 		}
 
 		Notify(this);
@@ -675,4 +677,76 @@ OrdersList::~OrdersList() {
 
 	//release memory
 	ordersList.clear();
+}
+
+// Attack function for the advance order
+void attack(Territory* sourceTerritory, Territory* targetTerritory, Player* currentPlayer, int* nbTroops) {
+
+	// Remove deployed troops from source territory
+	sourceTerritory->setArmyAmount(sourceTerritory->getArmyAmount() - *nbTroops);
+
+	// Variables for random
+	srand(time(NULL));
+	int attackPhase = 0;
+	int defendPhase = 0;
+	int finalAttackTroops = 0;
+	int finalDefendTroops = 0;
+
+	// Attack
+	for (int i = 0; i <= *nbTroops; i++) {
+		int roll = rand() % 100 + 1;
+		if (roll <= 60) {
+			attackPhase++;
+		}
+	}
+
+	// Defend
+	for (int i = 0; i <= targetTerritory->getArmyAmount(); i++) {
+		int roll = rand() % 100 + 1;
+		if (roll <= 60) {
+			defendPhase++;
+		}
+	}
+
+	// Check for negative values
+	if ((*nbTroops - defendPhase) < 0) {
+		finalAttackTroops = 0;
+	}
+	else {
+		finalAttackTroops = *nbTroops - defendPhase;
+	}
+
+	if ((targetTerritory->getArmyAmount() - attackPhase) < 0) {
+		finalDefendTroops = 0;
+	}
+	else {
+		finalDefendTroops = targetTerritory->getArmyAmount() - attackPhase;
+	}
+
+	// If the invasion is successful
+	if (finalAttackTroops > 0 && finalDefendTroops == 0) {
+
+		// Show success to player
+		cout << "You win! Territory conquered!";
+
+		// Transfer territory to winner
+		targetTerritory->setOwner(currentPlayer);
+
+		// Move remaining attack troops to new territory
+		targetTerritory->setArmyAmount(finalAttackTroops);
+
+		// TODO notify player
+	}
+	else {
+		// If the invasion failed (a draw is still a loss)
+
+		// Show failure to player
+		cout << "You lost! Territory has not been conquered!";
+
+		// Change troop allocation for defending territory
+		targetTerritory->setArmyAmount(finalDefendTroops);
+
+		// Change troop allocation for attacking territory
+		sourceTerritory->setArmyAmount(sourceTerritory->getArmyAmount());
+	}
 }

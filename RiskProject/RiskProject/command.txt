@@ -2,10 +2,8 @@ loadmap Canada.map
 validatemap
 addplayer sai
 addplayer cal
-addplayer zaid
+addplayer ziad
 addplayer faizan
-addplayer jane
-addplayer patrick
 gamestart
 quit
 

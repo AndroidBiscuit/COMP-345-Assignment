@@ -149,12 +149,7 @@ void GameEngine::startupPhase() {
 			cout << "switch the game to the play phase" << endl;
 			/*playPhase();*/
 			mainGameLoop();
-			delete commandObserver;
-			commandObserver = nullptr;
-
-			delete processorObserver;
-			processorObserver = nullptr;
-			break;
+			
 		}
 
 		if (source == "console") {
@@ -180,6 +175,11 @@ void GameEngine::startupPhase() {
 		}
 	
 	}
+	delete commandObserver;
+	commandObserver = nullptr;
+
+	delete processorObserver;
+	processorObserver = nullptr;
 
 	if (source == "console") {
 		delete cprocessor;
@@ -369,7 +369,7 @@ void GameEngine::mainGameLoop() {
 		{
 			winner = p;
 			cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
-
+			
 		}
 
 	}

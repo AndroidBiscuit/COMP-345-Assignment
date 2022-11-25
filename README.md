@@ -15,7 +15,7 @@
 
 # Deadlines
 - Assignment 1: Friday, 7 October 2022, 11:59 PM
-- Assignment 2: Friday, 11 November 2022, 11:59 PM
+- Assignment 2: Friday, 13 November 2022, 11:59 PM
 - Assignment 3: Friday, 2 December 2022, 11:59 PM
 
 # Work distribution
@@ -31,4 +31,9 @@
   - Part 3: Monica and Faizan
   - Part 4: Monica and Faizan
   - Part 5: Ziad and Lin
-  - Game engine: everyone
+- Assignment 3: 
+  - Part 1: 
+  - Part 2: 
+  - Part 3: 
+  - Part 4: 
+  - Part 5: 
