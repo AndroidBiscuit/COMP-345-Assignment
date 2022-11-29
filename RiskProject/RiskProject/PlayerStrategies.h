@@ -25,6 +25,7 @@ public:
 };
 
 class AggressivePlayerStrategy : public PlayerStrategy {
+
 public:
 	void issueOrder(Player* player, string order);
 	vector<Territory*> toAttack(Player* player);
@@ -45,4 +46,10 @@ public:
 	vector<Territory*> toDefend(Player* player);
 };
 
-//TODO cheater player?
+class CheaterPlayerStrategy : public PlayerStrategy {
+public:
+	void issueOrder(Player* player, string order);
+	vector<Territory*> toAttack(Player* player);
+	vector<Territory*> toDefend(Player* player);
+};
+

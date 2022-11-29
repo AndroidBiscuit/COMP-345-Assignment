@@ -30,8 +30,7 @@ private:
 	int armiesAmount;
 	string name;
 	vector<Territory*> territory;
-	vector<Territory*> toAttack;
-	vector<Territory*> toDefend;
+	
 	vector<Player*> cannotAttack; // records the players that can't be attacked as using with the negotiate
 	static int createdPlayers;
 	bool conquered;
@@ -49,6 +48,8 @@ private:
 	
 
 public:
+	vector<Territory*> tToAttack;
+	vector<Territory*> tToDefend;
 	//stream Insertion
 	friend ostream& operator<< (ostream& out, const Player& p);
 	friend istream& operator >> (istream& in, Player& p);
@@ -71,6 +72,7 @@ public:
 	void setOrdersList(OrdersList* orders); 
 	void setConquered(bool result);
 	void setOrdersToIssueFlag(bool ordersLeftToIssue);
+	void setOrdersList(Order* order);
 
 
 	//Accessor methods
@@ -122,8 +124,8 @@ public:
 	vector<Territory*> toAttack();
 	vector<Territory*> toDefend();
 	void issueOrder(string order);
-	vector<Territory*> *getAttackList();
-	vector<Territory*> *getDefendList();
-	void setAttackList(vector<Territory*> attackList);
-	void setDefendList(vector<Territory*> defendList);
+	vector<Territory*> getAttackList();
+	vector<Territory*> getDefendList();
+	void setAttackList();
+	void setDefendList();
 };
