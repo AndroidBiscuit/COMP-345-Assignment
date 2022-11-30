@@ -14,10 +14,10 @@
 #include"Orders.h"
 
 using namespace std;
-
-class Deck;
-class Card;
-class Hand;
+//
+//class Deck;
+//class Card;
+//class Hand;
 
 // Use it as is for now. Intergation with other parts will be done in Assignment 2
 class Order;

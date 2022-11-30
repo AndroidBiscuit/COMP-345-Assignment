@@ -197,3 +197,5 @@ public:
 
 	virtual string stringToLog();
 };
+
+void attack(Territory* sourceTerritory, Territory* targetTerritory, Player* currentPlayer, int* nbTroops);

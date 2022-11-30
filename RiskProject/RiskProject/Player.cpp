@@ -40,11 +40,11 @@ Player::Player(const Player& p) {
 		addTerritory(temp);
 
 	}
-	for (auto p : p.toAttack) {
+	for (auto p : p.tToAttack) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
 	}
-	for (auto p : p.toDefend) {
+	for (auto p : p.tToDefend) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
 	}
@@ -63,11 +63,11 @@ Player& Player::operator=(const Player& p) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
 	}
-	for (auto p : p.toAttack) {
+	for (auto p : p.tToAttack) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
 	}
-	for (auto p : p.toDefend) {
+	for (auto p : p.tToDefend) {
 		Territory* temp = new Territory(*p);
 		addTerritory(temp);
 	}
@@ -219,6 +219,24 @@ void Player::printOrderList(void) {
 	cout << "----------------------------------" << endl;
 }
 
+void Player::addFriendlyPlayer(int dstnPlayerID) {
+	friendlyPlayers.push_back(dstnPlayerID);
+}
+
+void Player::clearFriendlyPlayer() {
+	friendlyPlayers.clear();
+}
+
+bool Player::attackablePlayer(int dstnPlayerID) {
+	for (int i = 0; i < friendlyPlayers.size(); i++) {
+		if (friendlyPlayers[i] == dstnPlayerID) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 void Player::discoverOrderType(string x, Order* issued) {
 	string options[] = { "deploy", "advance", "bomb", "blockade", "airlift", "negotiate" };
 
@@ -325,7 +343,7 @@ void Player::issueOrder(Player* np, vector<Player*> pAvailable)
 					Deploy* deployOrderName = new Deploy(armyAmountAnswer, territory, this); //make sure name fits
 					ordersList->addOrder(deployOrderName);
 					cout << "New deployment order added to " << this->getName() << "'s orderList \n";
-					toDefend.push_back(territory); //need to clear this somehow at the end of turn? or make sure that its army units arent empty
+					tToDefend.push_back(territory); //need to clear this somehow at the end of turn? or make sure that its army units arent empty
 				}
 			}
 			
@@ -349,7 +367,7 @@ void Player::issueOrder(Player* np, vector<Player*> pAvailable)
 		orderNumber++;
 
 		cout << "Here are where your army units are stationed at: \n";
-		for (Territory* territory : toDefend)
+		for (Territory* territory : tToDefend)
 		{
 			cout << territory->getTName() << " with " << territory->getArmyAmount() << endl;
 		}
@@ -493,7 +511,7 @@ void Player::issueOrder(Player* np, vector<Player*> pAvailable)
 		orderNumber++;
 		cout << "From which territory would you like to airlift army units from? \n";
 		cout << "here are the territories where you have army units stationed at: \n";
-		for (Territory* t : toDefend) {
+		for (Territory* t : tToDefend) {
 			cout << t->getTName() <<endl;
 		}
 		cin >> territorySource;
@@ -566,3 +584,42 @@ bool Player::makeSureTerritoryAnswerExists(vector<Territory*> territoryList, str
 	return false;
 }
 
+PlayerStrategy *Player::getStrategy() {
+	return playerStrategy;
+}
+
+void Player::setStrategy(PlayerStrategy* strategy) {
+	playerStrategy = strategy;
+}
+
+vector<Territory*> Player::toAttack() {
+	return playerStrategy->toAttack(this);
+}
+
+vector<Territory*> Player::toDefend() {
+	return playerStrategy->toDefend(this);
+}
+
+void Player::issueOrder(string order) {
+	playerStrategy->issueOrder(this, order);
+}
+
+vector<Territory*> Player::getAttackList() {
+	return attackList;
+}
+
+vector<Territory*> Player::getDefendList() {
+	return defendList;
+}
+
+void Player::setAttackList() {
+	this->attackList = this->availableTerritoriesToAttack();
+}
+
+void Player::setDefendList() {
+	this->defendList = this->availableTerritoriesToDefend();
+}
+
+void Player::setOrdersList(Order* order) {
+	ordersList->addOrder(order);
+}

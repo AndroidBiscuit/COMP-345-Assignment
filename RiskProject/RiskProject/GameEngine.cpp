@@ -368,6 +368,11 @@ void GameEngine::mainGameLoop() {
 			executeOrderPhase();
 		} while (executeOrderRecursion);
 
+		// Clear friend list
+		for (int i = 0; i < players.size(); i++) {
+			players[i]->clearFriendlyPlayer();
+		}
+
 	}
 
 	//checks for winner 
@@ -378,9 +383,7 @@ void GameEngine::mainGameLoop() {
 		{
 			winner = p;
 			cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
-
 		}
-
 	}
 	
 

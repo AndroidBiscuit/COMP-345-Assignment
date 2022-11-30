@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "Cards.h"
 #include "Orders.h"
+#include "PlayerStrategies.h"
 
 using std::string;
 using std::ostream;
@@ -18,6 +19,7 @@ class Order;
 class OrdersList;
 class Deploy;
 class Cards;
+class PlayerStrategy;
 
 
 class Player{
@@ -28,20 +30,26 @@ private:
 	int armiesAmount;
 	string name;
 	vector<Territory*> territory;
-	vector<Territory*> toAttack;
-	vector<Territory*> toDefend;
+	
 	vector<Player*> cannotAttack; // records the players that can't be attacked as using with the negotiate
 	static int createdPlayers;
 	bool conquered;
 	bool ordersToIssueFlag; 
+	vector<int> friendlyPlayers; // Cannot attack these during the turn
 
 	//From Cards
 	Hand* hand;
 	//From Orders
 	OrdersList* ordersList;
+	//From PlayerStrategies
+	PlayerStrategy* playerStrategy;
+	vector<Territory*> attackList;
+	vector<Territory*> defendList;
 	
 
 public:
+	vector<Territory*> tToAttack;
+	vector<Territory*> tToDefend;
 	//stream Insertion
 	friend ostream& operator<< (ostream& out, const Player& p);
 	friend istream& operator >> (istream& in, Player& p);
@@ -64,6 +72,7 @@ public:
 	void setOrdersList(OrdersList* orders); 
 	void setConquered(bool result);
 	void setOrdersToIssueFlag(bool ordersLeftToIssue);
+	void setOrdersList(Order* order);
 
 
 	//Accessor methods
@@ -80,6 +89,10 @@ public:
 
 	//method
 	void printOrderList(void);
+	void addFriendlyPlayer(int);
+	void clearFriendlyPlayer();
+	bool attackablePlayer(int);
+	//int deployArmies();
 	void discoverOrderType(string x, Order* issued);
 	vector<Territory*> availableTerritoriesToDefend();
 	vector<Territory*> availableTerritoriesToAttack();
@@ -100,7 +113,14 @@ public:
 	friend class OrdersList;
 	friend class Deck;
 
-	//define Player Strategy
-	void definePlayerStrategy(string strategy);
+	//Playter strategy
+	PlayerStrategy* getStrategy();
+	void setStrategy(PlayerStrategy* strategy);
+	vector<Territory*> toAttack();
+	vector<Territory*> toDefend();
+	void issueOrder(string order);
+	vector<Territory*> getAttackList();
+	vector<Territory*> getDefendList();
+	void setAttackList();
+	void setDefendList();
 };
-

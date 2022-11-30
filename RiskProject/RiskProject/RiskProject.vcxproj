@@ -140,6 +140,7 @@
     <ClCompile Include="Orders.cpp" />
     <ClCompile Include="OrdersDriver.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerStrategies.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cards.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Orders.h" />
     <ClInclude Include="OrdersDriver.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerStrategies.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Canada.map" />
