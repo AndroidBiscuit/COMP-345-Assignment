@@ -198,6 +198,13 @@ bool Player::getConquered() {
 	return conquered;
 }
 
+//creates a player strategy according to the input string
+void Player::definePlayerStrategy(string strategy) {
+	if (ps != NULL) {
+		delete ps;
+	}
+}
+
 //Method:
 
 void Player::printOrderList(void) {

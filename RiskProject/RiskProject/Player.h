@@ -73,7 +73,6 @@ public:
 	vector<Territory*> getTerritory();
 	void removeTerritory(Territory* toRemove);
 	Hand* getHand();
-	/*vector<Card*> getCards();*/
 	OrdersList* getOrders(); 
 	vector<Player*> getCanNotAttack();
 	bool getConquered();
@@ -81,7 +80,6 @@ public:
 
 	//method
 	void printOrderList(void);
-	//int deployArmies();
 	void discoverOrderType(string x, Order* issued);
 	vector<Territory*> availableTerritoriesToDefend();
 	vector<Territory*> availableTerritoriesToAttack();
@@ -89,10 +87,6 @@ public:
 	void addTerritory(Territory*);
 	bool makeSureTerritoryAnswerExists(vector<Territory*>, string name);
 
-	//From Cards
- /*   void addCard(Card* card);*/
-	/*void addOrder(Order* order);*/
-	/*Hand* getHand();*/
 
 	//Intelligent player
 	bool intelligent;
@@ -106,5 +100,7 @@ public:
 	friend class OrdersList;
 	friend class Deck;
 
+	//define Player Strategy
+	void definePlayerStrategy(string strategy);
 };
 

@@ -45,6 +45,7 @@ public:
 	bool loadMap(string fileName);
 	void addPlayer();
 	void addPlayer(string name);
+	void addPlayer(string name, string strategy);
 	void removePlayer(Player* toRemove);
 	bool gameStartSetting();
 	void mainGameLoop();

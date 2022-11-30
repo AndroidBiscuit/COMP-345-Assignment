@@ -232,6 +232,16 @@ void GameEngine::addPlayer(string name) {
 	players.push_back(temp);
 }
 
+//takes player's name and strategy name as the parameter to create a player object 
+void GameEngine::addPlayer(string name, string strategy) {
+
+	//Creating Player Objects:
+	Player* temp = new Player();
+	temp->setName(name);
+	cout << "Welcome to Warzone, " << name << "!" << endl;
+	players.push_back(temp);
+}
+
 //asks player's name from the console to create a player object 
 void GameEngine::addPlayer(void) {
 	int n = 0;
