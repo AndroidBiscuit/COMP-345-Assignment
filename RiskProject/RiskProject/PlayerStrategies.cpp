@@ -101,6 +101,8 @@ void AggressivePlayerStrategy::issueOrder(Player* player, string order) {
 		}
 	}
 
+	bool usedCardFlag = false;
+
 	//get cards- if its a bomb, then use it
 	vector<Card*> cardsAvailable = player->getHand()->getCards();
 	for (Card* card : cardsAvailable) {
@@ -115,8 +117,13 @@ void AggressivePlayerStrategy::issueOrder(Player* player, string order) {
 			bombOrderName = bombOrderName.append(to_string(orderNumber)); //setting up the order obj name
 			Bomb* bombOrdername = new Bomb(player, territory);
 			//discard bomb card and grab a new card
+			usedCardFlag = true;
 			break;
 		}
+	}
+
+	if (!usedCardFlag) {
+		//discard a random card and pick up a new one
 	}
 
 	
