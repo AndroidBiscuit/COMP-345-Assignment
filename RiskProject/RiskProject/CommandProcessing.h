@@ -58,6 +58,11 @@ protected:
 	Command* saveCommand(string command);
 
 public:
+	vector <string> listOfMapFiles;
+	vector <string> listOfPlayerStrategies;
+	int numOfGames = 0;
+	int maxNumOfTurns = 0;
+
 	//Constructor
 	CommandProcessor();
 	CommandProcessor(const CommandProcessor& other);
@@ -77,6 +82,8 @@ public:
 	//Method
 	Command* processCommand();
 	bool validate(Command* cmd, GameEngine* ge);
+	void processTournamentCommand(vector<string> tournament_parameters);
+	bool validateTournamentParameters();
 	virtual string stringToLog();
 
 };

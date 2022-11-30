@@ -50,7 +50,10 @@ ostream& operator << (ostream& out, const Command& cmd) {
 void Command::saveEffect(string input) {
 
 	string theEffect;
-	if (input == "loadmap") {
+	if (input == "tournament") {
+		theEffect = "Tournament mode is active.";
+	}
+	else if (input == "loadmap") {
 		theEffect = "Map has been successfully loaded.";
 	}
 	else if (input == "validatemap") {
@@ -97,7 +100,7 @@ CommandProcessor::CommandProcessor(const CommandProcessor& other) {
 //Destructor
 CommandProcessor::~CommandProcessor(void) {
 
-	cout << "Destroying CommandProcessor." << endl;
+	cout << "Destroying Command Processor." << endl;
 	for (auto p : commands) {
 		delete p;
 	}
@@ -173,15 +176,20 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 
 	string currentState = ge->getState();
 
-	const string valid_commands[6] = { "loadmap", "validatemap", "addplayer", "gamestart", "replay", "quit" };
+	const string valid_commands[7] = {"tournament", "loadmap", "validatemap", "addplayer", "gamestart", "replay", "quit" };
 
 	bool isValid = false;
 
 	vector<string> seperate_cmd = split(cmd->getCommand(), " ");
+	vector<string> tournament_parameters;
 	string input = seperate_cmd[0];
 	string parameter = "";
 	if (seperate_cmd.size() == 2) {
 		parameter = seperate_cmd[1];
+	}
+
+	if (seperate_cmd.size() > 2) {
+		tournament_parameters = seperate_cmd;
 	}
 
 	for (string cmd : valid_commands) {
@@ -194,6 +202,43 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 		return false;
 	}
 	else {
+		if (input == "tournament") {
+			if (currentState == "start") {
+				cmd->saveEffect(input);
+				processTournamentCommand(tournament_parameters);
+				bool isValid = validateTournamentParameters();
+				if (!isValid) {
+					cout << "The tournament parameters are not valid. Quit! " << endl;
+					exit(0);
+				}
+				//Map files are loaded and validated as a result of executing a tournament command.
+				for (int i = 0; i < listOfMapFiles.size(); i++) {
+				
+					//load maps 
+					cout << "\n Loading Map " << i + 1 << endl;
+					bool result = ge->loadMap(listOfMapFiles[i]);
+
+					//if one of the map files cannot be loaded, print out the reason and exit game
+					if (!result) {
+						cout << listOfMapFiles[i] << " is an invalid file." << " Exit Game." << endl;
+						exit(0);
+					}
+					else {
+						ge->transition("maploaded");
+						ge->getMap()->validate();
+						if (!ge->getMap()->getValid()) {
+							cout << listOfMapFiles[i] << " is an invalid map." << " Exit Game." << endl;
+							exit(0);
+						}
+						ge->transition("mapvalidated");
+					}
+				}
+
+				return true;
+			}
+				
+		}
+
 		//Start state: the loadmap command results in sucessfully loading a readable map, trasitioning to the maploaded state
 		if (input == "loadmap") {
 			if (currentState == "start" || currentState == "maploaded") {
@@ -286,6 +331,94 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 // redefine the virtual method inherited from Subject class
 string CommandProcessor::stringToLog() {
 	return "Input command: " + commands.back()->getCommand();
+}
+
+//process the tournament command and extract the parameters
+void CommandProcessor::processTournamentCommand(vector<string> parameters) {
+	int i = 1; // start from parameters after "tournament"
+	while (i < parameters.size()) {
+		if (parameters[i] == "M") {
+			while (parameters[++i] != "P") {
+				listOfMapFiles.push_back(parameters[i]);
+			
+			}
+		}
+		else if (parameters[i] == "P") {
+			while (parameters[++i] != "G") {
+				listOfPlayerStrategies.push_back(parameters[i]);
+			}
+		}
+		else if (parameters[i] == "G") {
+			i++;
+			string temp;
+			temp = parameters[i++];
+			if (!isdigit(temp[0])) {
+				cout << "The number of games should be an integer." << endl;
+				exit(0);
+			}
+			numOfGames = stoi(temp);
+		}
+		else if (parameters[i] == "D") {
+			i++;
+			string temp;
+			temp = parameters[i++];
+			if (!isdigit(temp[0])) {
+				cout << "The max number of turns should be an integer." << endl;
+				exit(0);
+			}
+			maxNumOfTurns = stoi(temp);
+		}
+	}
+    //print the results
+	cout << "List of Map files:" << endl;
+	for (string s : listOfMapFiles)
+		cout << s << '\t';
+	cout << endl;
+	cout << "List of Player Strategies:" << endl;
+	for (string s : listOfPlayerStrategies)
+		cout << s << '\t';
+	cout << endl;
+	cout << "Number of Games: " << numOfGames << endl;
+	cout << "Max number of Turns: " << maxNumOfTurns << endl;
+}
+
+//validates tournament parameters
+bool CommandProcessor::validateTournamentParameters() {
+	bool isValid = true;
+	if (listOfMapFiles.size() < 1 || listOfMapFiles.size() > 5) {
+		cout << "Please enter 1-5 map files" << endl;
+		isValid = false;
+	}
+	if (listOfPlayerStrategies.size() < 2 || listOfPlayerStrategies.size() > 4) {
+		cout << "Please enter 2-4 player strategies" << endl;
+		isValid = false;
+	}
+	if (numOfGames < 1 || numOfGames > 5) {
+		cout << "Please enter a number between 1 and 5 for number of games" << endl;
+		isValid = false;
+	}
+	if (maxNumOfTurns < 10 || maxNumOfTurns > 50) {
+		cout << "Please enter a number between 10 and 50 for max number of turns" << endl;
+		isValid = false;
+	}
+
+	// validate strategy
+	string strategy[4] = { "Aggressive" , "Benevolent" , "Neutral", "Cheater" };
+	bool isStrategyValid = true;
+	for (int i = 0; i < listOfPlayerStrategies.size(); i++) {
+		if (listOfPlayerStrategies[i] != strategy[0] && listOfPlayerStrategies[i] != strategy[1] && listOfPlayerStrategies[i] != strategy[2] && listOfPlayerStrategies[i] != strategy[3])
+			isStrategyValid = false;
+	}
+
+
+
+	if (!isStrategyValid) {
+		cout << "At least one of the player Strategies entered is invalid!" << endl;
+		isValid = false;
+	}
+
+	return isValid;
+
 }
 
 // FileLineReader class

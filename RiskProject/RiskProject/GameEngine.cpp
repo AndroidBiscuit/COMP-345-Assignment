@@ -147,7 +147,6 @@ void GameEngine::startupPhase() {
 		
 		if (currentState == "assignreinforcement") {
 			cout << "switch the game to the play phase" << endl;
-			/*playPhase();*/
 			mainGameLoop();
 			delete commandObserver;
 			commandObserver = nullptr;
