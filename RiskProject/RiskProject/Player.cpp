@@ -26,6 +26,7 @@ Player::Player() {
 	hand = new Hand();
 	intelligent = false;
 	ordersToIssueFlag = true;
+	playerStrategy = new HumanPlayerStrategy(this);
 }
 
 Player::Player(const Player& p) {
@@ -200,7 +201,7 @@ bool Player::getConquered() {
 
 //creates a player strategy according to the input string
 void Player::definePlayerStrategy(string strategy) {
-	if (ps != NULL) {
+	if (PlayerStrategy != NULL) {
 		delete ps;
 	}
 }

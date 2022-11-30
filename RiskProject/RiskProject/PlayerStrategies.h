@@ -7,6 +7,7 @@ class Player;
 
 class PlayerStrategy {
 public:
+	Player* p;
 	// Issue order
 	virtual void issueOrder(Player* player, string order) = 0;
 
@@ -15,6 +16,13 @@ public:
 
 	// Return the defend list of selected player
 	virtual vector<Territory*> toDefend(Player* player) = 0;
+
+	PlayerStrategy();
+	PlayerStrategy(Player* player);
+	virtual ~PlayerStrategy();
+	void setPlayer(Player* player);
+	Player* getPlayer(void);
+
 };
 
 class HumanPlayerStrategy : public PlayerStrategy {
