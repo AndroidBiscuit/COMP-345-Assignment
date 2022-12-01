@@ -2,13 +2,13 @@
 #include <string>
 #include <iostream>
 #include "Player.h"
-#include "Cards.h"
 #include "Map.h"
 #include "Orders.h"
 #include "CommandProcessing.h"
 #include "LoggingObserver.h"
 
 using namespace std;
+class Deck;
 class GameEngine : public Subject {
 private:
     string state;
@@ -23,6 +23,7 @@ private:
 	string outputResults;
 
 public:
+	bool hasHumanPlayer = false;
 	//Neutral Player:
 	Player* neutral;
 	vector<string> winnerForEachMap;

@@ -6,6 +6,7 @@
 #include <list>
 #include "GameEngine.h"
 #include "Player.h"
+#include "Cards.h"
 
 using std::default_random_engine;
 
@@ -294,8 +295,14 @@ bool GameEngine::gameStartSetting() {
 	std::shuffle(std::begin(copyTerritories), std::end(copyTerritories), rng);
 
 	//Determine whether user input will be used:
-	cout << "Would you like to use console input to play the game? Y/N" << endl;
-	cin >> result;
+	if (hasHumanPlayer) {
+		cout << "Would you like to use console input to play the game? Y/N" << endl;
+		cin >> result;
+	}
+	else {
+		result = "n";
+	}
+	
 	while (result != "N" && result != "n" && result != "y" && result != "Y") {
 		cin >> result;
 	}
@@ -304,8 +311,11 @@ bool GameEngine::gameStartSetting() {
 	}
 
 	//Create neutral player:
-	neutral = new Player();
-	neutral->setName("Neutral");
+	if (neutral == NULL) {
+		neutral = new Player();
+		neutral->setName("Neutral");
+	}
+	
 	//Print out players:
 	cout << "All players have been added! Here is who will be playing:" << endl;
 	for (Player* p : players) {

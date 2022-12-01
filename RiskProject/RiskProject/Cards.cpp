@@ -17,7 +17,7 @@
 
 using namespace std;
 
-class Deck;
+//class Deck;
 
 
 
@@ -340,6 +340,3 @@ Deck* Hand::getDeck(){
 void Hand::setDeck(Deck* d){
     deck = d;
 }
-
-
-// EOF

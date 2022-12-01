@@ -1,14 +1,5 @@
-Input command: start
-Current effect: error
-Input command: loadmap Japan.map
-Current effect: Map has been successfully loaded.
+Input command: tournament M Canada.map Japan.map P Cheater Neutral Aggressive Benevolent G 2 D 10
+Current effect: Tournament mode is active.
 Transitioned to state: maploaded
-Input command: addplayer p1
-Current effect: It is a game command, but not valid in the current state
-Current effect: error
-Input command: addplayer p2
-Current effect: It is a game command, but not valid in the current state
-Current effect: error
-Input command: gamestart
-Current effect: It is a game command, but not valid in the current state
-Current effect: error
+Transitioned to state: mapvalidated
+Transitioned to state: assignreinforcement

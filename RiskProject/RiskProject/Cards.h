@@ -14,7 +14,6 @@
 #include"Orders.h"
 
 using namespace std;
-//
 class Deck;
 class Card;
 class Hand;

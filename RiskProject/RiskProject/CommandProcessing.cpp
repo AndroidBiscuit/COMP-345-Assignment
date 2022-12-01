@@ -184,12 +184,19 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 	vector<string> tournament_parameters;
 	string input = seperate_cmd[0];
 	string parameter = "";
+	string playerStrategy = "";
 	if (seperate_cmd.size() == 2) {
 		parameter = seperate_cmd[1];
 	}
 
-	if (seperate_cmd.size() > 2) {
+	if (seperate_cmd.size() == 3) {
+		parameter = seperate_cmd[1];
+		playerStrategy = seperate_cmd[2];
+	}
+
+	if (seperate_cmd.size() > 3) {
 		tournament_parameters = seperate_cmd;
+	
 	}
 
 	for (string cmd : valid_commands) {
@@ -335,13 +342,19 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 		else if (input == "addplayer") {
 			if (currentState == "mapvalidated" || currentState == "playersadded") {
 				if (ge->getPlayers().size() == 0) {
-					ge->addPlayer(parameter);
+					if (playerStrategy == "Human") {
+						ge->hasHumanPlayer = true;
+					}
+					ge->addPlayer(parameter, playerStrategy);
 					cmd->saveEffect(input);
 					ge->transition("playersadded");
 				}
 				//checks number of players, only 2-6 are allowed
 				else if (ge->getPlayers().size() < 6) {
-					ge->addPlayer(parameter);
+					if (playerStrategy == "Human") {
+						ge->hasHumanPlayer = true;
+					}
+					ge->addPlayer(parameter, playerStrategy);
 					cmd->saveEffect(input);
 				}
 
