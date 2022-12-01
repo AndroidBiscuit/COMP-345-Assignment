@@ -91,12 +91,12 @@ Deploy::Deploy() {/* cout << "Empty deploy constructor called. \n";*/ }
 Deploy::Deploy(string name) {
 	//cout << "Deploy constructor with string called. \n";
 	orderName = name;
-	orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
+	orderEffect = "Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.";
 }
 
 Deploy::Deploy(int au, Territory* t, Player* p) {
 	orderName = "deploy";
-	orderEffect = "Move a certain number of army units from the current player’s reinforcement pool to one of the current player’s territories.";
+	orderEffect = "Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.";
 	armyUnits = au;
 	territory = t;
 	player = p;
@@ -411,7 +411,7 @@ Airlift::Airlift() {}
 Airlift::Airlift(string name) {
 	//cout << "Airlift constructor with string called. \n";
 	orderName = name;
-	orderEffect = "Advance a certain number of army units from one of the current player’s territories to any another yerritory ";
+	orderEffect = "Advance a certain number of army units from one of the current player's territories to any another yerritory ";
 }
 
 Airlift::Airlift(const Airlift& a) :Order(a) {
@@ -425,7 +425,7 @@ Airlift::Airlift(const Airlift& a) :Order(a) {
 Airlift::Airlift(Player* p, Territory* src, Territory* dstn, int armyNum)
 {
 	orderName = "airlift";
-	orderEffect = "Advance a certain number of army units from one of the current player’s territories to any another yerritory ";
+	orderEffect = "Advance a certain number of army units from one of the current player's territories to any another yerritory ";
 	player = p;
 	srcTerritory = src;
 	dstnTerritory = dstn;

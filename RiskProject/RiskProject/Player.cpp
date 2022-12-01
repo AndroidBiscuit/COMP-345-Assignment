@@ -201,8 +201,46 @@ bool Player::getConquered() {
 
 //creates a player strategy according to the input string
 void Player::definePlayerStrategy(string strategy) {
-	if (PlayerStrategy != NULL) {
-		delete ps;
+	if (playerStrategy != NULL) {
+		delete playerStrategy;
+		playerStrategy = NULL;
+	}
+
+	if (strategy == "Human") {
+		playerStrategy = new HumanPlayerStrategy(this);
+		intelligent = true;
+		isNeutral = false;
+	}
+
+	else if (strategy == "Aggressive") {
+		playerStrategy = new AggressivePlayerStrategy(this);
+		intelligent = false;
+		isNeutral = false;
+	}
+
+	else if (strategy == "Benevolent") {
+		playerStrategy = new BenevolentPlayerStrategy(this);
+		intelligent = false;
+		isNeutral = false;
+	}
+
+	else if (strategy == "Neutral") {
+		playerStrategy = new NeutralPlayerStrategy(this);
+		intelligent = false;
+		isNeutral = true;
+	}
+
+	else if (strategy == "Cheater") {
+		playerStrategy = new CheaterPlayerStrategy(this);
+		intelligent = false;
+		isNeutral = false;
+	}
+
+	else {
+		playerStrategy = new HumanPlayerStrategy(this);
+		intelligent = false;
+		isNeutral = false;
+	
 	}
 }
 

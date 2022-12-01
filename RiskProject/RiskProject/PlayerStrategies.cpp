@@ -4,7 +4,13 @@
 //_________________________________________________________________________________________________
 // Human player strategy
 //-------------------------------------------------------------------------------------------------
+HumanPlayerStrategy::HumanPlayerStrategy() :PlayerStrategy()
+{
+}
 
+HumanPlayerStrategy::HumanPlayerStrategy(Player* player) : PlayerStrategy(player)
+{
+}
 // Issue order
 void HumanPlayerStrategy::issueOrder(Player* player, string order) {
 	//TODO: do we need to check the input?
@@ -46,7 +52,13 @@ vector<Territory*> HumanPlayerStrategy::toDefend(Player* player) {
 //_________________________________________________________________________________________________
 // Aggressive player strategy
 //-------------------------------------------------------------------------------------------------
+AggressivePlayerStrategy::AggressivePlayerStrategy() :PlayerStrategy()
+{
+}
 
+AggressivePlayerStrategy::AggressivePlayerStrategy(Player* player) : PlayerStrategy(player)
+{
+}
 // Issue order
 void AggressivePlayerStrategy::issueOrder(Player* player, string order) {
 	
@@ -147,7 +159,13 @@ vector<Territory*> AggressivePlayerStrategy::toDefend(Player* player) {
 //_________________________________________________________________________________________________
 // Benevolent player strategy
 //-------------------------------------------------------------------------------------------------
+BenevolentPlayerStrategy::BenevolentPlayerStrategy() :PlayerStrategy()
+{
+}
 
+BenevolentPlayerStrategy::BenevolentPlayerStrategy(Player* player) : PlayerStrategy(player)
+{
+}
 // Issue order
 void BenevolentPlayerStrategy::issueOrder(Player* player, string order) {
 	
@@ -170,9 +188,15 @@ vector<Territory*> BenevolentPlayerStrategy::toDefend(Player* player) {
 //_________________________________________________________________________________________________
 // Neutral player strategy
 //-------------------------------------------------------------------------------------------------
+NeutralPlayerStrategy::NeutralPlayerStrategy() :PlayerStrategy()
+{
+}
 
+NeutralPlayerStrategy::NeutralPlayerStrategy(Player* player) : PlayerStrategy(player)
+{
+}
 // Issue order
-void HumanPlayerStrategy::issueOrder(Player* player, string order) {
+void NeutralPlayerStrategy::issueOrder(Player* player, string order) {
 	//
 }
 
@@ -192,7 +216,13 @@ vector<Territory*> NeutralPlayerStrategy::toDefend(Player* player) {
 //_________________________________________________________________________________________________
 // Cheater player strategy
 //-------------------------------------------------------------------------------------------------
+CheaterPlayerStrategy::CheaterPlayerStrategy() :PlayerStrategy()
+{
+}
 
+CheaterPlayerStrategy::CheaterPlayerStrategy(Player* player) : PlayerStrategy(player)
+{
+}
 // Issue order - automatically turns adjacent territory owners to cheater player's 
 void CheaterPlayerStrategy::issueOrder(Player* player, string order) {
 	vector<Territory*> enemyTerritories = player->availableTerritoriesToAttack(); //gets adjacent territories to its own
@@ -212,3 +242,27 @@ vector<Territory*> CheaterPlayerStrategy::toDefend(Player* player) {
 	return player->getDefendList();
 }
 
+PlayerStrategy::PlayerStrategy()
+{
+	player = NULL;
+}
+
+PlayerStrategy::PlayerStrategy(Player* player)
+{
+	this->player = player;
+}
+
+PlayerStrategy::~PlayerStrategy()
+{
+	player = NULL;
+}
+
+void PlayerStrategy::setPlayer(Player* player)
+{
+	this->player = player;
+}
+
+Player* PlayerStrategy::getPlayer(void)
+{
+	return player;
+}

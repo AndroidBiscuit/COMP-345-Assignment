@@ -7,7 +7,7 @@ class Player;
 
 class PlayerStrategy {
 public:
-	Player* p;
+	Player* player;
 	// Issue order
 	virtual void issueOrder(Player* player, string order) = 0;
 
@@ -27,6 +27,8 @@ public:
 
 class HumanPlayerStrategy : public PlayerStrategy {
 public: 
+	HumanPlayerStrategy();
+	HumanPlayerStrategy(Player* player);
 	void issueOrder(Player* player, string order);
 	vector<Territory*> toAttack(Player* player);
 	vector<Territory*> toDefend(Player* player);
@@ -35,6 +37,8 @@ public:
 class AggressivePlayerStrategy : public PlayerStrategy {
 
 public:
+	AggressivePlayerStrategy();
+	AggressivePlayerStrategy(Player* player);
 	void issueOrder(Player* player, string order);
 	vector<Territory*> toAttack(Player* player);
 	vector<Territory*> toDefend(Player* player);
@@ -42,6 +46,8 @@ public:
 
 class BenevolentPlayerStrategy : public PlayerStrategy {
 public:
+	BenevolentPlayerStrategy();
+	BenevolentPlayerStrategy(Player* player);
 	void issueOrder(Player* player, string order);
 	vector<Territory*> toAttack(Player* player);
 	vector<Territory*> toDefend(Player* player);
@@ -49,6 +55,8 @@ public:
 
 class NeutralPlayerStrategy : public PlayerStrategy {
 public:
+	NeutralPlayerStrategy();
+	NeutralPlayerStrategy(Player* player);
 	void issueOrder(Player* player, string order);
 	vector<Territory*> toAttack(Player* player);
 	vector<Territory*> toDefend(Player* player);
@@ -56,6 +64,8 @@ public:
 
 class CheaterPlayerStrategy : public PlayerStrategy {
 public:
+	CheaterPlayerStrategy();
+	CheaterPlayerStrategy(Player* player);
 	void issueOrder(Player* player, string order);
 	vector<Territory*> toAttack(Player* player);
 	vector<Territory*> toDefend(Player* player);

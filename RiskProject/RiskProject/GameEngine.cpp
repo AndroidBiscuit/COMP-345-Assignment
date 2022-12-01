@@ -42,6 +42,19 @@ vector<Player*> GameEngine::getPlayers() {
 	return players;
 };
 
+void GameEngine::clearPlayers() {
+	players.clear();
+}
+
+void GameEngine::clearWinnerForEachMap() {
+	winnerForEachMap.clear();
+
+}
+
+void GameEngine::setOutputResults(string outputRes) {
+	outputResults = outputRes;
+
+}
 //Assignment operator
 GameEngine& GameEngine::operator =(const GameEngine& other){
 	state = other.state;
@@ -90,12 +103,13 @@ GameEngine::~GameEngine() {
 void GameEngine::transition(string newState) {
 	this->setState(newState);
 	cout << "You are transited to state: " << this->getState() << endl;
+	outputResults = "Transitioned to state: " + state;
 	Notify(this);
 }
 
 // redefine the virtual method inherited from Subject class
 string GameEngine::stringToLog() {
-	return "Transitioned to state: " + state;
+	return outputResults;
 }
 
 //implements a command-based user interaction mechanism to start the game.
@@ -147,7 +161,7 @@ void GameEngine::startupPhase() {
 		
 		if (currentState == "assignreinforcement") {
 			cout << "switch the game to the play phase" << endl;
-			mainGameLoop();
+			mainGameLoop(cprocessor->maxNumOfTurns);
 			delete commandObserver;
 			commandObserver = nullptr;
 
@@ -343,11 +357,12 @@ bool GameEngine::gameStartSetting() {
 }
 
 //Main Game loop
-void GameEngine::mainGameLoop() {	
+void GameEngine::mainGameLoop(int maxNumOfTurns) {	
 	Player* winner;
+	int counter = 0;
 	cout << "This is the play phase" <<endl;
-	while (!playerOwnsAllContinents()) {
-
+	while (!playerOwnsAllContinents() && counter < maxNumOfTurns) {
+		counter++;
 		//remove player if they have 0 territories
 		for (Player* p : players)
 		{
@@ -374,16 +389,24 @@ void GameEngine::mainGameLoop() {
 		}
 
 	}
-
-	//checks for winner 
-	for (Player* p : players) {
-		int playerTerritoryAmount = p->getTerritory().size();
-		int mapTerritoryAmount = map->getAllTerritory().size();
-		if (playerTerritoryAmount == mapTerritoryAmount)
-		{
-			winner = p;
-			cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
+	if (counter < maxNumOfTurns) {
+		//checks for winner 
+		for (Player* p : players) {
+			int playerTerritoryAmount = p->getTerritory().size();
+			int mapTerritoryAmount = map->getAllTerritory().size();
+			if (playerTerritoryAmount == mapTerritoryAmount)
+			{
+				winner = p;
+				cout << "Congrats " << winner->getName() << "! You have conquered all the territories!\n";
+				this->winnerForEachMap.push_back(winner->getName());
+			}
 		}
+	
+	}
+	else {
+		cout << "The total round reach the max number of turns. It is a draw." << endl;
+		this->winnerForEachMap.push_back("Draw");
+	
 	}
 	
 

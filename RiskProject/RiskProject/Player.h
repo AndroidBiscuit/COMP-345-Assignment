@@ -123,4 +123,8 @@ public:
 	vector<Territory*> getDefendList();
 	void setAttackList();
 	void setDefendList();
+
+	//define player strategy
+	void definePlayerStrategy(string strategy);
+	bool isNeutral;
 };

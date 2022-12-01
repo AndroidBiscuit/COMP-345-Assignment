@@ -213,7 +213,7 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 				}
 				//Map files are loaded and validated as a result of executing a tournament command.
 				for (int i = 0; i < listOfMapFiles.size(); i++) {
-				
+
 					//load maps 
 					cout << "\n Loading Map " << i + 1 << endl;
 					bool result = ge->loadMap(listOfMapFiles[i]);
@@ -231,9 +231,72 @@ bool CommandProcessor::validate(Command* cmd, GameEngine* ge) {
 							exit(0);
 						}
 						ge->transition("mapvalidated");
-					}
-				}
 
+						//play the game with the same setting for G(1-5) times
+						for (int j = 0; j < numOfGames; j++) {
+
+							//addplayers to GameEngines's data members players, players' name is the strategy they use
+							for (int i = 0; i < listOfPlayerStrategies.size(); i++) {
+								string name = listOfPlayerStrategies[i];
+								if (name == "Neutral") {
+									ge->addPlayer("Neutral2", name);
+								}
+								else {
+									ge->addPlayer(name, name);
+								}
+
+							}
+							//Game starts
+							ge->gameStartSetting();
+							ge->transition("assignreinforcement");
+							ge->mainGameLoop(maxNumOfTurns);
+							ge->clearPlayers();
+
+							//if the tournament is not finished, go to mapvalidated, otherwise, exit program
+							if (i == listOfMapFiles.size() - 1 && j == numOfGames - 1)
+								ge->transition("exitprogram");
+							else
+								ge->transition("mapvalidated");
+						}
+					}
+
+					//save the result of current map
+					ge->winnersForTournament.push_back(ge->winnerForEachMap);
+
+					//clear the data of winnerForEachMap to save next map's result
+					ge->clearWinnerForEachMap();
+				}
+				//print the whole tournament result
+				string outputRes = "";
+				outputRes = "Tournament mode:\nM: ";
+				for (string s : listOfMapFiles) {
+					outputRes += s + "\t";
+				}
+				outputRes += "\nP: ";
+				for (string s : listOfPlayerStrategies) {
+					outputRes += s + "\t";
+				}
+				outputRes += "\nG: ";
+				outputRes += to_string(numOfGames);
+				outputRes += "\nD: ";
+				outputRes += to_string(maxNumOfTurns);
+
+				outputRes += "\nResults: \n";
+				outputRes += "\t";
+				for (int i = 0; i < numOfGames; i++) {
+					outputRes += "Game " + to_string(i + 1) + "\t";
+				}
+				outputRes += "\n\n";
+				for (int i = 0; i < ge->winnersForTournament.size(); i++) {
+					outputRes += "Map " + to_string(i + 1) + "\t";
+					for (int j = 0; j < ge->winnersForTournament[0].size(); j++) {
+						outputRes += ge->winnersForTournament[i][j] + "\t";
+					}
+					outputRes += "\n\n";
+				}
+				cout << outputRes;
+				ge->setOutputResults(outputRes);
+				Notify(this);
 				return true;
 			}
 				
