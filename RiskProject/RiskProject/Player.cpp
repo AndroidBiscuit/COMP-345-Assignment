@@ -320,8 +320,11 @@ vector<Territory*> Player::availableTerritoriesToDefend()
 	return defendList;
 }
 
-
-void Player::issueOrder(Player* np, vector<Player*> pAvailable)
+void Player::issueOrder(Player* np, vector<Player*> pAvailable) {
+	playerStrategy->issueOrder(this);
+}
+/*
+void Player::issueOrder(Player* np, vector<Player*> pAvailable) DONT DELETE THIS PLEASE!!!
 {
 	Player* neutralPlayer = np;
 	vector<Player*> playersAvailable = pAvailable;
@@ -614,6 +617,8 @@ void Player::issueOrder(Player* np, vector<Player*> pAvailable)
 
 }
 
+auto */
+
 //making sure territory enetered from command line is a proper territory
 bool Player::makeSureTerritoryAnswerExists(vector<Territory*> territoryList, string territoryName) {
 	for (Territory* t : territoryList) {
@@ -639,8 +644,8 @@ vector<Territory*> Player::toDefend() {
 	return playerStrategy->toDefend(this);
 }
 
-void Player::issueOrder(string order) {
-	playerStrategy->issueOrder(this, order);
+void Player::issueOrder(string order) { //need to change this -> remove order since there is no need for it
+	playerStrategy->issueOrder(this);
 }
 
 vector<Territory*> Player::getAttackList() {

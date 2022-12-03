@@ -497,7 +497,7 @@ void GameEngine::issueOrderPhase() {
 				this->orderIssueRecursion = true;
 			
 			cout << "End of " << p->getName() << "'s turn to issue orders. \n";
-
+			//TODO: add if statement to check if its a bot-> if it is a bot, then setFlag to false automatically
 		}
 	}
 
