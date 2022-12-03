@@ -382,11 +382,12 @@ void AggressivePlayerStrategy::issueOrder(Player* player) {
 					advanceOrderName = advanceOrderName.append(to_string(orderNumber)); //setting up the order obj name
 					Advance* advanceOrderName = new Advance(player, territory, territoryAdj, territory->getArmyAmount());
 					player->setOrdersList(advanceOrderName);
-					break; //does this exit all of the loops? TO DEBUG
+					goto stop;
 				}
 			}
 		}
 	}
+	stop:
 
 	bool usedCardFlag = false;
 
