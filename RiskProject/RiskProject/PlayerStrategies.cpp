@@ -70,13 +70,18 @@ void AggressivePlayerStrategy::issueOrder(Player* player, string order) {
 	string advanceOrderName = "advance";
 	string bombOrderName = "bomb";
 	//TODO: INITIALIZATION PROBLEM AND HOW TO CHOOSE SUBSEQUENT TERRITORIES TO DEPLOY ARMIES TO
+	// 
+	//5 army units and place them anywhere randomly on their territories
+	vector<Territory*> territories = toDefend(player);
+
+
 	//deploy all army to strongest territory
 	//get territory w most army units on it 
 	for (Territory* territory : toDefend(player))
 	{
 		if (territory->getArmyAmount() > territoryArmy) {
 			territoryArmy = territory->getArmyAmount();
-			territoryToBeDeployedTo = territory->getTName();
+			territoryToBeDeployedTo = territory->getTName(); //just choosing territory here
 		}
 	}
 	//deploy all army to chosen territory
@@ -90,7 +95,7 @@ void AggressivePlayerStrategy::issueOrder(Player* player, string order) {
 
 			Deploy* deployOrderName = new Deploy(armyAmount, territory, player);
 			player->setArmiesAmount(0);
-			player->tToDefend.push_back(territory);
+			player->tToDefend.push_back(territory); //tToDefend is a territory vector where army units are deployed to
 			player->setOrdersList(deployOrderName);
 		}
 	}
@@ -101,7 +106,7 @@ void AggressivePlayerStrategy::issueOrder(Player* player, string order) {
 		if (territory->getTName() == territoryToBeDeployedTo) {
 			for (Territory* territoryAdj : territory->getAdjTerritories()) {
 				
-				if (territoryAdj->getOwner() != player)
+				if (territoryAdj->getOwner() != player) //making sure the adj territroy is an enemy's 
 				{
 					orderNumber++;
 					advanceOrderName = advanceOrderName.append(to_string(orderNumber)); //setting up the order obj name
@@ -136,6 +141,7 @@ void AggressivePlayerStrategy::issueOrder(Player* player, string order) {
 
 	if (!usedCardFlag) {
 		//discard a random card and pick up a new one
+
 	}
 
 	
