@@ -498,7 +498,7 @@ void GameEngine::issueOrderPhase() {
 			/*	this->orderIssueRecursion = false;*/
 				
 			}
-			else if (!p->intelligent && (p->getOrdersToIssueFlag() || p->getOrders()->getOrdersList().size() < 5)) {
+			else if (!p->intelligent && (p->getOrdersToIssueFlag() || p->getOrders()->getOrdersList().size() < 5)) { //Non-intelligent player issues 5 orders per turn
 				playerAnswer = 'y';
 			}
 			else {
