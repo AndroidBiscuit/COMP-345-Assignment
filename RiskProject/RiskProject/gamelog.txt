@@ -1,5 +1,0 @@
-Input command: tournament M Canada.map Japan.map P Cheater Neutral Aggressive Benevolent G 2 D 10
-Current effect: Tournament mode is active.
-Transitioned to state: maploaded
-Transitioned to state: mapvalidated
-Transitioned to state: assignreinforcement
