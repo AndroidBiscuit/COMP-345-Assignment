@@ -1,6 +1,5 @@
 #include "PlayerStrategies.h"
 #include <algorithm>
-
 //_________________________________________________________________________________________________
 // Human player strategy
 //-------------------------------------------------------------------------------------------------
@@ -12,11 +11,11 @@ HumanPlayerStrategy::HumanPlayerStrategy(Player* player) : PlayerStrategy(player
 {
 }
 // Issue order
-void HumanPlayerStrategy::issueOrder(Player* player) { //TODO:Need to pass neutral and players vector
-	Player* neutralPlayer = np;
-	vector<Player*> playersAvailable = pAvailable;
-	vector<Territory*> attackList = toAttack(player);
-	vector<Territory*> defendList = toDefend(player);
+void HumanPlayerStrategy::issueOrder() { //TODO:Need to pass neutral and players vector
+	Player* neutralPlayer = player->neutral;
+	//vector<Player*> playersAvailable = pAvailable;
+	vector<Territory*> attackList = toAttack();
+	vector<Territory*> defendList = toDefend();
 	char orderAnswer2 = 'x';
 	string orderAnswer;
 	string territoryAnswer;
@@ -269,26 +268,26 @@ void HumanPlayerStrategy::issueOrder(Player* player) { //TODO:Need to pass neutr
 
 	else if (cardToUse.compare("diplomacy") == 0)
 	{
-		string playerAnswer;
-		orderNumber++;
-		cout << "which player would you like to target? \n";
-		for (Player* p : playersAvailable)
-		{
-			cout << p->getName() << endl;
-		}
-		cin >> playerAnswer;
+		//string playerAnswer;
+		//orderNumber++;
+		//cout << "which player would you like to target? \n";
+		//for (Player* p : playersAvailable)
+		//{
+		//	cout << p->getName() << endl;
+		//}
+		//cin >> playerAnswer;
 
-		//create diplomacy order
-		negotiateOrderName = negotiateOrderName.append(to_string(orderNumber)); //setting up the order obj name
-		for (Player* targetplayer : playersAvailable)
-		{
-			if (targetplayer->getName() == playerAnswer)
-			{
-				Negotiate* negotiateOrderName = new Negotiate(player, targetplayer);
-				player->ordersList->addOrder(negotiateOrderName);
-			}
+		////create diplomacy order
+		//negotiateOrderName = negotiateOrderName.append(to_string(orderNumber)); //setting up the order obj name
+		//for (Player* targetplayer : playersAvailable)
+		//{
+		//	if (targetplayer->getName() == playerAnswer)
+		//	{
+		//		Negotiate* negotiateOrderName = new Negotiate(player, targetplayer);
+		//		player->ordersList->addOrder(negotiateOrderName);
+		//	}
 
-		}
+		//}
 
 	}
 	else if (cardToUse.compare("reinforcement"))
@@ -299,12 +298,12 @@ void HumanPlayerStrategy::issueOrder(Player* player) { //TODO:Need to pass neutr
 }
 
 // Return the attack list of selected player
-vector<Territory*> HumanPlayerStrategy::toAttack(Player* player) {
+vector<Territory*> HumanPlayerStrategy::toAttack() {
 	return player->getAttackList();
 }
 
 // Return the defend list of selected player
-vector<Territory*> HumanPlayerStrategy::toDefend(Player* player) {
+vector<Territory*> HumanPlayerStrategy::toDefend() {
 	return player->getDefendList();
 }
 
@@ -323,7 +322,7 @@ AggressivePlayerStrategy::AggressivePlayerStrategy(Player* player) : PlayerStrat
 {
 }
 // Issue order
-void AggressivePlayerStrategy::issueOrder(Player* player) {
+void AggressivePlayerStrategy::issueOrder() {
 	
 	int orderNumber = 0;
 	int territoryArmy = 0;
@@ -334,7 +333,7 @@ void AggressivePlayerStrategy::issueOrder(Player* player) {
 	string bombOrderName = "bomb";
 	//TODO: INITIALIZATION PROBLEM AND HOW TO CHOOSE SUBSEQUENT TERRITORIES TO DEPLOY ARMIES TO
 	//5 army units and place them anywhere randomly on their territories
-	vector<Territory*> territories = toDefend(player);
+	vector<Territory*> territories = player->toDefend();
 
 	for (int i = 0; i < 5; i++) {
 		int random = rand() % territories.size();
@@ -347,7 +346,7 @@ void AggressivePlayerStrategy::issueOrder(Player* player) {
 
 	//deploy all army to strongest territory
 	//get territory w most army units on it 
-	for (Territory* territory : toDefend(player))
+	for (Territory* territory : player->toDefend())
 	{
 		if (territory->getArmyAmount() > territoryArmy) {
 			territoryArmy = territory->getArmyAmount();
@@ -356,7 +355,7 @@ void AggressivePlayerStrategy::issueOrder(Player* player) {
 	}
 	//deploy all army to chosen territory
 	deployOrderName = deployOrderName.append(to_string(orderNumber));
-	for (Territory* territory : toDefend(player)) {
+	for (Territory* territory : toDefend()) {
 		if (territory->getTName().compare(territoryToBeDeployedTo) == 0) {
 			orderNumber++;
 			int playerArmyAmount = player->getArmiesAmount();
@@ -372,7 +371,7 @@ void AggressivePlayerStrategy::issueOrder(Player* player) {
 
 	vector<Territory*> adjTerritoriesVector;
 	//Move army units to adjacent enemy territory
-	for (Territory* territory : toDefend(player)) {
+	for (Territory* territory : toDefend()) {
 		if (territory->getTName() == territoryToBeDeployedTo) {
 			for (Territory* territoryAdj : territory->getAdjTerritories()) {
 				
@@ -397,7 +396,7 @@ void AggressivePlayerStrategy::issueOrder(Player* player) {
 		if (card->getCardName(card->getCardType()) == "bomb") 
 		{
 			//get random territory from territories that can be attacked
-			vector<Territory*> territoriesToBeAttacked = toAttack(player);
+			vector<Territory*> territoriesToBeAttacked = toAttack();
 			int random = rand() % territoriesToBeAttacked.size();
 			Territory* territory = territoriesToBeAttacked[random];
 			orderNumber++;
@@ -420,12 +419,12 @@ void AggressivePlayerStrategy::issueOrder(Player* player) {
 }
 
 // Return the attack list of selected player
-vector<Territory*> AggressivePlayerStrategy::toAttack(Player* player) {
+vector<Territory*> AggressivePlayerStrategy::toAttack() {
 	return player->getAttackList();
 }
 
 // Return the defend list of selected player
-vector<Territory*> AggressivePlayerStrategy::toDefend(Player* player) {
+vector<Territory*> AggressivePlayerStrategy::toDefend() {
 	return player->getDefendList();
 }
 
@@ -444,17 +443,17 @@ BenevolentPlayerStrategy::BenevolentPlayerStrategy(Player* player) : PlayerStrat
 {
 }
 // Issue order
-void BenevolentPlayerStrategy::issueOrder(Player* player, string order) {
-	
+void BenevolentPlayerStrategy::issueOrder() {
+	player->setOrdersToIssueFlag(false);
 }
 
 // Return the attack list of selected player
-vector<Territory*> BenevolentPlayerStrategy::toAttack(Player* player) {
+vector<Territory*> BenevolentPlayerStrategy::toAttack() {
 	return player->getAttackList();
 }
 
 // Return the defend list of selected player
-vector<Territory*> BenevolentPlayerStrategy::toDefend(Player* player) {
+vector<Territory*> BenevolentPlayerStrategy::toDefend() {
 	return player->getDefendList();
 }
 
@@ -473,17 +472,17 @@ NeutralPlayerStrategy::NeutralPlayerStrategy(Player* player) : PlayerStrategy(pl
 {
 }
 // Issue order
-void NeutralPlayerStrategy::issueOrder(Player* player, string order) {
-	//
+void NeutralPlayerStrategy::issueOrder() {
+	player->setOrdersToIssueFlag(false);
 }
 
 // Return the attack list of selected player
-vector<Territory*> NeutralPlayerStrategy::toAttack(Player* player) {
+vector<Territory*> NeutralPlayerStrategy::toAttack() {
 	return player->getAttackList();
 }
 
 // Return the defend list of selected player
-vector<Territory*> NeutralPlayerStrategy::toDefend(Player* player) {
+vector<Territory*> NeutralPlayerStrategy::toDefend() {
 	return player->getDefendList();
 }
 
@@ -501,21 +500,22 @@ CheaterPlayerStrategy::CheaterPlayerStrategy(Player* player) : PlayerStrategy(pl
 {
 }
 // Issue order - automatically turns adjacent territory owners to cheater player's 
-void CheaterPlayerStrategy::issueOrder(Player* player) {
+void CheaterPlayerStrategy::issueOrder() {
 	vector<Territory*> enemyTerritories = player->availableTerritoriesToAttack(); //gets adjacent territories to its own
 	for (Territory* t : enemyTerritories)
 	{
 		t->setOwner(player); 
 	}
+	player->setOrdersToIssueFlag(false);
 }
 
 // Return the attack list of selected player
-vector<Territory*> CheaterPlayerStrategy::toAttack(Player* player) {
+vector<Territory*> CheaterPlayerStrategy::toAttack() {
 	return player->getAttackList();
 }
 
 // Return the defend list of selected player
-vector<Territory*> CheaterPlayerStrategy::toDefend(Player* player) {
+vector<Territory*> CheaterPlayerStrategy::toDefend() {
 	return player->getDefendList();
 }
 

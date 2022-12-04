@@ -253,6 +253,7 @@ void GameEngine::addPlayer(string name, string strategy) {
 	//Creating Player Objects:
 	Player* temp = new Player();
 	temp->setName(name);
+	temp->definePlayerStrategy(strategy);
 	cout << "Welcome to Warzone, " << name << "!" << endl;
 	players.push_back(temp);
 }
@@ -373,6 +374,7 @@ void GameEngine::mainGameLoop(int maxNumOfTurns) {
 	cout << "This is the play phase" <<endl;
 	while (!playerOwnsAllContinents() && counter < maxNumOfTurns) {
 		counter++;
+		cout << "counter: " << counter << endl;
 		//remove player if they have 0 territories
 		for (Player* p : players)
 		{
@@ -385,6 +387,7 @@ void GameEngine::mainGameLoop(int maxNumOfTurns) {
 
 		//Order issueing phase
 		do {
+			
 			issueOrderPhase();
 		} while (orderIssueRecursion); //need to test this
 
@@ -486,17 +489,29 @@ void GameEngine::issueOrderPhase() {
 	for (Player* p : players) {
 		if (p->getOrdersToIssueFlag()) { //if true, then player still wants to issue orders
 			cout << p->getName() <<"'s turn to issue an order: " << endl;
-			p->issueOrder(neutral, players);  //passing down neutral player so orders can make use of it
+			p->issueOrder();  //passing down neutral player so orders can make use of it
 			
 			//at end of order issue, ask if player still wants to issue order - if yes then true, if no then set flag to false
 			cout << "Do you still want to issue orders? (y/n)" << endl;
-			cin >> playerAnswer;
+			if (!p->getOrdersToIssueFlag() || p->getOrders()->getOrdersList().size() > 5) {
+				playerAnswer = 'n';
+			/*	this->orderIssueRecursion = false;*/
+				
+			}
+			else if (!p->intelligent && (p->getOrdersToIssueFlag() || p->getOrders()->getOrdersList().size() < 5)) {
+				playerAnswer = 'y';
+			}
+			else {
+				cin >> playerAnswer;
+			}
 			if (playerAnswer == 'n')
 				p->setOrdersToIssueFlag(false);
 			if (playerAnswer == 'y')
 				this->orderIssueRecursion = true;
 			
 			cout << "End of " << p->getName() << "'s turn to issue orders. \n";
+			cout << "The final list of orders is: " << endl;
+			cout << *(p->getOrders()) << endl;
 			//TODO: add if statement to check if its a bot-> if it is a bot, then setFlag to false automatically
 		}
 	}
@@ -539,18 +554,21 @@ void GameEngine::executeOrderPhase() {
 			ordersList = player->getOrders();
 			list<Order*> aList = ordersList->getOrdersList();
 			//execute only if its deploy
-			if (aList.front()->getOrderName() == "deploy")
-			{
-				orderObserver = new LogObserver(aList.front());
-				noOrdersLeft = false;
-				noDeployOrdersLeft = false; //if flag is false then deploy has been spotted
-				cout << "Executing first order (only if its deploy)\n";
-				cout << "executing " << player->getName() << "'s deploy order\n";
-				aList.front()->execute();
-				player->getOrders()->remove(1); //remove order once its been executed
-				int x = (player->getOrders()->getOrdersList()).size();
-				int z;
+			if(!aList.empty()){
+				if (aList.front()->getOrderName() == "deploy")
+				{
+					orderObserver = new LogObserver(aList.front());
+					noOrdersLeft = false;
+					noDeployOrdersLeft = false; //if flag is false then deploy has been spotted
+					cout << "Executing first order (only if its deploy)\n";
+					cout << "executing " << player->getName() << "'s deploy order\n";
+					aList.front()->execute();
+					player->getOrders()->remove(1); //remove order once its been executed
+					int x = (player->getOrders()->getOrdersList()).size();
+					int z;
+				}
 			}
+			
 		}
 
 	}

@@ -320,9 +320,9 @@ vector<Territory*> Player::availableTerritoriesToDefend()
 	return defendList;
 }
 
-void Player::issueOrder(Player* np, vector<Player*> pAvailable) {
-	playerStrategy->issueOrder(this);
-}
+//void Player::issueOrder(Player* np, vector<Player*> pAvailable) {
+//	playerStrategy->issueOrder(this);
+//}
 /*
 void Player::issueOrder(Player* np, vector<Player*> pAvailable) DONT DELETE THIS PLEASE!!!
 {
@@ -637,15 +637,15 @@ void Player::setStrategy(PlayerStrategy* strategy) {
 }
 
 vector<Territory*> Player::toAttack() {
-	return playerStrategy->toAttack(this);
+	return playerStrategy->toAttack();
 }
 
 vector<Territory*> Player::toDefend() {
-	return playerStrategy->toDefend(this);
+	return playerStrategy->toDefend();
 }
 
-void Player::issueOrder(string order) { //need to change this -> remove order since there is no need for it
-	playerStrategy->issueOrder(this);
+void Player::issueOrder() { //need to change this -> remove order since there is no need for it
+	playerStrategy->issueOrder();
 }
 
 vector<Territory*> Player::getAttackList() {

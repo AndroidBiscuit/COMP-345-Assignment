@@ -2,13 +2,13 @@
 #include "GameEngineDriver.h"
 #include "CommandProcessingDriver.h"
 #include "LoggingObserverDriver.h"
+#include "TournamentDriver.h"
 
 int main(void) {
 
     bool round = true;
     while (round) {
-        system("CLS");
-        cout << "\n-------------------Test Menu-----------------------------" << endl;
+        system("CLS");        cout << "\n-------------------Test Menu-----------------------------" << endl;
         cout << "1. Start to test command processor.\n";
         cout << "2. Start to test start up phase.\n";
         cout << "3. Start to test main game loop..\n";
@@ -33,7 +33,7 @@ int main(void) {
            
             continue;
         case 5:
-            testLoggingObserver();
+            testTournament();
             round = false;
 
         default:

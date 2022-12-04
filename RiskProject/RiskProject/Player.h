@@ -96,7 +96,7 @@ public:
 	void discoverOrderType(string x, Order* issued);
 	vector<Territory*> availableTerritoriesToDefend();
 	vector<Territory*> availableTerritoriesToAttack();
-	void issueOrder(Player* p, vector<Player*> playersVector); //here
+	void issueOrder(); //here
 	void addTerritory(Territory*);
 	bool makeSureTerritoryAnswerExists(vector<Territory*>, string name);
 
@@ -112,13 +112,18 @@ public:
 	friend class Hand;
 	friend class OrdersList;
 	friend class Deck;
+	friend class PlayerStrategy;
+	friend class HumanPlayerStrategy;
+	friend class NeutralPlayerStrategy;
+	friend class CheaterPlayerStrategy;
+	friend class AggressivePlayerStrategy;
+	friend class BenevolentPlayerStrategy;
 
 	//Playter strategy
 	PlayerStrategy* getStrategy();
 	void setStrategy(PlayerStrategy* strategy);
 	vector<Territory*> toAttack();
 	vector<Territory*> toDefend();
-	void issueOrder(string order);
 	vector<Territory*> getAttackList();
 	vector<Territory*> getDefendList();
 	void setAttackList();
