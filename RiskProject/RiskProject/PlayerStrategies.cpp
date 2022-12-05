@@ -339,8 +339,10 @@ void AggressivePlayerStrategy::issueOrder() {
 	vector<Territory*> territories = toDefend();
 
 	for (int i = 0; i < 5; i++) {
-		if (toDefend().size() == 0)
+		if (territories.size() == 0) {
+			player->setOrdersToIssueFlag(false);
 			return;
+		}
 		int random = rand() % territories.size();
 		int orgnArmyAmount = territories[random]->getArmyAmount();
 		territories[random]->setArmyAmount(orgnArmyAmount+1);
