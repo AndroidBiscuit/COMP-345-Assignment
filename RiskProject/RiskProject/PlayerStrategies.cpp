@@ -14,8 +14,10 @@ HumanPlayerStrategy::HumanPlayerStrategy(Player* player) : PlayerStrategy(player
 void HumanPlayerStrategy::issueOrder() { //TODO:Need to pass neutral and players vector
 	Player* neutralPlayer = player->neutral;
 	//vector<Player*> playersAvailable = pAvailable;
-	vector<Territory*> attackList = toAttack();
-	vector<Territory*> defendList = toDefend();
+	player->setAttackList();
+	player->setDefendList();
+	vector<Territory*> attackList = player->toAttack();
+	vector<Territory*> defendList = player->toDefend();
 	char orderAnswer2 = 'x';
 	string orderAnswer;
 	string territoryAnswer;
@@ -331,7 +333,7 @@ void AggressivePlayerStrategy::issueOrder() {
 	string deployOrderName = "deploy";
 	string advanceOrderName = "advance";
 	string bombOrderName = "bomb";
-	//TODO: INITIALIZATION PROBLEM AND HOW TO CHOOSE SUBSEQUENT TERRITORIES TO DEPLOY ARMIES TO
+
 	//5 army units and place them anywhere randomly on their territories
 	vector<Territory*> territories = player->toDefend();
 
@@ -355,7 +357,7 @@ void AggressivePlayerStrategy::issueOrder() {
 	}
 	//deploy all army to chosen territory
 	deployOrderName = deployOrderName.append(to_string(orderNumber));
-	for (Territory* territory : toDefend()) {
+	for (Territory* territory : player->toDefend()) {
 		if (territory->getTName().compare(territoryToBeDeployedTo) == 0) {
 			orderNumber++;
 			int playerArmyAmount = player->getArmiesAmount();
@@ -368,6 +370,7 @@ void AggressivePlayerStrategy::issueOrder() {
 			player->setOrdersList(deployOrderName);
 		}
 	}
+
 
 	vector<Territory*> adjTerritoriesVector;
 	//Move army units to adjacent enemy territory
