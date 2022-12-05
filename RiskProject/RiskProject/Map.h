@@ -47,6 +47,12 @@ public:
     void addAdj(Territory* t);
     void setOwner(Player* p);
     void setArmyAmount(int a);
+
+    //Operator:
+    bool operator < (const Territory& str) const
+    {
+        return (armyAmount < str.armyAmount);
+    }
     
    
 };
