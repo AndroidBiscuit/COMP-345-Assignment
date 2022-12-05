@@ -171,6 +171,7 @@
   <ItemGroup>
     <Text Include="command.txt" />
     <Text Include="gamelog.txt" />
+    <Text Include="tournament.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
