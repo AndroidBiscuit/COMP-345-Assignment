@@ -513,8 +513,10 @@ void BenevolentPlayerStrategy::issueOrder() {
 	vector<Territory*> territories = toDefend();
 
 	for (int i = 0; i < 5; i++) {
-		if (toDefend().size() == 0)
+		if (territories.size() == 0) {
+			player->setOrdersToIssueFlag(false);
 			return;
+		}
 		int random = rand() % territories.size();
 		int orgnArmyAmount = territories[random]->getArmyAmount();
 		territories[random]->setArmyAmount(orgnArmyAmount + 1);
@@ -565,38 +567,42 @@ void BenevolentPlayerStrategy::issueOrder() {
 
 	bool usedCardFlag = false;
 
-	//get cards- if its a bomb, then use it
+	//get cards- if its blockade, then use it
 	vector<Card*> cardsAvailable = player->getHand()->getCards();
 	for (Card* card : cardsAvailable) {
 		if (card->getCardName(card->getCardType()) == "blockade")
 		{
-			int targetID;
-			bool isPlayerTerritory = false;
-
-			do {
-				targetID = rand() % player->toDefend().size();
-				for (Territory* territory : player->toDefend())
-				{
-					if (targetID == territory->getTID()) {
-						isPlayerTerritory = true;
-					}
-					else {
-						isPlayerTerritory = false;
-						temp = territory;
-					}
-				}
-			} while (isPlayerTerritory);
 			
+			//bool isPlayerTerritory = false;
+
+			vector<Territory*> enemyTerritories = toAttack();
+			int targetIndex = rand() % enemyTerritories.size();
+			Territory* targetTerritory = enemyTerritories[targetIndex];
+
+			//do {
+			//	targetID = rand() % player->toDefend().size();
+			//	for (Territory* territory : player->toDefend())
+			//	{
+			//		if (targetID == territory->getTID()) {
+			//			isPlayerTerritory = true;
+			//		}
+			//		else {
+			//			isPlayerTerritory = false;
+			//			temp = territory;
+			//		}
+			//	}
+			//} while (isPlayerTerritory);
+			//
 
 			
 			for (Territory* territory : territories)
 			{
-				if (territory->getTName() == temp->getTName())
+				if (territory->getTName() == targetTerritory->getTName())
 				{
 					orderNumber++;
 					//create blockade order
 					blockadeOrderName = blockadeOrderName.append(to_string(orderNumber)); //setting up the order obj name
-					Blockade* blockadeOrderName = new Blockade(temp, player, player->neutral);
+					Blockade* blockadeOrderName = new Blockade(territory, player, player->neutral);
 					player->ordersList->addOrder(blockadeOrderName);
 				}
 			}
