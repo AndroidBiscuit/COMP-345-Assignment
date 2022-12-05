@@ -336,7 +336,7 @@ void AggressivePlayerStrategy::issueOrder() {
 	string bombOrderName = "bomb";
 
 	//5 army units and place them anywhere randomly on their territories
-	vector<Territory*> territories = player->toDefend();
+	vector<Territory*> territories = toDefend();
 
 	for (int i = 0; i < 5; i++) {
 		int random = rand() % territories.size();
@@ -349,7 +349,7 @@ void AggressivePlayerStrategy::issueOrder() {
 
 	//deploy all army to strongest territory
 	//get territory w most army units on it 
-	for (Territory* territory : player->toDefend())
+	for (Territory* territory : territories)
 	{
 		if (territory->getArmyAmount() > territoryArmy) {
 			territoryArmy = territory->getArmyAmount();
@@ -358,7 +358,7 @@ void AggressivePlayerStrategy::issueOrder() {
 	}
 	//deploy all army to chosen territory
 	deployOrderName = deployOrderName.append(to_string(orderNumber));
-	for (Territory* territory : player->toDefend()) {
+	for (Territory* territory : territories) {
 		if (territory->getTName().compare(territoryToBeDeployedTo) == 0) {
 			orderNumber++;
 			int playerArmyAmount = player->getArmiesAmount();
@@ -375,7 +375,7 @@ void AggressivePlayerStrategy::issueOrder() {
 
 	vector<Territory*> adjTerritoriesVector;
 	//Move army units to adjacent enemy territory
-	for (Territory* territory : toDefend()) {
+	for (Territory* territory : territories) {
 		if (territory->getTName() == territoryToBeDeployedTo) {
 			for (Territory* territoryAdj : territory->getAdjTerritories()) {
 				
@@ -422,15 +422,53 @@ void AggressivePlayerStrategy::issueOrder() {
 	
 }
 
-// Return the attack list of selected player
-vector<Territory*> AggressivePlayerStrategy::toAttack() {
-	return player->getAttackList();
+vector<Territory*> AggressivePlayerStrategy::toAttack()
+{
+	//Returns enemy territories player has access to through adjacent territories. 
+	vector<Territory*> attack;
+	for (Territory* t : player->territory) {
+		for (Territory* d : t->getAdjTerritories()) {
+			if (!(find(attack.begin(), attack.end(), d) != attack.end())) {
+				if (d->getOwner() != player && t->getArmyAmount() > 0) { // Checks that the player owned territory has units to deploy
+					attack.push_back(d);
+				}
+
+			}
+
+		}
+	}
+
+	// Now the vector is sorted from best to worst target, uses the overloaded < operator from Map file
+	sort(attack.begin(), attack.end());
+
+	return attack;
 }
 
-// Return the defend list of selected player
-vector<Territory*> AggressivePlayerStrategy::toDefend() {
-	return player->getDefendList();
+vector<Territory*> AggressivePlayerStrategy::toDefend()
+{
+	//Returns territories owned by the player:
+	vector<Territory*> defense;
+	for (auto t : player->territory) {
+		if (t != nullptr)
+			defense.push_back(t);
+	}
+
+
+	sort(defense.begin(), defense.end());
+
+
+	return defense;
 }
+
+// Return the attack list of selected player
+//vector<Territory*> AggressivePlayerStrategy::toAttack() {
+//	return player->getAttackList();
+//}
+//
+//// Return the defend list of selected player
+//vector<Territory*> AggressivePlayerStrategy::toDefend() {
+//	return player->getDefendList();
+//}
 
 
 

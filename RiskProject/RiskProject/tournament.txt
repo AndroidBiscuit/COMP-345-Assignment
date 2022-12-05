@@ -1,1 +1,1 @@
-tournament M Canada.map Japan.map P Cheater Neutral Benevolent G 2 D 10
+tournament M Canada.map Japan.map P Cheater Neutral Aggressive Benevolent G 2 D 10
