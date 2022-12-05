@@ -1,0 +1,131 @@
+Input command: tournament M Canada.map Japan.map P Cheater Neutral Aggressive Benevolent G 2 D 10
+Current effect: Tournament mode is active.
+Transitioned to state: maploaded
+Transitioned to state: mapvalidated
+Transitioned to state: assignreinforcement
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Transitioned to state: mapvalidated
+Transitioned to state: assignreinforcement
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Transitioned to state: mapvalidated
+Transitioned to state: maploaded
+Transitioned to state: mapvalidated
+Transitioned to state: assignreinforcement
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Transitioned to state: mapvalidated
+Transitioned to state: assignreinforcement
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Order Executed: Deploy
+Deploy: Move a certain number of army units from the current player's reinforcement pool to one of the current player's territories.
+Order Advance: Advance
+Advance: Move a certain number of army units from one territory (source territory) to another territory (target territory)
+Transitioned to state: exitprogram
+Input command: tournament M Canada.map Japan.map P Cheater Neutral Aggressive Benevolent G 2 D 10
