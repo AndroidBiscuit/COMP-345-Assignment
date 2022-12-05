@@ -325,7 +325,8 @@ AggressivePlayerStrategy::AggressivePlayerStrategy(Player* player) : PlayerStrat
 }
 // Issue order
 void AggressivePlayerStrategy::issueOrder() {
-	
+	player->setAttackList();
+	player->setDefendList();
 	int orderNumber = 0;
 	int territoryArmy = 0;
 	string territoryToBeDeployedTo;
