@@ -339,6 +339,8 @@ void AggressivePlayerStrategy::issueOrder() {
 	vector<Territory*> territories = toDefend();
 
 	for (int i = 0; i < 5; i++) {
+		if (toDefend().size() == 0)
+			return;
 		int random = rand() % territories.size();
 		int orgnArmyAmount = territories[random]->getArmyAmount();
 		territories[random]->setArmyAmount(orgnArmyAmount+1);
@@ -357,15 +359,16 @@ void AggressivePlayerStrategy::issueOrder() {
 		}
 	}
 	//deploy all army to chosen territory
-	deployOrderName = deployOrderName.append(to_string(orderNumber));
+	
 	for (Territory* territory : territories) {
 		if (territory->getTName().compare(territoryToBeDeployedTo) == 0) {
 			orderNumber++;
+			deployOrderName = deployOrderName.append(to_string(orderNumber)); 
 			int playerArmyAmount = player->getArmiesAmount();
 			int territoryArmyAmount = territory->getArmyAmount();
 			int armyAmount = playerArmyAmount + territoryArmyAmount;
 
-			Deploy* deployOrderName = new Deploy(armyAmount, territory, player);
+			Deploy* deployOrderName = new Deploy(armyAmount, territory, player); 
 			player->setArmiesAmount(0);
 			player->tToDefend.push_back(territory); //tToDefend is a territory vector where army units are deployed to
 			player->setOrdersList(deployOrderName);
@@ -486,7 +489,129 @@ BenevolentPlayerStrategy::BenevolentPlayerStrategy(Player* player) : PlayerStrat
 }
 // Issue order
 void BenevolentPlayerStrategy::issueOrder() {
-	player->setOrdersToIssueFlag(false);
+	player->setAttackList();
+	player->setDefendList();
+	int orderNumber = 0;
+	int territoryArmy = 0;
+	string territoryToBeDeployedTo;
+
+	string deployOrderName = "deploy";
+	string advanceOrderName = "advance";
+	string blockadeOrderName = "blockade";
+
+	int sum = 0;
+	int average = 0;
+	int transfer = 0;
+	int remaining = player->getArmiesAmount();
+
+	Territory* temp;
+	vector<Territory*> weakTerritories;
+
+	//5 army units and place them anywhere randomly on their territories
+	vector<Territory*> territories = toDefend();
+
+	for (int i = 0; i < 5; i++) {
+		if (toDefend().size() == 0)
+			return;
+		int random = rand() % territories.size();
+		int orgnArmyAmount = territories[random]->getArmyAmount();
+		territories[random]->setArmyAmount(orgnArmyAmount + 1);
+		int playerArmyAmount = player->getArmiesAmount();
+		player->setArmiesAmount(playerArmyAmount - 1);
+	}
+
+	// Find average for weakest territory
+	for (Territory* territory : territories)
+	{
+		sum += territory->getArmyAmount();
+	}
+	average = sum / player->getTerritory().size();
+
+
+	// Evaluate territories to check if they are below average
+	for (Territory* territory : player->toDefend())
+	{
+		temp = territory;
+		if (temp->getArmyAmount() <= average) {
+			weakTerritories.push_back(temp);
+		}
+	}
+	// Add army to weak territories
+	transfer = remaining / weakTerritories.size();
+
+	
+	//deploy armies to weak territories list
+	for (Territory* weakTerritory : weakTerritories)
+	{
+		for (Territory* territory : territories) {
+			if (territory->getTName().compare(weakTerritory->getTName()) == 0) {
+				orderNumber++;
+				deployOrderName = deployOrderName.append(to_string(orderNumber));
+
+				//int playerArmyAmount = player->getArmiesAmount();
+				int territoryArmyAmount = territory->getArmyAmount();
+				int armyAmount = transfer + territoryArmyAmount;
+
+				Deploy* deployOrderName = new Deploy(armyAmount, territory, player);
+				player->setArmiesAmount(player->getArmiesAmount()-transfer);
+				player->tToDefend.push_back(territory); //tToDefend is a territory vector where army units are deployed to
+				player->setOrdersList(deployOrderName);
+			}
+		}
+
+	}
+
+	bool usedCardFlag = false;
+
+	//get cards- if its a bomb, then use it
+	vector<Card*> cardsAvailable = player->getHand()->getCards();
+	for (Card* card : cardsAvailable) {
+		if (card->getCardName(card->getCardType()) == "blockade")
+		{
+			int targetID;
+			bool isPlayerTerritory = false;
+
+			do {
+				targetID = rand() % player->toDefend().size();
+				for (Territory* territory : player->toDefend())
+				{
+					if (targetID == territory->getTID()) {
+						isPlayerTerritory = true;
+					}
+					else {
+						isPlayerTerritory = false;
+						temp = territory;
+					}
+				}
+			} while (isPlayerTerritory);
+			
+
+			
+			for (Territory* territory : territories)
+			{
+				if (territory->getTName() == temp->getTName())
+				{
+					orderNumber++;
+					//create blockade order
+					blockadeOrderName = blockadeOrderName.append(to_string(orderNumber)); //setting up the order obj name
+					Blockade* blockadeOrderName = new Blockade(temp, player, player->neutral);
+					player->ordersList->addOrder(blockadeOrderName);
+				}
+			}
+
+			
+			//discard bomb card and grab a new card
+			usedCardFlag = true;
+			break;
+		}
+	}
+
+	if (!usedCardFlag) {
+		//discard a random card and pick up a new one
+
+	}
+
+	//player->setOrdersToIssueFlag(false);
 }
 
 // Return the attack list of selected player
