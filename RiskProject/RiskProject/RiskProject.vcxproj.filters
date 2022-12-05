@@ -135,5 +135,8 @@
     <Text Include="gamelog.txt">
       <Filter>Source Files</Filter>
     </Text>
+    <Text Include="tournament.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

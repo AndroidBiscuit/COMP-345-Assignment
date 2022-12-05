@@ -471,19 +471,22 @@ NeutralPlayerStrategy::NeutralPlayerStrategy() :PlayerStrategy()
 NeutralPlayerStrategy::NeutralPlayerStrategy(Player* player) : PlayerStrategy(player)
 {
 }
-// Issue order
+// Issue order: Neutral player: never issues any order.
 void NeutralPlayerStrategy::issueOrder() {
+	cout << "The Neutral Player cannot issue any orders." << endl;
 	player->setOrdersToIssueFlag(false);
 }
 
 // Return the attack list of selected player
 vector<Territory*> NeutralPlayerStrategy::toAttack() {
-	return player->getAttackList();
+	vector<Territory*> ret;
+	return ret;
 }
 
 // Return the defend list of selected player
 vector<Territory*> NeutralPlayerStrategy::toDefend() {
-	return player->getDefendList();
+	vector<Territory*> ret;
+	return ret;
 }
 
 
@@ -501,23 +504,77 @@ CheaterPlayerStrategy::CheaterPlayerStrategy(Player* player) : PlayerStrategy(pl
 }
 // Issue order - automatically turns adjacent territory owners to cheater player's 
 void CheaterPlayerStrategy::issueOrder() {
-	vector<Territory*> enemyTerritories = player->availableTerritoriesToAttack(); //gets adjacent territories to its own
-	for (Territory* t : enemyTerritories)
-	{
-		t->setOwner(player); 
+	Order* issued;
+	Card* played;
+	LogObserver* orderObserver = new LogObserver(player->getOrders());
+	vector<Territory*> defend = this->toDefend();
+	vector<Territory*> attack = this->toAttack();
+
+	cout << "----------------------------------" << endl;
+	cout << "Cheater will now advance on all adjacent enemy territories." << endl;
+
+	for (Territory* t : attack) {
+		//Remove territory from original owner:
+		(t->getOwner())->removeTerritory(t);
+		//Make territory transfer and move armies:
+		t->setOwner(player);
+		player->addTerritory(t);
 	}
+
+	cout << "Cheater player has conquered " << attack.size() << " territories." << endl;
+	player->setConquered(true);
+	//vector<Territory*> enemyTerritories = player->availableTerritoriesToAttack(); //gets adjacent territories to its own
+	//for (Territory* t : enemyTerritories)
+	//{
+	//	t->setOwner(player); 
+	//}
 	player->setOrdersToIssueFlag(false);
 }
 
-// Return the attack list of selected player
-vector<Territory*> CheaterPlayerStrategy::toAttack() {
-	return player->getAttackList();
+vector<Territory*> CheaterPlayerStrategy::toAttack()
+{
+	//Returns enemy territories player has access to through adjacent territories. 
+	vector<Territory*> attack;
+	for (auto t : player->territory) {
+		for (auto d : t->getAdjTerritories()) {
+			if (!(find(attack.begin(), attack.end(), d) != attack.end())) {
+				if (d->getOwner() != player) {
+					attack.push_back(d);
+				}
+
+			}
+
+		}
+	}
+
+	// Now the vector is sorted from best to worst target, uses the overloaded < operator from Map file
+	sort(attack.begin(), attack.end());
+
+	return attack;
 }
 
-// Return the defend list of selected player
-vector<Territory*> CheaterPlayerStrategy::toDefend() {
-	return player->getDefendList();
+vector<Territory*> CheaterPlayerStrategy::toDefend()
+{
+	//Returns territories owned by the player:
+	vector<Territory*> defense;
+	for (auto t : player->territory) {
+		defense.push_back(t);
+	}
+
+	sort(defense.begin(), defense.end());
+
+	return defense;
 }
+
+//// Return the attack list of selected player
+//vector<Territory*> CheaterPlayerStrategy::toAttack() {
+//	return player->getAttackList();
+//}
+//
+//// Return the defend list of selected player
+//vector<Territory*> CheaterPlayerStrategy::toDefend() {
+//	return player->getDefendList();
+//}
 
 PlayerStrategy::PlayerStrategy()
 {
